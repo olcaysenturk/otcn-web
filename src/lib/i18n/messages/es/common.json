@@ -1,0 +1,1790 @@
+{
+  "error": {
+    "missingSession": "No se encontraron datos de sesión. Inténtalo de nuevo."
+  },
+  "transactionTypes": {
+    "withdraw": "Retiro",
+    "deposit": "Depósito",
+    "buy": "Compra",
+    "sell": "Venta"
+  },
+  "menu": {
+    "experience": "Experiencia Minka OTC",
+    "aboutUs": "¿Qué dicen de nosotros?",
+    "askedQuestions": "Preguntas frecuentes"
+  },
+  "bank": {
+    "title": "Cuentas bancarias",
+    "search": "Buscar banco",
+    "add": "Añadir cuenta",
+    "columns": {
+      "bank": "Banco",
+      "accountName": "Nombre de la cuenta",
+      "iban": "IBAN"
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "pagination": {
+      "showing": "Mostrando {{from}}-{{to}} de {{total}} registros",
+      "show": "Mostrar {{count}}"
+    },
+    "deleteModal": {
+      "title": "Eliminar cuenta bancaria",
+      "description": "¿Seguro que deseas eliminar esta cuenta bancaria? Esta acción no se puede deshacer.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    },
+    "successAdd": "Cuenta bancaria añadida correctamente",
+    "errorAdd": "No se pudo añadir la cuenta bancaria. Inténtalo de nuevo.",
+    "accountNamePlaceholder": "Introduce el nombre de la cuenta",
+    "ibanPlaceholder": "TR",
+    "ibanDeclaration": "Confirmo que el número de IBAN declarado en este formulario me pertenece y es correcto.",
+    "addBankAccountButton": "Añadir cuenta bancaria",
+    "adding": "Añadiendo..."
+  },
+  "address": {
+    "title": "Gestión de direcciones",
+    "add": "Añadir dirección",
+    "columns": {
+      "label": "Etiqueta",
+      "network": "Red",
+      "address": "Dirección",
+      "tag": "Memo / Tag",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "approved": "Aprobada",
+      "pending": "Pendiente"
+    },
+    "form": {
+      "title": "Añadir nueva dirección",
+      "type": "Tipo de dirección",
+      "corporate": "Corporativa",
+      "individual": "Individual",
+      "label": "Nombre de la dirección",
+      "network": "Seleccionar red",
+      "address": "Dirección",
+      "tag": "Tag / Memo (opcional)",
+      "whitelist": "Añadir a la lista blanca",
+      "save": "Guardar",
+      "successTitle": "Dirección añadida",
+      "successDesc": "Se ha añadido la nueva dirección a la lista blanca."
+    }
+  },
+  "security": {
+    "title": "Métodos de inicio de sesión",
+    "loginMethod": "Método de inicio de sesión",
+    "password": "Contraseña",
+    "autoLogout": "Cierre de sesión automático",
+    "methodValue": "Correo electrónico",
+    "methodDesc": "El inicio de sesión por correo electrónico está seleccionado. Puedes cambiar a teléfono en cualquier momento.",
+    "passwordDesc": "Protege tu cuenta con una contraseña única y segura; no la reutilices en otros sitios.",
+    "autoLogoutValue": "8 horas (predeterminado)",
+    "autoLogoutDesc": "Cierre de sesión automático tras un periodo de inactividad.",
+    "twoFaTitle": "Autenticación de dos factores (2FA)",
+    "smsOtp": "OTP por SMS",
+    "smsDesc": "Los códigos de un solo uso enviados a tu teléfono protegen tu cuenta.",
+    "emailOtp": "OTP por correo electrónico",
+    "emailDesc": "Se envían códigos de un solo uso a tu correo electrónico para iniciar sesión y realizar acciones sensibles.",
+    "authApp": "Aplicación de autenticación",
+    "authDesc": "Usa un código de un solo uso de Google Authenticator, Authy o similar.",
+    "edit": "Editar",
+    "loginManagement": "Gestión de inicio de sesión",
+    "accountAuthority": "Autoridad de la cuenta",
+    "password_label": "Contraseña",
+    "password_description": "Protege tu cuenta con una contraseña única y segura; no la uses en ningún otro sitio.",
+    "password_changeButton": "Cambiar contraseña",
+    "smsOtp_label": "OTP por SMS",
+    "smsOtp_description": "Tu cuenta está protegida con códigos de verificación de un solo uso enviados a tu teléfono.",
+    "emailOtp_label": "OTP por correo electrónico",
+    "emailOtp_description": "Se envía un código de seguridad de un solo uso a tu correo electrónico para el inicio de sesión y transacciones sensibles.",
+    "authenticator_label": "Aplicación de autenticación",
+    "authenticator_description": "Usa un código de un solo uso de una app como Google Authenticator o Authy.",
+    "tfaModalInfo": "Completa las verificaciones requeridas para cambiar la configuración de {{type}}.",
+    "tfaModalTitle": "OTP de {{type}}",
+    "atLeastOneOtpRequired": "Al menos un método OTP debe permanecer activo."
+  },
+  "accountHeader": {
+    "title": "Gestión de la cuenta de usuario",
+    "description": "Gestiona tu información personal y corporativa, cuentas bancarias, configuración de seguridad y preferencias de notificación desde un solo lugar."
+  },
+  "dashboard": {
+    "incomplete": {
+      "assets": {
+        "title": "Mis activos",
+        "description": "Una vez aprobada tu cuenta, podrás ver todos tus saldos de activos cripto y fiat desde esta sección."
+      },
+      "transactions": {
+        "title": "Mis transacciones",
+        "description": "Aquí se mostrarán todas las órdenes de compra-venta OTC y movimientos de transferencia que realices."
+      },
+      "cta": "Completar solicitud"
+    },
+    "assets": {
+      "title": "Mis activos",
+      "tabs": {
+        "unit": "Unidad de activo cripto",
+        "category": "Categoría de activo cripto"
+      },
+      "legend": {
+        "bitcoin": "Bitcoin",
+        "bnb": "BNB",
+        "ethereum": "Ethereum",
+        "tether": "Tether"
+      }
+    },
+    "validation": {
+      "required": "Este campo es obligatorio",
+      "selectRequired": "La selección es obligatoria"
+    },
+    "crypto": {
+      "declareModal": {
+        "depositTitle": "Declaración de depósito de activo cripto",
+        "withdrawTitle": "Declaración de retiro de activo cripto",
+        "asset": "Activo cripto",
+        "individual": "Individual",
+        "corporate": "Persona jurídica",
+        "senderNameIndividual": "Nombre completo del remitente*",
+        "senderNameCorporate": "Nombre de la persona jurídica (razón social)*",
+        "isOwnAddress": "Esta dirección está registrada a mi nombre",
+        "informationType": "Tipo de información",
+        "select": "Seleccionar",
+        "address": "Dirección completa",
+        "addressPlaceholder": "Introduce la dirección",
+        "birthplaceIndividual": "Fecha y lugar de nacimiento",
+        "birthplaceCorporate": "Lugar y fecha de constitución",
+        "identityIndividual": "Número de identidad / pasaporte",
+        "identityCorporate": "Número de identificación fiscal",
+        "customerNo": "Número de cliente",
+        "customerNoPlaceholder": "Introduce el número de cliente",
+        "cityLabelIndividual": "Provincia de nacimiento del remitente",
+        "cityLabelCorporate": "Provincia de constitución del remitente",
+        "districtLabelIndividual": "Distrito de nacimiento del remitente",
+        "districtLabelCorporate": "Distrito de constitución del remitente",
+        "dateLabelIndividual": "Fecha de nacimiento del remitente",
+        "dateLabelCorporate": "Fecha de constitución del remitente",
+        "cityPlaceholder": "Seleccionar provincia",
+        "districtPlaceholder": "Seleccionar distrito",
+        "loading": "Cargando...",
+        "addressType": "Tipo de dirección",
+        "provider": "Proveedor de servicios de activos cripto",
+        "vaspOption": "Proveedor de servicios de activos cripto",
+        "personalOption": "Billetera personal",
+        "submit": "Enviar",
+        "successMessage": "Declaración enviada correctamente.",
+        "errorMessage": "Se produjo un error al enviar la declaración.",
+        "idError": "No se encontró el ID de transacción."
+      }
+    },
+    "operations": {
+      "title": "Mis operaciones",
+      "description": "Aquí se mostrarán todas las órdenes de compra-venta OTC y movimientos de transferencia que realices.",
+      "cta": "Completar solicitud"
+    },
+    "transactions": {
+      "buy": "Compra",
+      "sell": "Venta"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "description": "Una vez aprobada tu cuenta, podrás ver todos los saldos cripto y fiat desde aquí.",
+      "cta": "Declarar detalles",
+      "0": {
+        "title": "Tienes un depósito cripto pendiente",
+        "description": "El depósito no se ha completado. Para asignar el monto a tu cuenta, declara los detalles de la transacción."
+      },
+      "1": {
+        "title": "Tienes un depósito cripto pendiente",
+        "description": "El depósito no se ha completado. Para asignar el monto a tu cuenta, declara los detalles de la transacción."
+      },
+      "2": {
+        "title": "Configuración de 2FA",
+        "description": "Activa la autenticación de dos factores (2FA) para proteger tu cuenta."
+      },
+      "3": {
+        "title": "Sobre tu solicitud",
+        "description": "Después de subir tus documentos, tu cuenta será aprobada dentro de 24 horas."
+      },
+      "4": {
+        "title": "Bienvenido a OTCN",
+        "description": "Gracias por crear tu cuenta corporativa."
+      },
+      "5": {
+        "title": "Bienvenido a Minka",
+        "description": "Gracias por crear tu cuenta corporativa."
+      }
+    }
+  },
+  "wallet": {
+    "title": "Mis activos",
+    "subtitle": "Puedes gestionar todos tus saldos cripto y fiat (FIAT) desde esta pantalla.",
+    "pendingNotification": {
+      "title": "Tienes depósitos cripto pendientes",
+      "description": "Para completar el depósito y que el monto se acredite en tu cuenta, debes declarar los detalles de la transacción.",
+      "action": "Revisar"
+    },
+    "totalBalance": {
+      "title": "Saldo total estimado",
+      "change": "Subió un 6,6% respecto al mes pasado",
+      "deposit": "Depósito",
+      "withdraw": "Retiro",
+      "available": "Disponible",
+      "locked": "En orden",
+      "withdrawing": "En retiro"
+    },
+    "actions": {
+      "deposit": "Depósito",
+      "withdraw": "Retiro",
+      "trade": "Operar"
+    },
+    "donut": {
+      "title": "Mis activos",
+      "assetUnit": "Unidad de activo cripto",
+      "assetCategory": "Categoría de activo cripto",
+      "legend": {
+        "bitcoin": "Bitcoin",
+        "bnb": "BNB",
+        "ethereum": "Ethereum",
+        "tether": "Tether",
+        "other": "Otro"
+      },
+      "categories": {
+        "bitcoin": "Bitcoin",
+        "altcoins": "Altcoins",
+        "stable": "Stablecoins"
+      }
+    },
+    "fiat": {
+      "title": "Moneda",
+      "amount": "Monto",
+      "available": "Disponible",
+      "locked": "En uso",
+      "currency": "Lira turca"
+    },
+    "empty": {
+      "title": "Aún no tienes ningún activo",
+      "description": "Deposita fondos en tu cuenta para empezar a operar.",
+      "action": "Depósito",
+      "donutMessage": "A medida que añadas activos, podrás ver la distribución general aquí."
+    },
+    "table": {
+      "title": "Lista de activos",
+      "resultCount": "{{count}} resultados",
+      "convertSmall": "Convertir montos pequeños",
+      "hideSmall": "Ocultar < 1 USD",
+      "searchPlaceholder": "Buscar",
+      "headers": {
+        "asset": "Activo cripto",
+        "amount": "Monto",
+        "available": "Disponible",
+        "locked": "En uso",
+        "action": "Acción"
+      },
+      "pagination": {
+        "perPage": "Por página"
+      }
+    }
+  },
+  "modals": {
+    "declare": {
+      "title": "Declaración de depósito de activo cripto",
+      "titleWithdraw": "Declaración de retiro de activo cripto",
+      "submit": "Enviar",
+      "fields": {
+        "assetType": "Activo cripto",
+        "person": {
+          "individual": "Individual",
+          "corporate": "Corporativa"
+        },
+        "receiverName": "Nombre corporativo del destinatario",
+        "sameAddress": "Estoy enviando desde mi propia dirección",
+        "infoType": "Tipo de información",
+        "city": "Ciudad de la empresa remitente",
+        "district": "Distrito de la empresa remitente",
+        "establishmentDate": "Fecha de constitución de la empresa remitente",
+        "addressType": "Tipo de dirección",
+        "serviceProvider": "Proveedor de servicios de activos cripto",
+        "note": "Proveedor de servicios de activos cripto"
+      },
+      "options": {
+        "infoType": "Ubicación y fecha del remitente",
+        "addressType": "Proveedor de servicios de activos cripto",
+        "addressIndividual": "Dirección individual",
+        "serviceProvider": "Lorem ipsum",
+        "placeholder": "Lorem ipsum"
+      }
+    },
+    "pending": {
+      "title": "Transacciones pendientes",
+      "amount": "Monto",
+      "senderAddress": "Dirección del remitente",
+      "network": "Red",
+      "noRecords": "No se encontraron registros.",
+      "declareAction": "Declarar información"
+    },
+    "assetDetail": {
+      "available": "Disponible",
+      "inOrder": "En orden",
+      "processing": "Procesando",
+      "lastTransactions": "Transacciones recientes",
+      "viewAll": "Ver todo",
+      "historyTitle": "Historial de transacciones",
+      "recentCount": "(Últimas {{count}} transacciones)",
+      "filterAll": "Todas las transacciones",
+      "noTransactions": "No se encontraron transacciones.",
+      "footerLast5Info": "Mostrando las últimas 5 transacciones. Visita la página Mis transacciones para más detalles.",
+      "myTransactions": "Mis transacciones",
+      "footerInfo": "Se muestran los datos de transacciones de los últimos 6 meses. Para registros más antiguos, puedes visitar la página",
+      "footerLink": "Mis transacciones",
+      "footerInfoEnd": "."
+    },
+    "funds": {
+      "titleDeposit": "Depósito",
+      "titleWithdraw": "Retiro",
+      "subtitleMethod": "Elige cómo deseas realizar la operación.",
+      "subtitleDepositBank": "Selecciona una cuenta bancaria y revisa los detalles.",
+      "subtitleWithdrawBank": "Retirar a una cuenta bancaria",
+      "subtitleDepositCrypto": "Transfiere cripto desde tu billetera.",
+      "subtitleWithdrawCrypto": "Retira cripto a una billetera.",
+      "subtitleAddBankAccount": "Añade una cuenta bancaria.",
+      "subtitleAddCryptoAddress": "Añade una dirección cripto.",
+      "subtitleSummary": "Revisa los detalles de la solicitud.",
+      "firstTimeDesc": "Puedes depositar TL mediante cuenta bancaria o transferir activos cripto.",
+      "depositDesc": "Puedes depositar TL mediante cuenta bancaria o transferir activos cripto.",
+      "optionDepositBankTitle": "Depositar mediante cuenta bancaria",
+      "optionDepositBankDesc": "Deposita TL a través de bancos turcos al instante o en horario laboral.",
+      "optionDepositCryptoTitle": "Depositar cripto",
+      "optionDepositCryptoDesc": "Aumenta tu saldo transfiriendo cripto desde tu billetera.",
+      "depositBankTitle": "Depositar en cuenta bancaria",
+      "depositBankDesc": "Elige un banco y consulta los detalles de la cuenta.",
+      "summaryTitle": "Detalles de la solicitud",
+      "depositBullet1": "Añade el código",
+      "depositBullet1b": "a la descripción de la transferencia.",
+      "depositBullet2": "El nombre de la cuenta remitente debe coincidir con el nombre de tu cuenta Minka.",
+      "depositBullet3": "Las transferencias incorrectas o incompletas se devuelven en 24 horas.",
+      "depositAmountLabel": "Monto a enviar",
+      "depositAmountValue": "Mín. 500 TL - Máx. 1.000.000 TL",
+      "depositReferenceLabel": "Código de referencia",
+      "submit": "Enviar solicitud",
+      "continue": "Continuar",
+      "withdrawTitle": "Retiro",
+      "withdrawDesc": "Elige cómo deseas retirar y continúa.",
+      "optionWithdrawBankTitle": "Retirar a cuenta bancaria",
+      "optionWithdrawBankDesc": "Transfiere TL a tu cuenta bancaria verificada.",
+      "optionWithdrawCryptoTitle": "Retirar cripto",
+      "optionWithdrawCryptoDesc": "Transfiere cripto a redes compatibles.",
+      "withdrawBankTitle": "Seleccionar cuenta bancaria",
+      "withdrawBankDesc": "Elige la cuenta a usar para el retiro.",
+      "withdrawBullet1": "Las solicitudes de retiro se aprueban en horario laboral.",
+      "withdrawBullet2": "El IBAN debe coincidir con el nombre del titular de la cuenta.",
+      "withdrawAmountLabel": "Monto a retirar",
+      "withdrawFeeLabel": "Comisión de la transacción",
+      "withdrawFeeValue": "0 TL",
+      "availability": {
+        "instant": "Instantáneo (24/7)",
+        "business": "Horario laboral"
+      },
+      "fee": {
+        "free": "Gratis"
+      },
+      "depositNotice": "Realiza la transferencia únicamente desde la cuenta bancaria corporativa de tu empresa. Las transferencias desde cuentas personales serán devueltas.",
+      "mobileBanking": "Mediante banca móvil",
+      "cryptoDepositTitle": "Depositar cripto",
+      "cryptoDepositBullet1": "Asegúrate de seleccionar la red correcta para los depósitos.",
+      "cryptoDepositBullet2": "Las transferencias a otras redes pueden perderse.",
+      "cryptoDepositBullet3": "Enviar tokens distintos de {{asset}} a esta dirección resultará en la pérdida de fondos.",
+      "selectCoin": "Activo cripto",
+      "network": "Red",
+      "addAddress": "Añadir dirección",
+      "cryptoDepositWarning": "Deposita únicamente {{asset}}. Enviar otros activos puede resultar en pérdida permanente.",
+      "cryptoDepositMemoWarning": "Deposita únicamente {{asset}}. Enviar otros activos puede resultar en pérdida permanente.",
+      "cryptoDepositAddress": "Dirección",
+      "cryptoDepositQr": "Código QR",
+      "sampleAddress": "bc1qrp33g0q5c5...n0p9",
+      "copy": "Copiar",
+      "assetLabel": "Activo",
+      "networkLabel": "Red",
+      "depositAddressLabel": "Dirección de la billetera",
+      "withdrawCryptoTitle": "Retirar cripto",
+      "withdrawBankBullet1": "Puedes retirar TL a tu cuenta 24/7 desde nuestros bancos asociados.",
+      "withdrawBankBullet2": "Las solicitudes de retiro EFT se pueden enviar hasta las 15:30 en días laborables. En fines de semana o festivos, solo se pueden enviar solicitudes de retiro de TL mediante transferencia bancaria.",
+      "withdrawBankBullet3": "Solo puedes retirar TL a una cuenta bancaria a tu nombre.",
+      "withdrawBankBullet4": "El retiro mínimo de TL es 10 TL.",
+      "withdrawCryptoBullet1": "Asegúrate de que la dirección del destinatario coincida exactamente con la red seleccionada.",
+      "withdrawCryptoBullet2": "El retiro mínimo de {{asset}} es {{minQty}} {{asset}}",
+      "withdrawCryptoBullet3": "Tiempo estimado de llegada según la densidad de la red: ~ {{time}} minutos",
+      "withdrawAddressLabel": "Dirección del destinatario",
+      "withdrawLabelOptional": "Etiqueta / Memo (opcional)",
+      "withdrawFiatAmountLabel": "Monto fiat aproximado",
+      "withdrawReceiveLabel": "Recibirás",
+      "optional": "Opcional",
+      "noAddressWarning": "No hay ninguna dirección creada para el activo seleccionado entre tus direcciones registradas. Crea primero una dirección de retiro.",
+      "addNewAddress": "Añadir nueva dirección de retiro segura",
+      "addressSelectPlaceholder": "Seleccionar dirección",
+      "assetSource": "Origen de los fondos",
+      "assetSourceOptions": {
+        "salaryWorkIncome": "Salario / Ingresos de negocio",
+        "cryptoGain": "Ganancias cripto",
+        "rentalIncome": "Ingresos por alquiler",
+        "personalInvestment": "Inversión personal",
+        "other": "Otro"
+      },
+      "transactionPurpose": "Propósito de la transacción",
+      "withdrawPurposeOptions": {
+        "transferOwnWallet": "Transferencia a mi propia billetera",
+        "transferOtherExchange": "Transferencia a otra cuenta de exchange",
+        "yieldStakingLending": "Rendimiento (Staking, Lending, etc.)",
+        "investmentIcoIeo": "Inversión (ICO, IEO, etc.)",
+        "custodySecurity": "Custodia y seguridad",
+        "other": "Otro"
+      },
+      "selectPlaceholder": "Seleccionar",
+      "inputPlaceholder": "Entrada",
+      "selectCoinPlaceholder": "Seleccionar activo",
+      "networkPlaceholder": "Seleccionar red",
+      "labelTitle": "Etiqueta",
+      "labelPlaceholder": "Introduce la etiqueta",
+      "addressTitle": "Dirección",
+      "addressPlaceholder": "Introduce la dirección",
+      "memoTitle": "MEMO",
+      "memoPlaceholder": "Introduce el MEMO",
+      "userTypeTitle": "Tipo de usuario",
+      "individual": "Individual",
+      "corporate": "Persona jurídica",
+      "receiverNameIndividual": "Nombre completo del destinatario",
+      "receiverNameCorporate": "Nombre de la persona jurídica del destinatario (razón social)",
+      "isSelfOwnedLabel": "Esta dirección está registrada a mi nombre",
+      "receiverBirthDateTitle": "Fecha de nacimiento del destinatario",
+      "identityNumberTitle": "Número de identidad del destinatario",
+      "taxNumberTitle": "Número de identificación fiscal del destinatario",
+      "residenceAddressTitle": "Dirección completa",
+      "residenceAddressPlaceholder": "Dirección completa",
+      "countryTitle": "País",
+      "countryTurkey": "Turquía",
+      "providerTypeTitle": "Tipo de dirección",
+      "providerNameTitle": "Proveedor de servicios de activos cripto",
+      "other": "Otro",
+      "otherProviderNameTitle": "Nombre de otra plataforma",
+      "otherProviderNamePlaceholder": "Introduce el nombre de la plataforma",
+      "providerNamePlaceholder": "Seleccionar proveedor",
+      "continueToDeclaration": "Continuar a la declaración de dirección",
+      "continueToTfa": "Continuar a la verificación 2FA",
+      "receiverCountryTitle": "País",
+      "receiverCountryPlaceholder": "Seleccionar país",
+      "confirm": "Confirmar",
+      "providerTypes": {
+        "wallet": "Billetera personal",
+        "exchange": "Proveedor de servicios de activos cripto"
+      },
+      "bankAccountTitle": "Cuenta bancaria",
+      "bankAccountPlaceholder": "Seleccionar cuenta bancaria",
+      "addBankAccount": "Añadir cuenta bancaria",
+      "bankLabel": "Banco",
+      "ibanLabel": "IBAN",
+      "amountLabel": "Monto",
+      "availableLabel": "Disponible {{amount}}",
+      "withdrawnAmountLabel": "Monto retirado",
+      "confirmRequest": "Confirmar solicitud",
+      "copySuccess": "¡Copiado correctamente!",
+      "eftHavale": "EFT y transferencia bancaria 24/7",
+      "accountNameTitle": "Nombre de la cuenta",
+      "noBankFound": "No se encontró ningún banco para esta moneda.",
+      "addressCopied": "¡Dirección copiada!",
+      "depositTagLabel": "Etiqueta de depósito:",
+      "createAddress": "Crear dirección",
+      "tfaDescription": "Debes completar todas las verificaciones para finalizar la transacción.",
+      "complete": "Completar",
+      "address": "Dirección",
+      "bankAccountRequired": "Selecciona una cuenta bancaria.",
+      "amountRequired": "Introduce un monto.",
+      "amountMustBeGreaterThanZero": "El monto debe ser mayor que 0.",
+      "validAddressRequired": "Selecciona una dirección válida.",
+      "withdrawInitError": "Se produjo un error al iniciar la transacción.",
+      "insufficientBalance": "Saldo insuficiente.",
+      "description": "Descripción",
+      "ibanTitle": "IBAN",
+      "withdrawSuccess": "Solicitud de retiro recibida correctamente.",
+      "withdrawError": "La solicitud de retiro falló."
+    },
+    "tfa": {
+      "email": "Correo electrónico",
+      "phone": "Número de teléfono",
+      "codePlaceholder": "Introduce el código de 6 dígitos",
+      "sendCode": "Enviar código",
+      "sending": "Enviando...",
+      "verify": "Verificar",
+      "verifying": "Verificando...",
+      "emailSentText": "Introduce el código de verificación de 6 dígitos enviado a {{email}}.",
+      "phoneSentText": "Introduce el código de verificación de 6 dígitos enviado a {{phone}}.",
+      "confirm": "Confirmar",
+      "errors": {
+        "flowIdNotFound": "No se encontró el ID de flujo.",
+        "sendFailed": "No se pudo enviar el código de verificación.",
+        "verifyFailed": "La verificación falló.",
+        "generic": "Se produjo un error.",
+        "invalidCode": "Introduce un código de 6 dígitos."
+      },
+      "success": {
+        "sent": "Código de verificación enviado.",
+        "verified": "Verificación exitosa."
+      }
+    },
+    "addressModal": {
+      "titleInfo": "Añadir dirección de retiro",
+      "titleDeclare": "Declaración de dirección de activo cripto",
+      "titleVerify": "Verificación 2FA",
+      "steps": {
+        "info": "Detalles de la dirección",
+        "declare": "Declaración de dirección",
+        "verify": "Verificación 2FA"
+      },
+      "fields": {
+        "asset": "Activo cripto",
+        "network": "Red",
+        "label": "Etiqueta",
+        "address": "Dirección",
+        "persona": "Activo cripto",
+        "corporateName": "Nombre de la persona jurídica del destinatario (razón social)*",
+        "corporateTaxId": "Número de identificación fiscal del destinatario",
+        "fullName": "Nombre completo del destinatario*",
+        "tckn": "Número de identidad nacional del destinatario*",
+        "verificationCode": "Código de verificación"
+      },
+      "placeholders": {
+        "asset": "Seleccionar activo cripto",
+        "network": "Seleccionar red",
+        "label": "Introduce la etiqueta",
+        "address": "Introduce la dirección",
+        "corporateName": "Seleccionar razón social",
+        "corporateTaxId": "Introduce el número de identificación fiscal",
+        "fullName": "Introduce el nombre completo",
+        "tckn": "Introduce el número de identidad nacional",
+        "verificationCode": "000000"
+      },
+      "notes": {
+        "whitelist": "Tu dirección se añadirá a la lista blanca.",
+        "tfaRequired": "Se requiere verificación 2FA."
+      },
+      "actions": {
+        "saveAddress": "Guardar dirección"
+      }
+    },
+    "corporate": {
+      "actions": {
+        "save": "Guardar"
+      },
+      "validation": {
+        "firstNameMin": "El nombre debe tener al menos 2 caracteres",
+        "lastNameMin": "El apellido debe tener al menos 2 caracteres",
+        "identityNumberLength": "El número de identidad nacional debe tener 11 dígitos",
+        "birthDateFormat": "Introduce una fecha válida (AAAA-MM-DD)",
+        "identitySerialRequired": "El número de serie de identidad es obligatorio",
+        "applicationIdMissing": "No se encontró el ID de solicitud"
+      },
+      "addShareholder": {
+        "title": "Añadir accionista",
+        "fields": {
+          "name": "Nombre",
+          "surname": "Apellido",
+          "identityNumber": "Número de identidad nacional",
+          "birthDate": "Fecha de nacimiento"
+        },
+        "placeholders": {
+          "name": "Introduce el nombre del accionista",
+          "surname": "Introduce el apellido del accionista",
+          "identityNumber": "Introduce tu número de identidad nacional de 11 dígitos"
+        }
+      },
+      "updateAuthority": {
+        "title": "Editar autoridad de la cuenta",
+        "fields": {
+          "identityNumber": "Número de identidad nacional",
+          "birthDate": "Fecha de nacimiento",
+          "identitySerialNumber": "Número de serie de identidad"
+        },
+        "placeholders": {
+          "identityNumber": "Introduce tu número de identidad nacional de 11 dígitos",
+          "identitySerialNumber": "Ejemplo: A21"
+        }
+      }
+    },
+    "security": {
+      "changePassword": {
+        "title": "Cambiar contraseña",
+        "currentPassword": "Contraseña actual",
+        "newPassword": "Nueva contraseña",
+        "confirmPassword": "Nueva contraseña (repetir)",
+        "saving": "Guardando...",
+        "saveAction": "Guardar nueva contraseña"
+      },
+      "passwordVerify": {
+        "titles": {
+          "sms": "Verificación por teléfono",
+          "email": "Verificación por correo electrónico",
+          "authenticator": "Verificación 2FA"
+        },
+        "descriptions": {
+          "authenticator": "Introduce el código de tu aplicación de autenticación para cambiar tu contraseña.",
+          "smsPrefix": "Para cambiar tu contraseña, introduce el código de verificación enviado a",
+          "smsSuffix": ".",
+          "emailPrefix": "Para cambiar tu contraseña, introduce el código de verificación enviado a",
+          "emailSuffix": "."
+        },
+        "codeLabel": "Código de verificación",
+        "codePlaceholder": "Código de verificación de 6 dígitos",
+        "sendCode": "Enviar código",
+        "verifying": "Verificando...",
+        "confirm": "Confirmar"
+      }
+    }
+  },
+  "applicationPage": {
+    "cta": "Completar solicitud",
+    "assets": {
+      "title": "Mis activos",
+      "description": "Una vez aprobada tu cuenta, podrás ver todos los saldos cripto y fiat desde aquí."
+    },
+    "trades": {
+      "title": "Mis operaciones",
+      "description": "Aquí se mostrarán todas las órdenes de compra-venta OTC y movimientos de transferencia que realices."
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "0": {
+        "title": "Lorem ipsum",
+        "description": "Lorem ipsum dolar set amet"
+      },
+      "1": {
+        "title": "Configuración de 2FA",
+        "description": "Activa la autenticación de dos factores (2FA) para proteger tu cuenta."
+      },
+      "2": {
+        "title": "Sobre tu solicitud",
+        "description": "Después de subir tus documentos, tu cuenta será aprobada dentro de 24 horas."
+      },
+      "3": {
+        "title": "Bienvenido a Minka",
+        "description": "Gracias por crear tu cuenta corporativa."
+      }
+    }
+  },
+  "back": "Volver",
+  "hero.title": "Opera cripto en minutos",
+  "hero.subtitle": "Compra, vende y sigue los mercados con datos en tiempo real.",
+  "hero.formTitle": "Solicita ahora tu cuenta corporativa OTCN",
+  "hero.stats": {
+    "volume": {
+      "value": "$50K+",
+      "label": "Volumen de operaciones"
+    },
+    "support": {
+      "value": "24/7",
+      "label": "Soporte dedicado"
+    },
+    "liquidity": {
+      "value": "Alta",
+      "label": "Acceso a liquidez"
+    }
+  },
+  "hero.stats.volume.value": "$50K+",
+  "hero.stats.volume.label": "Volumen de operaciones",
+  "hero.stats.support.value": "24/7",
+  "hero.stats.support.label": "Soporte dedicado",
+  "hero.stats.liquidity.value": "Alta",
+  "hero.stats.liquidity.label": "Acceso a liquidez",
+  "steps": {
+    "title": "Una experiencia OTC profesional en 3 pasos",
+    "cta": "Iniciar solicitud",
+    "apply": {
+      "title": "Envía tu solicitud",
+      "description": "Comienza el proceso completando el breve formulario. Nuestro equipo revisa tus datos rápidamente, se pone en contacto contigo y te guía en los siguientes pasos."
+    },
+    "register": {
+      "title": "Completa tu incorporación",
+      "description": "Sube los documentos requeridos para finalizar la incorporación. Nuestro equipo de cumplimiento revisa y verifica tu cuenta, y puedes seguir cada paso directamente desde el panel."
+    },
+    "trade": {
+      "title": "Comienza a operar",
+      "description": "Una vez aprobado, recibe precios personalizados y ejecuta operaciones OTC con una experiencia segura, rápida y transparente. Nuestro equipo está disponible en cada etapa siempre que necesites ayuda."
+    }
+  },
+  "testimonials": {
+    "title": "¿Qué dicen de nosotros?",
+    "items": [
+      {
+        "quote": "Con Minka todo el proceso es digital y rastreable. El equipo responde rápido y los precios son transparentes.",
+        "name": "Ayse Demir",
+        "title": "Gerente de Tesorería",
+        "company": "Anka Investments"
+      },
+      {
+        "quote": "En el lado institucional de OTC, ofrecen tanto velocidad como integraciones seguras; eso marca la diferencia para nosotros.",
+        "name": "Mehmet Kaya",
+        "title": "Director Financiero",
+        "company": "Nova Tech"
+      },
+      {
+        "quote": "El acceso a liquidez y el soporte operativo nos permiten gestionar operaciones de gran volumen con comodidad.",
+        "name": "Selin Arslan",
+        "title": "Gerente de Inversiones",
+        "company": "Pera Capital"
+      }
+    ]
+  },
+  "faq": {
+    "title": {
+      "main": "Preguntas",
+      "muted": "Frecuentes"
+    },
+    "description": "Respuestas rápidas a las preguntas más comunes sobre tu flujo OTC. Contacta a nuestro equipo para cualquier otra duda.",
+    "items": [
+      {
+        "q": "¿Qué es el comercio OTC?",
+        "a": "El contenido de este apartado se añadirá próximamente."
+      },
+      {
+        "q": "¿Cuáles son nuestros límites diarios y mensuales?",
+        "a": "El contenido de este apartado se añadirá próximamente."
+      },
+      {
+        "q": "¿Con qué bancos podemos trabajar?",
+        "a": "El contenido de este apartado se añadirá próximamente."
+      },
+      {
+        "q": "¿Qué activos podemos negociar en OTC?",
+        "a": "El contenido de este apartado se añadirá próximamente."
+      },
+      {
+        "q": "¿Con qué bancos podemos trabajar?",
+        "a": "El contenido de este apartado se añadirá próximamente."
+      },
+      {
+        "q": "¿Qué activos podemos negociar en OTC?",
+        "a": "El contenido de este apartado se añadirá próximamente."
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "title": {
+        "line1": "Opera cripto en minutos.",
+        "line2": "Compra, vende y sigue los mercados",
+        "line3": "con datos en tiempo real."
+      },
+      "inputAriaLabel": "Correo electrónico o número de teléfono",
+      "inputPlaceholder": "Correo electrónico / Número de teléfono",
+      "startNow": "Empezar ahora",
+      "provideText": "SOLO PROPORCIONAMOS",
+      "popular": "Popular",
+      "metrics": {
+        "helper": "lorem ipsum",
+        "marketCap": {
+          "title": "Capitalización\nde mercado"
+        },
+        "bitcoinDominance": {
+          "title": "Dominancia\nde Bitcoin"
+        }
+      }
+    },
+    "market": {
+      "tabs": {
+        "gainers": "Mayores subidas",
+        "mostVisited": "Más visitados",
+        "new": "Nuevos"
+      }
+    },
+    "trade": {
+      "title": "OPERA A TU MANERA",
+      "subtitle": "Solo proporcionamos las herramientas",
+      "points": {
+        "trusted": "Confiado por traders en todo el mundo",
+        "secure": "Seguro. Rápido. Transparente",
+        "regulated": "Seguridad de nivel regulado",
+        "support": "Soporte 24/7"
+      }
+    },
+    "portfolio": {
+      "title": "Construye tu cartera",
+      "description": "Toma el control de tu futuro financiero. Ya sea que seas un trader experimentado o estés empezando, opera fácilmente con más de 300 criptomonedas a tu manera, con comisiones bajas.",
+      "cta": "Comprar cripto"
+    },
+    "faq": {
+      "basicsTitle": "Lo básico de OTCN",
+      "firstAnswer": "OTCN es una plataforma de trading de criptomonedas que te ayuda a comprar, vender y seguir los mercados de criptomonedas con precios en tiempo real y datos de mercado en vivo. Puedes crear una cuenta, explorar gráficos de mercado y realizar operaciones en minutos."
+    },
+    "coinDetail": {
+      "eyebrow": "Detalle de la moneda",
+      "description": "Esta es una página de detalle de marcador de posición. Los datos de mercado, gráficos, libro de órdenes y metadatos de activos se pueden conectar aquí cuando el endpoint real esté listo.",
+      "back": "Volver",
+      "stats": {
+        "lastPrice": "Último precio",
+        "change24h": "Cambio 24h",
+        "marketStatus": "Estado del mercado",
+        "mockData": "Datos de prueba"
+      }
+    }
+  },
+  "footer": {
+    "contactUs": "Contáctanos",
+    "contact": "Contacto",
+    "email": "Correo electrónico",
+    "callCenter": "Centro de atención",
+    "location": "Ubicación",
+    "locationText": "Lorem Ipsum es simplemente un texto de relleno de las industrias de la imprenta y la composición tipográfica.",
+    "rights": "OTCN 2026. Todos los derechos reservados.",
+    "privacyPolicy": "Política de privacidad",
+    "terms": "Términos de uso",
+    "userEngagement": "Acuerdo de usuario",
+    "cookiePolicy": "Política de cookies"
+  },
+  "application": {
+    "header": {
+      "title": "Completa tu solicitud de cuenta corporativa",
+      "description": "Completa los siguientes pasos para iniciar operaciones OTC y activar tu cuenta."
+    },
+    "tabs": {
+      "pre": {
+        "label": "Pre-solicitud",
+        "description": "Inicia tu solicitud y completa los datos básicos."
+      },
+      "company": {
+        "label": "Información de la empresa",
+        "description": "Introduce los datos de la empresa y de la persona autorizada."
+      },
+      "digital": {
+        "label": "Carga digital de documentos",
+        "description": "Sube los documentos requeridos digitalmente."
+      },
+      "wet": {
+        "label": "Entrega de firma manuscrita",
+        "description": "Envía los documentos con firma manuscrita."
+      },
+      "review": {
+        "label": "Proceso de revisión",
+        "description": "Tus documentos están en revisión."
+      }
+    },
+    "digitalDocumentUpload": {
+      "infoTitle": "Las cargas digitales son para fines de verificación previa.",
+      "infoDescription": "Después de que tus documentos sean aprobados en el sistema, deberás enviarnos los originales con firma manuscrita por mensajería.",
+      "table": {
+        "documentName": "Nombre del documento",
+        "uploadDate": "Fecha de carga",
+        "lastActionDate": "Fecha de última acción",
+        "status": "Estado"
+      },
+      "status": {
+        "pending": "Documento pendiente",
+        "approved": "Aprobado",
+        "rejected": "Rechazado",
+        "reviewing": "En revisión"
+      },
+      "actions": {
+        "uploadDocument": "Subir documento",
+        "viewRejectionReason": "Ver motivo de rechazo",
+        "startCourierRequest": "Iniciar solicitud de mensajería"
+      },
+      "documents": {
+        "declaration": "Formulario de declaración del usuario",
+        "petition": "Solicitud de apertura de cuenta",
+        "signatureCircular": "Circular de firmas vigente",
+        "taxPlate": "Certificado fiscal",
+        "activityCertificate": "Certificado de actividad (últimos 6 meses)",
+        "tradeRegistry": "Boletín del Registro Mercantil (Constitución + Autoridad + Vigente)",
+        "shareholderInfo1": "Información del accionista (25%+ n.º1)",
+        "shareholderInfo2": "Información del accionista (25%+ n.º2)",
+        "invoice": "Factura emitida a nombre de la empresa en los últimos 3 meses",
+        "ubo": "Declaración del UBO (Beneficiario final efectivo)"
+      }
+    },
+    "reviewProcess": {
+      "title": "Tus documentos están siendo revisados",
+      "subtitle": "Tus documentos han sido tomados en revisión por nuestro equipo de cumplimiento.",
+      "description": "Los documentos con firma manuscrita que enviaste para tus operaciones OTC están siendo revisados por nuestro equipo de cumplimiento. Se te notificará por correo electrónico cuando el proceso esté completo. También puedes seguir tu proceso aquí en cualquier momento.",
+      "notificationTitle": "Notificación por correo electrónico",
+      "notificationDescription": "Cuando el proceso de evaluación esté completo, se te contactará usando los datos a continuación.",
+      "helpTitle": "¿Necesitas ayuda?",
+      "helpDescription": "Puedes contactar a nuestro equipo de soporte para preguntas sobre el proceso de evaluación.",
+      "emailLabel": "Correo electrónico",
+      "phoneLabel": "Número de teléfono",
+      "callCenterLabel": "Centro de atención:",
+      "contactLabel": "Contacto:"
+    },
+    "companyInfo": {
+      "nav": {
+        "shareholder": "Información del accionista",
+        "bank": "Información bancaria",
+        "officer": "Información del oficial autorizado"
+      },
+      "bank": {
+        "accountNameLabel": "Nombre de la cuenta",
+        "accountNamePlaceholder": "Nombre de la cuenta corporativa",
+        "taxNumberLabel": "Número de identificación fiscal",
+        "taxNumberPlaceholder": "Número de identificación fiscal individual / persona jurídica",
+        "bankLabel": "Banco",
+        "bankPlaceholder": "Seleccionar",
+        "ibanLabel": "IBAN",
+        "ibanPlaceholder": "TRXX 0000 0000 0000 0000 0000 00"
+      },
+      "buttons": {
+        "saveInfo": "Guardar datos",
+        "saveContinue": "Guardar y continuar",
+        "addShareholder": "Añadir accionista"
+      },
+      "shareholder": {
+        "notice": "Según la normativa, basta con introducir los datos de los accionistas con una participación del 25% o más.",
+        "newShareholder": "Nuevo accionista",
+        "fields": {
+          "nameLabel": "Nombre",
+          "namePlaceholder": "Nombre del accionista",
+          "surnameLabel": "Apellido",
+          "surnamePlaceholder": "Apellido del accionista",
+          "nationalIdLabel": "Número de identidad nacional",
+          "nationalIdPlaceholder": "Introduce tu número de identidad de 11 dígitos",
+          "birthLabel": "Fecha de nacimiento",
+          "birthPlaceholder": "DD.MM.AAAA",
+          "emailLabel": "Correo electrónico",
+          "emailPlaceholder": "ejemplo@empresa.com",
+          "phoneLabel": "Número de teléfono",
+          "phonePlaceholder": "(5XX) XXX XX XX"
+        },
+        "defaults": {
+          "name": "Jane",
+          "surname": "Doe",
+          "email": "ejemplo@empresa.com"
+        },
+        "noShareholderCheckbox": "No hay accionistas individuales con una participación del 25% o más."
+      },
+      "officer": {
+        "fields": {
+          "nameLabel": "Nombre",
+          "namePlaceholder": "Jane",
+          "surnameLabel": "Apellido",
+          "surnamePlaceholder": "Doe",
+          "nationalIdLabel": "Número de identidad nacional",
+          "nationalIdPlaceholder": "Introduce tu número de identidad de 11 dígitos",
+          "birthLabel": "Fecha de nacimiento",
+          "birthPlaceholder": "DD.MM.AAAA",
+          "emailLabel": "Correo electrónico",
+          "emailPlaceholder": "jane@empresa.com",
+          "phoneLabel": "Número de teléfono",
+          "phonePlaceholder": "(539) 646 2665",
+          "serialNumberLabel": "Número de serie",
+          "serialNumberPlaceholder": "Número de serie de identidad"
+        },
+        "kyc": {
+          "title": "Verificación KYC",
+          "description": "Utiliza una de las siguientes opciones para verificar tu identidad.",
+          "digitalTitle": "KYC digital",
+          "digitalDesc": "Verifica al instante escaneando un código QR o usando un enlace.",
+          "digitalLink": "Rápido y fácil",
+          "badge": "Rápido y fácil",
+          "courierTitle": "KYC por mensajería",
+          "courierDesc": "Solicita un mensajero para completar la verificación de identidad físicamente.",
+          "courierLink": "Verificación física",
+          "digitalPanel": {
+            "title": "Verificación KYC digital",
+            "info": "Completarás el proceso de verificación de identidad desde tu dispositivo móvil usando este código QR o enlace. Saldrás de esta página durante el proceso.",
+            "qrHint": "Escanea el código QR con tu dispositivo móvil.",
+            "or": "o",
+            "linkTitle": "Enlace de verificación",
+            "linkHint": "Puedes copiar el enlace y abrirlo en tu dispositivo móvil.",
+            "stepsTitle": "Pasos de verificación",
+            "step1": "Escanea el código QR o abre el enlace en tu dispositivo móvil",
+            "step2": "Fotografía el frente y el reverso de tu documento de identidad",
+            "step3": "Completa la verificación de reconocimiento facial",
+            "step4": "Espera el resultado de la verificación",
+            "startVerification": "Iniciar verificación de identidad"
+          },
+          "courierPanel": {
+            "title": "Verificación KYC por mensajería",
+            "infoTitle": "Información importante",
+            "infoContent": "Si elige la opción de KYC por mensajería, se omitirá el paso de carga digital de documentos. Entregarás todos tus documentos directamente por mensajería.",
+            "viewDocumentList": "Ver lista de documentos",
+            "phoneLabel": "Tu número de teléfono",
+            "sendSms": "Enviar SMS",
+            "smsHint": "Se enviará un SMS a tu teléfono para crear una cita de mensajería.",
+            "smsSuccess": "Se ha enviado un SMS a tu número registrado para dirigirte a la solicitud de mensajería.",
+            "smsNotReceived": "¿No recibiste el SMS?",
+            "resendSms": "Reenviar",
+            "stepsTitle": "Pasos de verificación",
+            "step1": "Revisa el SMS enviado a tu teléfono",
+            "step2": "Ve al sistema Kuryenet haciendo clic en el enlace del SMS",
+            "step3": "Selecciona la fecha y hora que te convenga",
+            "step4": "Confirma tu cita de mensajería",
+            "requiredDocuments": "Documentos requeridos para la solicitud",
+            "documentsInfo": "Los siguientes documentos deben entregarse con firmas manuscritas cuando llegue el mensajero. En caso de documentos faltantes o incorrectos, el proceso de activación de tu cuenta corporativa puede retrasarse. Asegúrate de que todos los documentos estén actualizados y vigentes.",
+            "backToCourier": "Volver al proceso de mensajería",
+            "downloadList": "Descargar lista",
+            "companyDocuments": "DOCUMENTOS DE LA EMPRESA",
+            "documentHint": "Prepara los documentos y entrégalos cuando llegue el mensajero.",
+            "documents": {
+              "sig": {
+                "title": "Circulares de firma de la empresa",
+                "bullets": [
+                  "Debe ser un documento vigente recibido en los últimos 3 meses.",
+                  "Si se van a usar las firmas de personas designadas como apoderados de tu empresa, las circulares de firma y el poder de estas personas también deben subirse juntos.",
+                  "Puedes revisarlo descargando el documento de muestra."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Plantilla de archivo de muestra para circulares de firma",
+                "download": "Descargar"
+              },
+              "gazette": {
+                "title": "Boletín del Registro Mercantil",
+                "bullets": [
+                  "Debe ser el boletín que muestre la estructura de socios y las personas autorizadas vigentes de la empresa.",
+                  "Se deben añadir todos los números importantes del boletín, como cambios de constitución y de dirección."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Vista de muestra del Boletín del Registro Mercantil",
+                "download": "Descargar"
+              },
+              "activity": {
+                "title": "Certificado de actividad",
+                "bullets": [
+                  "Debe haberse recibido en los últimos 3 meses.",
+                  "Se puede obtener en la Cámara de Comercio o Industria."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Plantilla de muestra del Certificado de actividad",
+                "download": "Descargar"
+              },
+              "tax": {
+                "title": "Certificado fiscal",
+                "bullets": [
+                  "Debe ser el certificado fiscal vigente del año actual."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Muestra de certificado fiscal",
+                "download": "Descargar"
+              },
+              "declaration": {
+                "title": "Formulario de declaración del usuario",
+                "bullets": [
+                  "Todos los campos del formulario deben completarse y firmarse en su totalidad."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Plantilla del Formulario de declaración del usuario",
+                "download": "Descargar"
+              },
+              "petition": {
+                "title": "Solicitud de apertura de cuenta",
+                "bullets": [
+                  "Debe estar redactada en papel de la empresa y firmada por personas autorizadas."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Borrador de la solicitud",
+                "download": "Descargar"
+              },
+              "invoice": {
+                "title": "Muestra de factura",
+                "bullets": [
+                  "Debe ser una factura (electricidad, agua, internet, etc.) registrada a nombre de la empresa en los últimos 3 meses."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Vista de muestra de factura",
+                "download": "Descargar"
+              },
+              "ubo": {
+                "title": "Declaración del UBO",
+                "bullets": [
+                  "Es el formulario de declaración que muestra a los beneficiarios finales efectivos."
+                ],
+                "sampleTitle": "Archivo de muestra",
+                "sampleDesc": "Plantilla del Formulario de declaración del UBO",
+                "download": "Descargar"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "form": {
+    "companyTitle": "Nombre de la empresa",
+    "authorizedName": "Nombre del autorizado",
+    "authorizedSurname": "Apellido del autorizado",
+    "phoneNumber": "Número de teléfono",
+    "email": "Correo electrónico",
+    "estimatedVolume": "Volumen estimado de operaciones",
+    "volumeRangePlaceholder": "Rango promedio",
+    "inputPlaceholder": "Introduce",
+    "companyPlaceholder": "Introduce el nombre de la empresa",
+    "namePlaceholder": "Introduce el nombre",
+    "surnamePlaceholder": "Introduce el apellido",
+    "phoneInputPlaceholder": "Introduce el número de teléfono",
+    "emailPlaceholder": "Introduce el correo electrónico",
+    "phonePlaceholder": "5__ ___ __ __",
+    "consentText": "He leído el Aviso de privacidad sobre el tratamiento de datos personales.",
+    "submit": "Solicitar",
+    "submitting": "Enviando...",
+    "successTitle": "Solicitud recibida",
+    "successDescription": "Haz clic en el enlace de confirmación enviado a tu correo electrónico.",
+    "errorTitle": "¡Error!",
+    "errorDescription": "Debes completar los campos obligatorios.",
+    "registrationFailed": "El registro falló.",
+    "avgVolumeOptions": {
+      "0-50k": "0 - 50.000 USD",
+      "50k-250k": "50.000 - 250.000 USD",
+      "250k-1m": "250.000 - 1.000.000 USD",
+      "1mPlus": "1.000.000 USD o más"
+    },
+    "totalVolumeOptions": {
+      "daily": "Promedio diario",
+      "weekly": "Promedio semanal",
+      "monthly": "Promedio mensual"
+    },
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "userName": "Nombre de usuario",
+    "phoneCountryCode": "Código de país",
+    "citizenshipNumber": "Número de identidad / pasaporte",
+    "dateOfBirth": "Fecha de nacimiento",
+    "password": "Contraseña",
+    "nickName": "Apodo"
+  },
+  "validation": {
+    "descriptionMin": "La descripción debe tener al menos 20 caracteres",
+    "application": {
+      "companyNameMin": "El nombre de la empresa debe tener al menos 2 caracteres",
+      "firstNameMin": "El nombre del autorizado debe tener al menos 2 caracteres",
+      "lastNameMin": "El apellido del autorizado debe tener al menos 2 caracteres",
+      "phoneCountryRequired": "Selecciona un código de país",
+      "phoneInvalid": "El número de teléfono no es válido",
+      "emailInvalid": "Introduce una dirección de correo electrónico válida",
+      "estimatedVolumeRequired": "Selecciona un volumen estimado",
+      "kvkkRequired": "Debes aceptar el texto de divulgación antes de solicitar.",
+      "phoneTenDigits": "El número de teléfono debe tener 10 dígitos",
+      "phoneLengthRange": "El número de teléfono debe tener entre 6 y 14 dígitos"
+    },
+    "auth": {
+      "emailInvalid": "Introduce una dirección de correo electrónico válida",
+      "passwordMin": "La contraseña debe tener al menos 6 caracteres"
+    },
+    "addCryptoAddress": {
+      "fillRequiredFields": "Completa los campos obligatorios.",
+      "addressAddedError": "Error al añadir la dirección."
+    },
+    "required": "Este campo es obligatorio",
+    "selectRequired": "La selección es obligatoria",
+    "invalidIBAN": "IBAN no válido",
+    "unsupportedBankCode": "Código de banco no admitido",
+    "accountNameRequired": "El nombre de la cuenta no puede estar vacío",
+    "ibanConfirmationRequired": "Marca la confirmación del IBAN",
+    "assetRequired": "Se requiere seleccionar el activo",
+    "networkRequired": "Se requiere seleccionar la red",
+    "labelMinLength": "La etiqueta debe tener al menos 2 caracteres",
+    "invalidAddress": "Introduce una dirección válida",
+    "receiverNameRequired": "Se requiere el nombre del destinatario",
+    "birthDateRequired": "Se requiere la fecha de nacimiento",
+    "invalidIdentityNumber": "Introduce un número de identidad válido (11 dígitos)",
+    "invalidTaxNumber": "Introduce un número de identificación fiscal válido (10 dígitos)",
+    "providerRequired": "Se requiere seleccionar el proveedor de servicios de activos cripto",
+    "platformNameRequired": "Introduce el nombre de la plataforma",
+    "assetSourceOtherMin": "La descripción del origen del activo debe tener al menos 3 caracteres",
+    "withdrawPurposeOtherMin": "La descripción del propósito de retiro debe tener al menos 3 caracteres"
+  },
+  "marketPage": {
+    "title": "Mercados cripto",
+    "search": "Buscar moneda",
+    "empty": "Ningún activo coincide con los filtros seleccionados.",
+    "trade": "Operar",
+    "itemsPerPage": "Elementos por página",
+    "tabs": {
+      "cryptos": "Cripto",
+      "favorites": "Favoritos",
+      "spots": "Spot",
+      "futures": "Futuros"
+    },
+    "categories": {
+      "all": "Todos",
+      "topGainers": "Mayores subidas",
+      "newListing": "Nuevos listados",
+      "ai": "IA",
+      "meme": "Meme",
+      "layer1": "Capa 1",
+      "defi": "DeFi",
+      "stablecoin": "Stablecoin",
+      "layer2": "Capa 2",
+      "gaming": "Gaming",
+      "nft": "NFT",
+      "oracle": "Oracle",
+      "other": "Otro"
+    },
+    "metrics": {
+      "marketCap": "Capitalización de mercado",
+      "nxt10": "Índice NXT10",
+      "fearGreed": "Miedo y codicia",
+      "extremeFear": "Miedo extremo",
+      "altcoinSeason": "Temporada de altcoins",
+      "averageRsi": "RSI promedio",
+      "bitcoin": "Bitcoin",
+      "altcoin": "Altcoin",
+      "oversold": "Sobreventa",
+      "overbought": "Sobrecompra"
+    },
+    "filters": {
+      "marketCap": "Capitalización de mercado",
+      "volume24h": "Volumen 24h",
+      "all": "Todos los filtros",
+      "sortBy": "Ordenar por"
+    },
+    "table": {
+      "asset": "Activo",
+      "name": "Nombre",
+      "mobilePriceChange": "Precio / Cambio 24h",
+      "mobileCapVolume": "Cap / Vol",
+      "price": "Precio",
+      "change1h": "1h %",
+      "change24h": "24h %",
+      "change7d": "7d %",
+      "marketCap": "Capitalización de mercado",
+      "volume24h": "Volumen 24h",
+      "circulatingSupply": "Oferta circulante"
+    }
+  },
+  "header": {
+    "dashboard": "Panel",
+    "overview": "Resumen",
+    "buyCrypto": "Comprar cripto",
+    "blog": "Blog",
+    "proTrade": "Pro Trade",
+    "easyTrade": "Easy Trade",
+    "otc": "OTC",
+    "market": "Mercado",
+    "trade": "Operar",
+    "transactions": "Transacciones",
+    "wallet": "Mis activos",
+    "deposit": "Depósito",
+    "withdraw": "Retiro",
+    "notifications": "Notificaciones",
+    "txMenu": {
+      "allTransactions": "Transacciones",
+      "allTransactionsDesc": "Consulta tus operaciones de depósito/retiro",
+      "tradeOrders": "Órdenes de compra/venta",
+      "tradeOrdersDesc": "Ver todas tus operaciones de compra/venta"
+    },
+    "tradeMenu": {
+      "proTrade": "Pro Trade",
+      "proTradeDesc": "Opera cripto con herramientas profesionales",
+      "easyTrade": "Easy Trade",
+      "easyTradeDesc": "Compra y vende cripto al instante con facilidad"
+    }
+  },
+  "transactions": {
+    "title": "Depósito / Retiro",
+    "subtitle": "Visualiza y rastrea tus depósitos y retiros en FIAT o cripto",
+    "tabs": {
+      "fiat": "Transacciones FIAT",
+      "crypto": "Transacciones cripto"
+    },
+    "filters": {
+      "type": {
+        "label": "Tipo de transacción",
+        "default": "Todos",
+        "all": "Todos",
+        "withdraw": "Retiro",
+        "deposit": "Depósito"
+      },
+      "time": {
+        "label": "Rango de tiempo",
+        "default": "Últimos 30 días",
+        "today": "Hoy",
+        "yesterday": "Ayer",
+        "last7": "Últimos 7 días",
+        "last30": "Últimos 30 días",
+        "last90": "Últimos 3 meses",
+        "thisMonth": "Este mes",
+        "lastMonth": "Mes pasado",
+        "customRange": "Rango personalizado"
+      },
+      "status": {
+        "label": "Estado",
+        "default": "Todos",
+        "success": "Exitosa",
+        "pending": "Pendiente",
+        "processing": "Procesando",
+        "failed": "Cancelada"
+      },
+      "currency": {
+        "label": "Moneda"
+      }
+    },
+    "table": {
+      "headers": {
+        "date": "Fecha",
+        "amount": "Monto",
+        "status": "Estado",
+        "type": "Tipo de transacción",
+        "bank": "Detalles bancarios"
+      },
+      "detail": {
+        "id": "ID de transacción",
+        "bankName": "Nombre del banco",
+        "iban": "IBAN",
+        "description": "Descripción",
+        "otherBank": "Otro banco"
+      }
+    },
+    "crypto": {
+      "headers": {
+        "asset": "Activo cripto",
+        "network": "Red",
+        "amount": "Monto",
+        "address": "Dirección",
+        "txid": "TxID"
+      },
+      "detailTitle": "Detalles de la transacción",
+      "declare": "Declarar",
+      "declared": "Declarado"
+    }
+  },
+  "trade": {
+    "title": "Compra / Venta OTC",
+    "subtitle": "Ejecuta operaciones de gran volumen al instante con tarifas competitivas y liquidez profunda.",
+    "buy": "Compra",
+    "sell": "Venta",
+    "priceLabel": "Precio",
+    "buyPriceLabel": "Precio de compra",
+    "sellPriceLabel": "Precio de venta",
+    "amountLabel": "Monto",
+    "totalLabel": "Total",
+    "feeLabel": "Tarifa:",
+    "buyCtaLabel": "COMPRAR",
+    "sellCtaLabel": "VENDER",
+    "maxLabel": "Máx",
+    "orderSuccess": "Orden colocada correctamente",
+    "errors": {
+      "insufficientBalance": "Saldo insuficiente. Reduce el monto.",
+      "amountTooLarge": "El monto introducido es demasiado alto. Intenta con un monto menor.",
+      "invalidAmount": "Monto no válido. Verifica el precio y la cantidad.",
+      "generic": "No se pudo enviar la orden. Inténtalo de nuevo."
+    }
+  },
+  "tradeOrders": {
+    "title": "Compra / Venta",
+    "subtitle": "Tus transacciones de compra y venta de activos",
+    "detailTitle": "Detalles de la transacción",
+    "openOrdersTitle": "Órdenes abiertas",
+    "cancelModal": {
+      "title": "Cancelar orden",
+      "description": "¿Seguro que deseas cancelar esta orden? Esta acción no se puede deshacer.",
+      "clearAllTitle": "Cancelar todas las órdenes",
+      "clearAllDescription": "¿Seguro que deseas cancelar todas las órdenes abiertas listadas? Esta acción no se puede deshacer.",
+      "confirm": "Sí, cancelar orden",
+      "clearAllConfirm": "Sí, cancelar todas",
+      "cancel": "Cerrar",
+      "processing": "Cancelando...",
+      "cancelSuccess": "Orden cancelada."
+    },
+    "tabs": {
+      "open": "Órdenes abiertas",
+      "orders": "Órdenes",
+      "history": "Historial de compra/venta"
+    },
+    "filters": {
+      "type": "Tipo de orden",
+      "time": "Rango de tiempo",
+      "base": "Base",
+      "pair": "Par",
+      "currency": "Moneda",
+      "side": "Lado",
+      "status": "Estado",
+      "typeOptions": {
+        "all": "Todos",
+        "limit": "Límite",
+        "market": "Mercado"
+      },
+      "timeOptions": {
+        "last7": "Últimos 7 días",
+        "last30": "Últimos 30 días",
+        "last90": "Últimos 3 meses"
+      },
+      "sideOptions": {
+        "all": "Todos",
+        "buy": "Compra",
+        "sell": "Venta"
+      },
+      "quote": "Cotización",
+      "actions": {
+        "clearAll": "Borrar filtros"
+      }
+    },
+    "status": {
+      "all": "Todos",
+      "completed": "Completada",
+      "partial": "Parcialmente ejecutada",
+      "processing": "Procesando",
+      "cancelled": "Cancelada",
+      "openOrder": "Orden abierta",
+      "filledOrder": "Orden ejecutada",
+      "canceledOrder": "Orden cancelada",
+      "partiallyFilledOrder": "Orden parcialmente ejecutada",
+      "transmissionError": "Error de transmisión"
+    },
+    "side": {
+      "buy": "Compra",
+      "sell": "Venta"
+    },
+    "table": {
+      "headers": {
+        "date": "Fecha",
+        "pair": "Par",
+        "side": "Lado",
+        "type": "Tipo de orden",
+        "filled": "Ejecutado",
+        "price": "Precio",
+        "total": "Total",
+        "status": "Estado",
+        "amount": "Monto",
+        "trigger": "Condición de activación",
+        "actions": "Acciones",
+        "avgPrice": "Precio promedio",
+        "fee": "Tarifa"
+      }
+    },
+    "actions": {
+      "clearAll": "Borrar todo"
+    }
+  },
+  "account": {
+    "menu": {
+      "profile": "Información del perfil",
+      "corporate": "Información de la cuenta corporativa",
+      "bank": "Cuentas bancarias",
+      "address": "Gestión de direcciones",
+      "security": "Seguridad",
+      "user": "Gestión de usuarios",
+      "activity": "Actividad",
+      "notification": "Permisos de comunicación",
+      "preferences": "Preferencias"
+    },
+    "profile": {
+      "photo": "Foto de perfil",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "phone": "Número de teléfono",
+      "idNumber": "Número de identidad",
+      "birthDate": "Fecha de nacimiento",
+      "closeTitle": "Cerrar cuenta",
+      "closeDesc": "Si cierras tu cuenta, deberás ser invitado nuevamente por el administrador de tu cuenta corporativa para recuperar el acceso.",
+      "closeCta": "Cerrar cuenta"
+    },
+    "corporateMenu": {
+      "info": "Información de la empresa",
+      "docs": "Documentos de la empresa"
+    },
+    "corporateTable": {
+      "title": "Documentos de la empresa",
+      "desc": "Consulta y gestiona tus documentos corporativos a continuación.",
+      "download": "Descargar",
+      "resultCount": "{{count}} resultados",
+      "searchPlaceholder": "Buscar documento",
+      "headers": {
+        "product": "Producto",
+        "approveDate": "Fecha de aprobación",
+        "validDate": "Fecha de validez",
+        "status": "Estado",
+        "action": "Acciones"
+      },
+      "documents": {
+        "userDeclarationForm": "Formulario de declaración del usuario",
+        "accountOpeningPetition": "Solicitud de apertura de cuenta",
+        "signatureCircular": "Circular de firmas vigente",
+        "taxCertificate": "Certificado fiscal",
+        "activityCertificate": "Certificado de actividad (últimos 6 meses)",
+        "tradeRegistryGazette": "Boletín del Registro Mercantil",
+        "shareholderInfo1": "Información del accionista (25%+ n.º1)",
+        "shareholderInfo2": "Información del accionista (25%+ n.º2)",
+        "invoiceSamples": "Muestras de factura",
+        "uboDeclaration": "Declaración del UBO (Beneficiario final efectivo)"
+      },
+      "status": {
+        "approved": "Aprobado",
+        "expired": "Validez expirada"
+      },
+      "upload": "Subir documento",
+      "action": "Ver",
+      "pagination": {
+        "showing": "Mostrando {{from}}-{{to}} de {{total}} registros",
+        "show": "Mostrar {{count}}"
+      }
+    },
+    "corporateInfo": {
+      "title": "Detalles de accionistas",
+      "add": "Añadir accionista",
+      "role": "Accionista 25%+",
+      "managerTitle": "Gerente de cuenta",
+      "edit": "Editar",
+      "noShareholder": "No se encontraron accionistas registrados."
+    },
+    "bank": {
+      "title": "Cuentas bancarias",
+      "search": "Buscar banco",
+      "add": "Añadir cuenta",
+      "columns": {
+        "bank": "Banco",
+        "accountName": "Nombre de la cuenta",
+        "taxId": "Número de identificación fiscal",
+        "iban": "IBAN"
+      },
+      "actions": {
+        "edit": "Editar",
+        "delete": "Eliminar"
+      },
+      "pagination": {
+        "showing": "Mostrando {{from}}-{{to}} de {{total}} registros",
+        "show": "Mostrar {{count}}"
+      },
+      "noData": "Aún no tienes ninguna cuenta bancaria registrada.",
+      "noDataDescription": "Necesitas añadir una cuenta bancaria para las transacciones de depósito y retiro.",
+      "deleteModal": {
+        "title": "Eliminar cuenta bancaria",
+        "description": "¿Seguro que deseas eliminar esta cuenta bancaria? Esta acción no se puede deshacer.",
+        "confirm": "Sí, eliminar",
+        "cancel": "Cancelar"
+      }
+    },
+    "placeholder": {
+      "title": "Contenido próximamente",
+      "desc": "Estamos preparando el contenido para esta pestaña."
+    },
+    "security": {
+      "title": "Métodos de inicio de sesión",
+      "loginMethod": "Método de inicio de sesión",
+      "password": "Contraseña",
+      "autoLogout": "Cierre de sesión automático",
+      "methodValue": "Correo electrónico",
+      "methodDesc": "El inicio de sesión por correo electrónico está seleccionado. Puedes cambiar a teléfono en cualquier momento.",
+      "passwordDesc": "Protege tu cuenta con una contraseña única y segura; no la reutilices en otros sitios.",
+      "autoLogoutValue": "8 horas (predeterminado)",
+      "autoLogoutDesc": "Cierre de sesión automático tras un periodo de inactividad.",
+      "twoFaTitle": "Autenticación de dos factores (2FA)",
+      "smsOtp": "OTP por SMS",
+      "smsDesc": "Los códigos de un solo uso enviados a tu teléfono protegen tu cuenta.",
+      "emailOtp": "OTP por correo electrónico",
+      "emailDesc": "Se envían códigos de un solo uso a tu correo electrónico para iniciar sesión y realizar acciones sensibles.",
+      "authApp": "Aplicación de autenticación",
+      "authDesc": "Usa un código de un solo uso de Google Authenticator, Authy o similar.",
+      "edit": "Editar"
+    },
+    "address": {
+      "title": "Gestión de direcciones",
+      "add": "Añadir dirección",
+      "safeTitle": "Direcciones seguras de retiro",
+      "searchPlaceholder": "Buscar dirección segura de retiro",
+      "cancel": "Cancelar",
+      "resultCount": "{{count}} resultados",
+      "noRecords": "No se encontraron registros.",
+      "perPage": "Por página",
+      "columns": {
+        "coin": "Moneda",
+        "label": "Etiqueta",
+        "network": "Red",
+        "address": "Dirección",
+        "tag": "Memo / Tag",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "status": {
+        "approved": "Aprobada",
+        "pending": "Pendiente"
+      },
+      "form": {
+        "title": "Añadir nueva dirección",
+        "type": "Tipo de dirección",
+        "corporate": "Corporativa",
+        "individual": "Individual",
+        "label": "Nombre de la dirección",
+        "network": "Seleccionar red",
+        "address": "Dirección",
+        "tag": "Tag / Memo (opcional)",
+        "whitelist": "Añadir a la lista blanca",
+        "save": "Guardar",
+        "successTitle": "Dirección añadida",
+        "successDesc": "Se ha añadido la nueva dirección a la lista blanca."
+      },
+      "empty": {
+        "title": "No se encontró ninguna dirección de retiro",
+        "description": "Deposita fondos en tu cuenta para empezar a operar.",
+        "action": "Añadir dirección de retiro"
+      },
+      "deleteModal": {
+        "title": "Eliminar dirección",
+        "description": "¿Seguro que deseas eliminar esta dirección de retiro? Esta acción no se puede deshacer.",
+        "confirm": "Sí, eliminar",
+        "cancel": "Cancelar"
+      }
+    }
+  },
+  "userPage": {
+    "title": "Usuarios autorizados",
+    "addUser": "Añadir nuevo usuario",
+    "filters": {
+      "search": "Buscar usuario",
+      "status": "Estado",
+      "role": "Rol"
+    },
+    "table": {
+      "user": "Usuario",
+      "email": "Correo electrónico",
+      "phone": "Número de teléfono",
+      "role": "Rol",
+      "status": "Estado"
+    },
+    "status": {
+      "active": "Activo",
+      "invited": "Invitado"
+    },
+    "pagination": {
+      "showing": "Mostrando 1 a 8 de 50 registros",
+      "show": "Mostrar 8"
+    },
+    "rolesTitle": "Gestión de roles",
+    "roles": {
+      "admin": "Administrador",
+      "approver": "Aprobador",
+      "trader": "Trader",
+      "viewer": "Espectador"
+    },
+    "permissions": {
+      "manageUsers": "Añadir, eliminar y aprobar usuarios",
+      "manageRoles": "Asignar y cambiar roles para todos los usuarios",
+      "manageAddresses": "Añadir, editar y eliminar todas las direcciones",
+      "viewReports": "Ver todos los reportes y registros",
+      "reviewWhitelist": "Revisar nuevas solicitudes de dirección/lista blanca",
+      "reviewRoles": "Revisar y aprobar roles de usuario",
+      "sendInvites": "Enviar invitaciones a nuevos usuarios",
+      "tradeAssets": "Operar activos cripto/fiat",
+      "swapTransfer": "Operaciones de swap/transferencia",
+      "manageOwnWhitelist": "Añadir direcciones propias a la lista blanca",
+      "viewHistory": "Ver historial de activos y transacciones",
+      "viewSummaries": "Revisar reportes y resúmenes"
+    }
+  },
+  "notificationPage": {
+    "title": "Notificaciones",
+    "blockedTitle": "Notificaciones bloqueadas",
+    "blockedDesc": "Activa las notificaciones del navegador para no perderte actualizaciones importantes.",
+    "enable": "Activar notificaciones",
+    "preferenceTitle": "Preferencia",
+    "preferenceValue": "Limitada",
+    "preferenceDesc": "Elige tus preferencias de notificación.",
+    "customizeTitle": "Personalizar",
+    "customizeDesc": "Ajusta tu configuración de notificaciones.",
+    "edit": "Editar"
+  },
+  "preferencesPage": {
+    "title": "Preferencias",
+    "edit": "Editar",
+    "timezone": "Zona horaria",
+    "currency": "Moneda base",
+    "language": "Idioma",
+    "numberFormat": "Formato numérico",
+    "timezones": {
+      "utc": "[+00:00 UTC] UTC, Hora universal",
+      "istanbul": "[+03:00 UTC] Europa/Istanbul",
+      "newYork": "[-05:00 UTC] América/Nueva York"
+    },
+    "languages": {
+      "en": "English",
+      "pt": "Portuguese",
+      "es": "Spanish",
+      "ru": "Russian"
+    }
+  },
+  "activityPage": {
+    "comingSoon": "La pantalla de actividad estará disponible próximamente."
+  },
+  "toast": {
+    "copied": "Copiado al portapapeles"
+  },
+  "common": {
+    "close": "Cerrar",
+    "enter": "Entrar",
+    "actions": {
+      "search": "Buscar",
+      "filter": "Filtrar",
+      "yes": "Sí",
+      "no": "No",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "apply": "Aplicar",
+      "continue": "Continuar",
+      "processing": "Procesando...",
+      "max": "Máx"
+    },
+    "searchInput": {
+      "placeholder": "Buscar...",
+      "relatedResults": "Resultados relacionados"
+    },
+    "locale": {
+      "selectLanguage": "Seleccionar idioma",
+      "changeLanguage": "Cambiar idioma"
+    },
+    "decimalInput": {
+      "amountLabel": "Monto",
+      "available": "Disponible {{amount}}"
+    },
+    "emptyState": {
+      "title": "No se encontraron transacciones",
+      "description": "No tienes ninguna transacción que coincida con tus criterios."
+    },
+    "loading": "Cargando...",
+    "success": "Operación completada correctamente",
+    "error": "Se produjo un error. Inténtalo de nuevo."
+  },
+  "auth": {
+    "loginPage": {
+      "initiationTitle": "Verificación requerida"
+    }
+  },
+  "crypto": {
+    "declareModal": {
+      "depositTitle": "Declaración de depósito de activo cripto",
+      "withdrawTitle": "Declaración de retiro de activo cripto",
+      "asset": "Activo cripto",
+      "individual": "Individual",
+      "corporate": "Corporativa",
+      "senderNameIndividual": "Nombre y apellido del remitente*",
+      "senderNameCorporate": "Nombre corporativo del remitente (razón social)*",
+      "isOwnAddress": "Esta dirección está registrada a mi nombre",
+      "informationType": "Tipo de información",
+      "select": "Seleccionar",
+      "address": "Dirección completa",
+      "addressPlaceholder": "Introduce la dirección",
+      "birthplaceIndividual": "Fecha y lugar de nacimiento",
+      "birthplaceCorporate": "Lugar y fecha de constitución",
+      "identityIndividual": "Número de identidad / pasaporte",
+      "identityCorporate": "Número de identificación fiscal",
+      "customerNo": "Número de cliente",
+      "customerNoPlaceholder": "Introduce el número de cliente",
+      "cityLabelIndividual": "Ciudad de nacimiento del remitente",
+      "cityLabelCorporate": "Ciudad de constitución del remitente",
+      "districtLabelIndividual": "Distrito de nacimiento del remitente",
+      "districtLabelCorporate": "Distrito de constitución del remitente",
+      "dateLabelIndividual": "Fecha de nacimiento del remitente",
+      "dateLabelCorporate": "Fecha de constitución del remitente",
+      "cityPlaceholder": "Seleccionar ciudad",
+      "districtPlaceholder": "Seleccionar distrito",
+      "loading": "Cargando...",
+      "addressType": "Tipo de dirección",
+      "provider": "Proveedor de servicios de activos cripto",
+      "vaspOption": "Proveedor de servicios de activos cripto",
+      "personalOption": "Billetera individual",
+      "submit": "Enviar",
+      "successMessage": "Declaración enviada correctamente.",
+      "errorMessage": "Se produjo un error al enviar la declaración.",
+      "idError": "No se encontró el ID de transacción.",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Introduce una descripción para tu transacción",
+      "otherOption": "Otro",
+      "otherProviderLabel": "Nombre del proveedor de servicios de activos cripto",
+      "otherProviderPlaceholder": "Introduce el nombre del proveedor de servicios"
+    }
+  }
+}

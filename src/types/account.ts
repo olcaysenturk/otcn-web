@@ -1,0 +1,34 @@
+export type AccountInfo = {
+  userId: number;
+  accountId: number;
+  accountNumber: string;
+  accountType: string;
+  accountStatus: string;
+  activatedDate?: string;
+  accountCreatedDate: string;
+  accountUserId: number;
+  userRole: string;
+  isUserActive: boolean;
+  userAddedDate: string;
+  accountDisplayName: string;
+  isCorporate: boolean;
+  corporateAccountId: number;
+  companyName: string;
+  taxNumber?: string;
+  mersisNo?: string;
+  corporateAddress?: string;
+  corporateCity?: string;
+  corporateCountry: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  identityNumber: string;
+  kycEnabled: boolean;
+  dateOfBirth?: string;
+  phoneNumberConfirmed: boolean;
+  emailConfirmed: boolean;
+  userStatus: string;
+  isFirstDepositDone: boolean;
+};
+

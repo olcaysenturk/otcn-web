@@ -1,0 +1,232 @@
+parameters:
+- name: deployToDev
+  displayName: Deploy to Dev environment?
+  type: boolean
+  default: true
+
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+
+
+
+resources:
+- repo: self
+
+variables:
+- group: GitOpsSecrets
+- name: imageRepository
+  value: 'minkafintek-test-swr/exchange-otc-web'
+- name: containerRegistry
+  value: 'swr.tr-west-1.myhuaweicloud.com'
+- name: dockerfilePath
+  value: 'Dockerfile'
+- name: tag
+  value: '$(Build.SourceBranchName)-$(Build.BuildId)'
+- name: imagePullSecret
+  value: 'minka-dev-registry'
+- name: configRepoUrl
+  value: 'https://dev.azure.com/minkatech/DevOps/_git/GitOps'
+- name: name
+  value: '$(Build.Repository.Name)'
+- name: type
+  value: 'otc-web'
+
+
+stages:
+# -------------------------------------------------------------------------
+# STAGE 1: BUILD
+# -------------------------------------------------------------------------
+- stage: Build
+  displayName: 'Build and Push Image'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Docker Image'
+    pool:
+      name: 'Default'
+    steps:
+    - task: Docker@2
+      displayName: '1.1. Build and push image'
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        buildContext: .
+        containerRegistry: $(imagePullSecret)
+        tags: |
+          $(tag)
+
+# -------------------------------------------------------------------------
+# STAGE 2: DEPLOY TO DEV
+# -------------------------------------------------------------------------
+- stage: DeployDev
+  displayName: 'Deploy to DEV'
+  dependsOn: Build
+  condition: and(succeeded(), eq('${{ parameters.deployToDev }}', true))
+  jobs:
+  - job: UpdateGitOpsDev
+    displayName: 'Update Dev GitOps'
+    pool:
+      name: 'Default'
+    steps:
+      - task: Bash@3
+        displayName: '2.1. Update GitOps (Dev)'
+        env:
+          GIT_PAT: $(gitopsRepoPat)
+          ENVIRONMENT_NAME: 'dev'
+          IMAGE_TAG: $(tag)
+          TARGET_TYPE: $(type)
+        inputs:
+          targetType: 'inline'
+          script: |
+            set -e
+            
+            if [ -z "$TARGET_TYPE" ]; then
+              echo "⚠️  UYARI: Type değişkeni bulunamadı!"
+              exit 1
+            fi
+
+            echo "Deploying to Environment: $ENVIRONMENT_NAME"
+            echo "Worker Type: $TARGET_TYPE"
+
+            # Install yq
+            wget -q https://github.com/mikefarah/yq/releases/download/v4.44.6/yq_linux_amd64 -O yq && chmod +x yq
+            
+            # Git Clone
+            git config --global user.name "DevOps Master"
+            git config --global user.email "devops-master@minkafintek.com.tr"
+            CLONE_URL=$(echo "$(configRepoUrl)" | sed "s|https://|https://unused:$GIT_PAT@|")
+            rm -rf _gitops_repo
+            git clone "$CLONE_URL" _gitops_repo
+            cd _gitops_repo
+
+            # Update
+            VALUES_FILE="values/$ENVIRONMENT_NAME/$(name)/${TARGET_TYPE}-values.yaml"
+            
+            if [ ! -f "$VALUES_FILE" ]; then
+               echo "⚠️ Dosya bulunamadı: $VALUES_FILE"
+               exit 1
+            fi
+            
+            echo "Updating $VALUES_FILE with tag $IMAGE_TAG"
+            ../yq -i '.deployment.image.tag = "'$IMAGE_TAG'"' "$VALUES_FILE"
+            
+            git add "$VALUES_FILE"
+            
+            # Push
+            if git diff --cached --quiet; then
+                echo "No changes detected."
+            else
+                git commit -m "ci($ENVIRONMENT_NAME): Deploy $TARGET_TYPE tag $IMAGE_TAG [skip ci]"
+                git push origin HEAD:main
+            fi
+
+# -------------------------------------------------------------------------
+# STAGE 3: DEPLOY TO PREPROD
+# -------------------------------------------------------------------------
+- stage: DeployPreprod
+  displayName: 'Deploy to PREPROD'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - deployment: UpdateGitOpsPreprod
+    displayName: 'Update Preprod GitOps'
+    pool:
+      name: 'Default'
+    environment: 'PreProduction'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            displayName: '3.1. Update GitOps (Preprod)'
+            env:
+              GIT_PAT: $(gitopsRepoPat)
+              ENVIRONMENT_NAME: 'preprod'
+              IMAGE_TAG: $(tag)
+              TARGET_TYPE: $(type)
+            inputs:
+              targetType: 'inline'
+              script: |
+                set -e
+                
+                echo "Deploying to Environment: $ENVIRONMENT_NAME"
+                echo "Worker Type: $TARGET_TYPE"
+
+                wget -q https://github.com/mikefarah/yq/releases/download/v4.44.6/yq_linux_amd64 -O yq && chmod +x yq
+                
+                git config --global user.name "DevOps Master"
+                git config --global user.email "devops-master@minkafintek.com.tr"
+                CLONE_URL=$(echo "$(configRepoUrl)" | sed "s|https://|https://unused:$GIT_PAT@|")
+                rm -rf _gitops_repo
+                git clone "$CLONE_URL" _gitops_repo
+                cd _gitops_repo
+
+                VALUES_FILE="values/$ENVIRONMENT_NAME/$(name)/${TARGET_TYPE}-values.yaml"
+                if [ ! -f "$VALUES_FILE" ]; then echo "⚠️ Dosya yok: $VALUES_FILE"; exit 1; fi
+                
+                ../yq -i '.deployment.image.tag = "'$IMAGE_TAG'"' "$VALUES_FILE"
+                git add "$VALUES_FILE"
+                
+                if git diff --cached --quiet; then
+                    echo "No changes."
+                else
+                    git commit -m "ci($ENVIRONMENT_NAME): Deploy $TARGET_TYPE tag $IMAGE_TAG [skip ci]"
+                    git push origin HEAD:main
+                fi
+
+# -------------------------------------------------------------------------
+# STAGE 4: DEPLOY TO PROD
+# -------------------------------------------------------------------------
+- stage: DeployProd
+  displayName: 'Deploy to PROD'
+  dependsOn: DeployPreprod
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - deployment: UpdateGitOpsProd
+    displayName: 'Update Prod GitOps'
+    pool:
+      name: 'Default'
+    environment: 'Production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            displayName: '4.1. Update GitOps (Prod)'
+            env:
+              GIT_PAT: $(gitopsRepoPat)
+              ENVIRONMENT_NAME: 'prod'
+              IMAGE_TAG: $(tag)
+              TARGET_TYPE: $(type)
+            inputs:
+              targetType: 'inline'
+              script: |
+                set -e
+                
+                echo "Deploying to Environment: $ENVIRONMENT_NAME"
+                echo "Worker Type: $TARGET_TYPE"
+
+                wget -q https://github.com/mikefarah/yq/releases/download/v4.44.6/yq_linux_amd64 -O yq && chmod +x yq
+                
+                git config --global user.name "DevOps Master"
+                git config --global user.email "devops-master@minkafintek.com.tr"
+                CLONE_URL=$(echo "$(configRepoUrl)" | sed "s|https://|https://unused:$GIT_PAT@|")
+                rm -rf _gitops_repo
+                git clone "$CLONE_URL" _gitops_repo
+                cd _gitops_repo
+
+                VALUES_FILE="values/$ENVIRONMENT_NAME/$(name)/${TARGET_TYPE}-values.yaml"
+                if [ ! -f "$VALUES_FILE" ]; then echo "⚠️ Dosya yok: $VALUES_FILE"; exit 1; fi
+                
+                ../yq -i '.deployment.image.tag = "'$IMAGE_TAG'"' "$VALUES_FILE"
+                git add "$VALUES_FILE"
+                
+                if git diff --cached --quiet; then
+                    echo "No changes."
+                else
+                    git commit -m "ci($ENVIRONMENT_NAME): Deploy $TARGET_TYPE tag $IMAGE_TAG [skip ci]"
+                    git push origin HEAD:main
+                fi

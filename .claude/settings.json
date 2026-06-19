@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node /tmp/shot.mjs)",
+      "Bash(cp /tmp/shot.mjs /Users/olcay.senturk/.npm/_npx/e41f203b7505f1fb/shot.mjs)",
+      "Bash(sed -i '' \"s#/tmp/#/tmp/#g\" shot.mjs)",
+      "Bash(node shot.mjs)",
+      "Bash(npx tsc *)",
+      "Bash(node shot2.mjs)",
+      "Bash(node shot5.mjs)"
+    ],
+    "additionalDirectories": [
+      "/Users/olcay.senturk/.npm/_npx/e41f203b7505f1fb"
+    ]
+  }
+}
