@@ -126,6 +126,7 @@ export function MarketPage() {
               assets={pageAssets}
               favorites={favorites}
               sortKey={sortKey}
+              sortDirection={sortDirection}
               onSort={handleSort}
               onToggleFavorite={handleToggleFavorite}
             />

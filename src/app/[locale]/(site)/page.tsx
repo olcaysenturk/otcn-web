@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { withLocale } from "@/lib/i18n/href";
@@ -6,6 +7,7 @@ import { HeroSection } from "@/components/home/Hero";
 import { ThreeStepExperience } from "@/components/home/ThreeStepExperience";
 import { TestimonialsSection } from "@/components/home/Testimonials";
 import { FAQSection } from "@/components/home/FAQSection";
+import { HomeSkeleton } from "@/components/home/HomeSkeleton";
 import { AnimatedSection } from "@/components/layout/AnimatedSection";
 import { resolveLocale, getHomeMetadata, getHomeStructuredData } from "@/lib/seo/homepage";
 
@@ -23,6 +25,14 @@ export default async function HomePage({
         redirect(withLocale("/dashboard", locale));
     }
 
+    return (
+        <Suspense fallback={<HomeSkeleton />}>
+            <HomeContent locale={locale} />
+        </Suspense>
+    );
+}
+
+async function HomeContent({ locale }: { locale: ReturnType<typeof resolveLocale> }) {
     const structuredData = await getHomeStructuredData(locale);
 
     return (

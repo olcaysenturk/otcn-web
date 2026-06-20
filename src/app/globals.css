@@ -247,6 +247,7 @@ body {
 
 html {
   scroll-behavior: smooth;
+  background-color: #1c2425;
 }
 
 @keyframes fade-in {

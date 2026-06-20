@@ -22,23 +22,27 @@ import { fetchFiatTransactions } from "@/services/fiat";
 import { getSession } from "@/lib/api/session";
 import { Transaction, CryptoTransaction } from "./deposit-withdraw/types";
 import type { PendingDepositDeclaration } from "@/types/crypto";
-import { TransactionPageSkeleton } from "./TransactionSkeleton";
 import { TransactionsPageShell, TransactionsTableCard, TransactionsTableFooter } from "./TransactionsLayout";
 import { resolveTimeRange, type SharedTimeFilterValue } from "./timeRange";
 import { DepositWithdrawTabPanel } from "./deposit-withdraw/DepositWithdrawTabPanel";
 import { mapCryptoTransactionsToRows, mapFiatTransactionsToRows } from "./deposit-withdraw/mappers";
+import { MOCK_CRYPTO_TRANSACTIONS, MOCK_FIAT_TRANSACTIONS } from "./deposit-withdraw/mockData";
 import { WalletNotification } from "@/components/wallet/WalletNotification";
 
 // Types moved to ./deposit-withdraw/types.ts
+
+// ⚠️ TEMPORARY DEMO FLAGS — when true the tabs show mock rows (see ./mockData).
+// Set to false (and remove the mock blocks below) once the API returns real data.
+const USE_CRYPTO_MOCK = true;
+const USE_FIAT_MOCK = true;
 
 export function DepositWithdrawPage() {
   const { t, locale } = useI18n();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const currentTab = (searchParams.get("tab") as "fiat" | "crypto") || "fiat";
   const tabParam = (searchParams.get("tab") as "fiat" | "crypto") || "fiat";
   const openModal = useModalStore((state) => state.openModal);
-  const [tab, setTab] = useState<"fiat" | "crypto">(currentTab);
+  const [tab, setTab] = useState<"fiat" | "crypto">(tabParam);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const today = useMemo(() => new Date(), []);
@@ -55,7 +59,7 @@ export function DepositWithdrawPage() {
 
   // Fiat Data State
   const [fiatTransactions, setFiatTransactions] = useState<Transaction[]>([]);
-  const [fiatLoading, setFiatLoading] = useState(false);
+  const [fiatLoading, setFiatLoading] = useState(true);
   const [fiatPage, setFiatPage] = useState(1);
   const [fiatTotalPages, setFiatTotalPages] = useState(1);
   const [fiatLimit, setFiatLimit] = useState(8);
@@ -64,7 +68,7 @@ export function DepositWithdrawPage() {
 
   // Crypto Data State
   const [cryptoTransactions, setCryptoTransactions] = useState<CryptoTransaction[]>([]);
-  const [cryptoLoading, setCryptoLoading] = useState(false);
+  const [cryptoLoading, setCryptoLoading] = useState(true);
   const [cryptoPage, setCryptoPage] = useState(1);
   const [cryptoTotalPages, setCryptoTotalPages] = useState(1);
   const [cryptoLimit, setCryptoLimit] = useState(8);
@@ -167,6 +171,19 @@ export function DepositWithdrawPage() {
     const loadFiatData = async () => {
       if (tab !== "fiat") return;
 
+      // ⚠️ TEMPORARY DEMO MOCK — shows the skeleton briefly, then mock FIAT rows.
+      // Remove this block (and ./mockData) once the API returns real data.
+      if (USE_FIAT_MOCK) {
+        setFiatLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        if (!cancelled) {
+          setFiatTransactions(MOCK_FIAT_TRANSACTIONS);
+          setFiatTotalPages(1);
+          setFiatLoading(false);
+        }
+        return;
+      }
+
       setFiatLoading(true);
       try {
         const session = await getSession();
@@ -211,6 +228,19 @@ export function DepositWithdrawPage() {
 
     const loadCryptoData = async () => {
       if (tab !== "crypto") return;
+
+      // ⚠️ TEMPORARY DEMO MOCK — shows the skeleton briefly, then mock crypto rows.
+      // Remove this block (and ./mockData) once the API returns real data.
+      if (USE_CRYPTO_MOCK) {
+        setCryptoLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        if (!cancelled) {
+          setCryptoTransactions(MOCK_CRYPTO_TRANSACTIONS);
+          setCryptoTotalPages(1);
+          setCryptoLoading(false);
+        }
+        return;
+      }
 
       setCryptoLoading(true);
       try {
@@ -340,22 +370,17 @@ export function DepositWithdrawPage() {
 
 
 
-  // Show full page skeleton before mount or during initial data load
-  if (!mounted) {
-    return <TransactionPageSkeleton />;
-  }
-
   return (
     <TransactionsPageShell
       title={t("transactions.title")}
       subtitle={t("transactions.subtitle")}
       toolbar={(
-        <Tabs value={tab} onValueChange={handleTabChange} className="w-auto mb-3">
-          <TabsList>
-            <TabsTrigger value="fiat">
+        <Tabs value={tab} onValueChange={handleTabChange} className="mb-3 w-auto">
+          <TabsList animated className="h-auto w-auto gap-0.5 rounded-[14px] p-1">
+            <TabsTrigger value="fiat" className="rounded-[12px] px-4 py-1.5 text-sm tracking-[-0.16px]">
               {t("transactions.tabs.fiat")}
             </TabsTrigger>
-            <TabsTrigger value="crypto">
+            <TabsTrigger value="crypto" className="rounded-[12px] px-4 py-1.5 text-sm tracking-[-0.16px]">
               {t("transactions.tabs.crypto")}
             </TabsTrigger>
           </TabsList>
@@ -381,9 +406,9 @@ export function DepositWithdrawPage() {
               options={
                 tab === "crypto"
                   ? [
-                    { label: t("transactions.filters.type.all"), value: t("transactions.filters.type.all") },
                     { label: t("transactions.filters.type.deposit"), value: t("transactions.filters.type.deposit") },
                     { label: t("transactions.filters.type.withdraw"), value: t("transactions.filters.type.withdraw") },
+                    { label: t("transactions.filters.type.all"), value: t("transactions.filters.type.all") },
                   ]
                   : [
                     { label: t("transactions.filters.type.all"), value: t("transactions.filters.type.all") },
@@ -438,10 +463,10 @@ export function DepositWithdrawPage() {
             <div className="ml-auto">
               <button
                 type="button"
-                className="text-sm font-semibold text-blue-600 hover:text-blue-700"
+                className="inline-flex h-[38px] items-center rounded-[12px] border border-[#C7F022] px-4 text-sm font-semibold text-[#C7F022] transition-colors hover:bg-[#C7F022]/10"
                 onClick={resetFiltersToDefault}
               >
-                {t("tradeOrders.filters.actions.clearAll")}
+                {t("common.actions.clearAll")}
               </button>
             </div>
           </>
@@ -477,6 +502,7 @@ export function DepositWithdrawPage() {
             copyWithToast={copyWithToast}
             onDeclareClick={(mode, transactionId) => openModal("declare-transaction", { mode, transactionId })}
             onDetailClick={(transaction) => openModal("crypto-transaction-detail", { transaction })}
+            onFiatDetailClick={(transaction) => openModal("fiat-transaction-detail", { transaction })}
           />
       </TransactionsTableCard>
     </TransactionsPageShell>

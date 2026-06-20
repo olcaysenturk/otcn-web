@@ -24,13 +24,13 @@ export function TransactionsPageShell({
   return (
     <div
       className={cn(
-        "min-h-[1000px] space-y-8 animate-in fade-in duration-500 rounded-4xl md:rounded-44 border border-slate-100 bg-slate-50/80 p-4 md:p-6 shadow-sm",
+        "min-h-[1000px] space-y-8 animate-in fade-in duration-500 rounded-4xl md:rounded-44 border border-[#1F2526] bg-[#0E0F10]/40 p-4 md:p-6",
         className,
       )}
     >
       <div className="flex flex-col gap-1">
-        <h1 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h1>
-        <p className="text-sm text-slate-600 dark:text-slate-300">{subtitle}</p>
+        <h1 className="text-lg font-semibold text-[#F4F7F8]">{title}</h1>
+        <p className="text-sm text-[#788084]">{subtitle}</p>
       </div>
 
       {toolbar}
@@ -55,8 +55,17 @@ export function TransactionsTableCard({
   filtersClassName,
 }: TransactionsTableCardProps) {
   return (
-    <div className={cn(minHeightClassName, "rounded-3xl border border-slate-200 bg-white/70 p-4 backdrop-blur-sm flex flex-col")}>
-      <div className={cn("flex flex-wrap items-center gap-3", filtersClassName)}>{filters}</div>
+    <div className={cn(minHeightClassName, "rounded-3xl border border-[#1F2526] bg-[#0E0F10] p-4 flex flex-col")}>
+      <div
+        className={cn(
+          // Mobile: single horizontal scrollable row of filter pills.
+          // md+: wrap onto multiple lines.
+          "flex items-center gap-3 overflow-x-auto no-scrollbar [&>*]:shrink-0 md:flex-wrap md:overflow-x-visible",
+          filtersClassName,
+        )}
+      >
+        {filters}
+      </div>
       <div className="mt-6 flex-1">{children}</div>
       {footer}
     </div>
@@ -85,16 +94,16 @@ export function TransactionsTableFooter({
   className,
 }: TransactionsTableFooterProps) {
   return (
-    <div className={cn("mt-6 flex items-center justify-between text-sm text-slate-600", className)}>
+    <div className={cn("mt-6 flex items-center justify-between text-sm text-[#788084]", className)}>
       <div className="flex items-center gap-2">
         <span>{pageSizeLabel}</span>
         <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
-          <SelectTrigger className="h-9 min-w-[70px] rounded-full border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 shadow-sm hover:border-slate-300">
+          <SelectTrigger className="h-9 min-w-[70px] rounded-full border border-[#3A4043] bg-[#0E0F10] px-3 text-sm font-medium text-[#F4F7F8] hover:border-[#5E666A]">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-white text-slate-900">
+          <SelectContent className="border-[#3A4043] bg-[#161A1B] text-[#F4F7F8]">
             {pageSizeOptions.map((size) => (
-              <SelectItem key={size} value={String(size)}>
+              <SelectItem key={size} value={String(size)} className="text-[#C5C9CC] focus:bg-white/5 focus:text-[#F4F7F8]">
                 {size}
               </SelectItem>
             ))}

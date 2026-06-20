@@ -11,6 +11,7 @@ import { UpdateAccountAuthorityModal } from "./corporate/UpdateAccountAuthorityM
 import { CourierKycModal } from "./courier/CourierKycModal";
 import { DigitalKycModal } from "./kyc/DigitalKycModal";
 import { CryptoTransactionDetailModal } from "./crypto-transaction-detail/CryptoTransactionDetailModal";
+import { FiatTransactionDetailModal } from "./fiat-transaction-detail/FiatTransactionDetailModal";
 import { DeclareTransactionModal } from "./declare-transaction/DeclareTransactionModal";
 import { AddBankAccountModal } from "./funds/addAccount/AddBankAccountModal";
 import { AddCryptoAddressModal } from "./funds/addAccount/AddCryptoAddressModal";
@@ -31,6 +32,7 @@ const modalRegistry = {
   "asset-detail": AssetDetailModal,
   "pending-transactions": PendingTransactionsModal,
   "crypto-transaction-detail": CryptoTransactionDetailModal,
+  "fiat-transaction-detail": FiatTransactionDetailModal,
   "trade-order-detail": TradeOrderDetailModal,
   "add-shareholder": AddShareholderModal,
   "add-bank-account": AddBankAccountModal,

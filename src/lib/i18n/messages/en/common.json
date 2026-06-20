@@ -1345,6 +1345,7 @@
         "asset": "Crypto Asset",
         "network": "Network",
         "amount": "Amount",
+        "fee": "Transaction Fee",
         "address": "Address",
         "txid": "TxID"
       },
@@ -1726,7 +1727,8 @@
       "apply": "Apply",
       "continue": "Continue",
       "processing": "Processing...",
-      "max": "Max"
+      "max": "Max",
+      "clearAll": "Clear Filters"
     },
     "searchInput": {
       "placeholder": "Search...",

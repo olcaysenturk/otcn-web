@@ -1335,6 +1335,7 @@
         "asset": "Криптоактив",
         "network": "Сеть",
         "amount": "Сумма",
+        "fee": "Комиссия",
         "address": "Адрес",
         "txid": "TxID"
       },
@@ -1716,7 +1717,8 @@
       "apply": "Применить",
       "continue": "Продолжить",
       "processing": "Обработка...",
-      "max": "Макс"
+      "max": "Макс",
+      "clearAll": "Очистить фильтры"
     },
     "searchInput": {
       "placeholder": "Поиск...",

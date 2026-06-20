@@ -1335,6 +1335,7 @@
         "asset": "Ativo Cripto",
         "network": "Rede",
         "amount": "Valor",
+        "fee": "Taxa",
         "address": "Endereço",
         "txid": "TxID"
       },
@@ -1716,7 +1717,8 @@
       "apply": "Aplicar",
       "continue": "Continuar",
       "processing": "Processando...",
-      "max": "Máx"
+      "max": "Máx",
+      "clearAll": "Limpar Filtros"
     },
     "searchInput": {
       "placeholder": "Buscar...",

@@ -2,6 +2,8 @@ export type Transaction = {
   id: string;
   date: string;
   amount: string;
+  /** Currency code shown in the detail panel (e.g. "TRY"). */
+  currency?: string;
   status: "success" | "pending" | "processing" | "failed";
   type: "withdraw" | "deposit";
   bank: string;
@@ -19,6 +21,10 @@ export type CryptoTransaction = {
   network: string;
   date: string;
   amount: string;
+  /** Fiat-approx value shown under the amount (e.g. "≈ ₺523.40"). */
+  amountApprox?: string;
+  /** Transaction fee (e.g. "1.04 USD"). */
+  fee?: string;
   status: "success" | "pending" | "processing" | "failed";
   address: string;
   txId: string;
@@ -31,6 +37,7 @@ export type FiatTransactionsTabProps = {
   t: (key: string) => string;
   expanded: string | null;
   onExpand: (id: string | null) => void;
+  onDetailClick: (row: Transaction) => void;
 };
 
 export type CryptoTransactionsTabProps = {

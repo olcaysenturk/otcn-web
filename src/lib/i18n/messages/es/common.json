@@ -1335,6 +1335,7 @@
         "asset": "Activo cripto",
         "network": "Red",
         "amount": "Monto",
+        "fee": "Comisión",
         "address": "Dirección",
         "txid": "TxID"
       },
@@ -1716,7 +1717,8 @@
       "apply": "Aplicar",
       "continue": "Continuar",
       "processing": "Procesando...",
-      "max": "Máx"
+      "max": "Máx",
+      "clearAll": "Borrar filtros"
     },
     "searchInput": {
       "placeholder": "Buscar...",

@@ -3,7 +3,6 @@
 import type { CryptoTransaction, Transaction } from "./types";
 import { CryptoTransactionsTab } from "./CryptoTransactionsTab";
 import { FiatTransactionsTab } from "./FiatTransactionsTab";
-import { TransactionsTableSkeleton } from "../TransactionSkeleton";
 
 type DepositWithdrawTabPanelProps = {
   tab: "fiat" | "crypto";
@@ -17,6 +16,7 @@ type DepositWithdrawTabPanelProps = {
   copyWithToast: (value: string) => void;
   onDeclareClick: (mode: "withdraw" | "deposit", transactionId?: number) => void;
   onDetailClick: (transaction: CryptoTransaction) => void;
+  onFiatDetailClick: (transaction: Transaction) => void;
 };
 
 export function DepositWithdrawTabPanel({
@@ -31,13 +31,8 @@ export function DepositWithdrawTabPanel({
   copyWithToast,
   onDeclareClick,
   onDetailClick,
+  onFiatDetailClick,
 }: DepositWithdrawTabPanelProps) {
-  const isCurrentTabLoading = tab === "fiat" ? fiatLoading : cryptoLoading;
-
-  if (isCurrentTabLoading) {
-    return <TransactionsTableSkeleton />;
-  }
-
   if (tab === "fiat") {
     return (
       <FiatTransactionsTab
@@ -46,6 +41,7 @@ export function DepositWithdrawTabPanel({
         t={t}
         expanded={expanded}
         onExpand={onExpand}
+        onDetailClick={onFiatDetailClick}
       />
     );
   }

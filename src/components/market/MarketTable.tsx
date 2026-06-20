@@ -1,74 +1,153 @@
 "use client";
 
-import { ArrowDownUp, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Link from "next/link";
 
-import { MarketAssetRow } from "@/components/market/MarketAssetRow";
 import { CoinIcon } from "@/components/ui/CoinIcon";
+import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { withLocale } from "@/lib/i18n/href";
 import { cn } from "@/lib/utils";
-import type { MarketSortKey, MarketTableProps } from "@/types/market";
+import type { MarketAsset, MarketSortKey, MarketTableProps } from "@/types/market";
 
-const columns: Array<{ key: MarketSortKey; labelKey: string }> = [
-  { key: "price", labelKey: "marketPage.table.price" },
-  { key: "change1h", labelKey: "marketPage.table.change1h" },
-  { key: "change24h", labelKey: "marketPage.table.change24h" },
-  { key: "change7d", labelKey: "marketPage.table.change7d" },
-  { key: "marketCap", labelKey: "marketPage.table.marketCap" },
-  { key: "volume24h", labelKey: "marketPage.table.volume24h" },
-  { key: "circulatingSupply", labelKey: "marketPage.table.circulatingSupply" },
-];
+function ChangeValue({ value }: { value: string }) {
+  const isNegative = value.trim().startsWith("-");
+  return (
+    <span className={cn(isNegative ? "text-[#FF4D6D]" : "text-[#27E9A6]")}>{value}</span>
+  );
+}
 
 export function MarketTable({
   assets,
   favorites,
   sortKey,
+  sortDirection = "desc",
   onSort,
   onToggleFavorite,
 }: MarketTableProps) {
   const { locale, t } = useI18n();
 
+  const columns: DataTableColumn<MarketAsset, MarketSortKey>[] = [
+    {
+      id: "asset",
+      header: t("marketPage.table.asset"),
+      minWidth: "180px",
+      cell: (asset) => (
+        <Link
+          href={withLocale(`/trade/spot/${asset.symbol.toLowerCase()}`, locale)}
+          className="flex items-center gap-3"
+        >
+          <CoinIcon symbol={asset.symbol} size={32} />
+          <span>
+            <span className="block text-[14px] font-medium text-[#F4F7F8]">{asset.name}</span>
+            <span className="mt-0.5 block text-[11px] text-[#C5C9CC]">({asset.symbol})</span>
+          </span>
+        </Link>
+      ),
+    },
+    {
+      id: "price",
+      header: t("marketPage.table.price"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap font-medium",
+      cell: (asset) => asset.price,
+    },
+    {
+      id: "change1h",
+      header: t("marketPage.table.change1h"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap",
+      cell: (asset) => <ChangeValue value={asset.change1h} />,
+    },
+    {
+      id: "change24h",
+      header: t("marketPage.table.change24h"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap",
+      cell: (asset) => <ChangeValue value={asset.change24h} />,
+    },
+    {
+      id: "change7d",
+      header: t("marketPage.table.change7d"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap",
+      cell: (asset) => <ChangeValue value={asset.change7d} />,
+    },
+    {
+      id: "marketCap",
+      header: t("marketPage.table.marketCap"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap",
+      cell: (asset) => asset.marketCap,
+    },
+    {
+      id: "volume24h",
+      header: t("marketPage.table.volume24h"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap",
+      cell: (asset) => (
+        <>
+          <span className="block">{asset.volume24h}</span>
+          <span className="mt-0.5 block text-[10px] text-[#788084]">{asset.volumeUnits}</span>
+        </>
+      ),
+    },
+    {
+      id: "circulatingSupply",
+      header: t("marketPage.table.circulatingSupply"),
+      sortable: true,
+      cellClassName: "whitespace-nowrap",
+      cell: (asset) => asset.circulatingSupply,
+    },
+    {
+      id: "trade",
+      header: "",
+      width: "76px",
+      align: "center",
+      cell: (asset) => (
+        <Link
+          href={withLocale(`/trade/${asset.symbol.toLowerCase()}-usdt`, locale)}
+          className="inline-flex h-10 items-center justify-center rounded-[12px] border border-[#F4F7F8] px-4 text-[12px] font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+        >
+          {t("marketPage.trade")}
+        </Link>
+      ),
+    },
+    {
+      id: "favorite",
+      header: "",
+      width: "48px",
+      align: "center",
+      cell: (asset) => (
+        <button
+          type="button"
+          aria-label={`${asset.name} favorite`}
+          onClick={() => onToggleFavorite(asset.symbol)}
+          className="inline-flex text-[#F4F7F8] transition hover:text-[#C7F022]"
+        >
+          <Star className={cn("h-4 w-4", favorites.has(asset.symbol) && "fill-[#C7F022] text-[#C7F022]")} />
+        </button>
+      ),
+    },
+  ];
+
   return (
     <section>
-      <div className="hidden overflow-x-auto md:block">
-        <table className="w-full min-w-[1160px] border-separate border-spacing-y-2">
-          <thead>
-            <tr>
-              <th className="min-w-[180px] px-4 py-1 text-left text-[11px] font-medium text-[#788084]">
-                {t("marketPage.table.asset")}
-              </th>
-              {columns.map((column) => (
-                <th key={column.key} className="px-3 py-1 text-left">
-                  <button
-                    type="button"
-                    onClick={() => onSort(column.key)}
-                    className="flex items-center gap-1 text-[11px] font-medium text-[#788084] transition hover:text-[#F4F7F8]"
-                  >
-                    {t(column.labelKey)}
-                    <ArrowDownUp
-                      className={`h-3 w-3 ${sortKey === column.key ? "text-[#C7F022]" : ""}`}
-                    />
-                  </button>
-                </th>
-              ))}
-              <th className="w-[76px]" />
-              <th className="w-12" />
-            </tr>
-          </thead>
-          <tbody>
-            {assets.map((asset) => (
-              <MarketAssetRow
-                key={asset.symbol}
-                asset={asset}
-                isFavorite={favorites.has(asset.symbol)}
-                onToggleFavorite={onToggleFavorite}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable<MarketAsset, MarketSortKey>
+        columns={columns}
+        data={assets}
+        getRowId={(asset) => asset.symbol}
+        minWidth="1160px"
+        sort={sortKey ? { key: sortKey, direction: sortDirection } : null}
+        onSortChange={onSort}
+        rowClassName={() => "hover:[&>td]:bg-[#121516]"}
+        disableMobileCards
+        empty={
+          <div className="px-6 py-16 text-center text-sm text-[#788084]">{t("marketPage.empty")}</div>
+        }
+      />
 
+      {/* Compact mobile layout (kept bespoke for density) */}
       <div className="md:hidden">
         <div className="grid grid-cols-[minmax(0,1.1fr)_minmax(90px,1fr)_80px] gap-1 border-b border-[#3A4043]/60 px-1 pb-2 text-[10px] text-[#788084]">
           <button
@@ -76,28 +155,27 @@ export function MarketTable({
             onClick={() => onSort("price")}
             className="flex items-center gap-1 text-left"
           >
-            {t("marketPage.table.name")} <ArrowDownUp className="h-3 w-3" />
+            {t("marketPage.table.name")}
           </button>
           <button
             type="button"
             onClick={() => onSort("change24h")}
             className="flex items-center justify-end gap-1 text-right"
           >
-            {t("marketPage.table.mobilePriceChange")} <ArrowDownUp className="h-3 w-3" />
+            {t("marketPage.table.mobilePriceChange")}
           </button>
           <button
             type="button"
             onClick={() => onSort("marketCap")}
             className="flex items-center justify-end gap-1 text-right"
           >
-            {t("marketPage.table.mobileCapVolume")} <ArrowDownUp className="h-3 w-3" />
+            {t("marketPage.table.mobileCapVolume")}
           </button>
         </div>
 
         <div className="divide-y divide-[#3A4043]/40">
           {assets.map((asset) => {
             const isNegative = asset.change24h.trim().startsWith("-");
-
             return (
               <div
                 key={asset.symbol}
@@ -146,13 +224,13 @@ export function MarketTable({
             );
           })}
         </div>
-      </div>
 
-      {assets.length === 0 && (
-        <div className="px-6 py-16 text-center text-sm text-[#788084]">
-          {t("marketPage.empty")}
-        </div>
-      )}
+        {assets.length === 0 && (
+          <div className="px-6 py-16 text-center text-sm text-[#788084]">
+            {t("marketPage.empty")}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

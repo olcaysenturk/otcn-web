@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 
-export type ModalName = "declare-transaction" | "funds" | "address" | "courier-kyc" | "digital-kyc" | "asset-detail" | "pending-transactions" | "crypto-transaction-detail" | "trade-order-detail" | "add-shareholder" | "add-bank-account" | "change-password"
+export type ModalName = "declare-transaction" | "funds" | "address" | "courier-kyc" | "digital-kyc" | "asset-detail" | "pending-transactions" | "crypto-transaction-detail" | "fiat-transaction-detail" | "trade-order-detail" | "add-shareholder" | "add-bank-account" | "change-password"
   | "update-account-authority"
   | "add-crypto-address"
   | "password-change-verify"

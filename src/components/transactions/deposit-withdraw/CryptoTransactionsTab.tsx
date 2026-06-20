@@ -1,203 +1,154 @@
 "use client";
 
-import React from "react";
 import { ChevronRight, Copy } from "lucide-react";
+
+import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CryptoTransactionsTabProps } from "./types";
 import { TransactionStatusPill } from "./TransactionStatusPill";
+import type { CryptoTransaction } from "./types";
 
-export function CryptoTransactionsTab({ rows, loading, t, copyWithToast, onDeclareClick, onDetailClick }: CryptoTransactionsTabProps) {
-    const compactHash = (value: string, head = 6, tail = 6) => {
-        if (!value) return "-";
-        if (value.length <= head + tail + 3) return value;
-        return `${value.slice(0, head)}...${value.slice(-tail)}`;
-    };
-    const hasValue = (value?: string) => Boolean(value && value.trim() && value.trim() !== "-");
+function TwoLineSkeleton({ topW = "w-24", bottomW = "w-16" }: { topW?: string; bottomW?: string }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Skeleton className={`h-4 ${topW} bg-white/10`} />
+      <Skeleton className={`h-3 ${bottomW} bg-white/10`} />
+    </div>
+  );
+}
 
-    return (
-        <div className="mt-4">
-            <div className="flex flex-col gap-3">
-                {/* Header */}
-                <div className="hidden lg:grid grid-cols-[0.9fr_1fr_1.25fr_1fr_1fr_1.6fr_1.6fr_0.4fr] items-center gap-x-4 px-4 text-xs font-medium text-slate-500">
-                    <div>{t("transactions.crypto.headers.asset")}</div>
-                    <div>{t("transactions.crypto.headers.network")}</div>
-                    <div>{t("transactions.table.headers.date")}</div>
-                    <div>{t("transactions.crypto.headers.amount")}</div>
-                    <div>{t("transactions.table.headers.status")}</div>
-                    <div>{t("transactions.crypto.headers.address")}</div>
-                    <div>{t("transactions.crypto.headers.txid")}</div>
-                    <div />
-                </div>
+const compactHash = (value: string, head = 6, tail = 6) => {
+  if (!value) return "-";
+  if (value.length <= head + tail + 3) return value;
+  return `${value.slice(0, head)}...${value.slice(-tail)}`;
+};
 
-                {/* Rows */}
-                {rows.map((row) => {
-                    const [datePart, timePart] = row.date.split(" ");
-                    const isDeclared = Boolean(row.hasDeclaration);
-                    const shouldShowDeclare = row.type === "deposit" && Boolean(row.needsDeclaration);
-                    const assetText = String(row.asset || "-").toUpperCase();
+const hasValue = (value?: string) => Boolean(value && value.trim() && value.trim() !== "-");
 
-                    return (
-                        <div key={row.id} className="flex flex-col gap-3">
-                            {/* Desktop View */}
-                            <div className="hidden lg:grid grid-cols-[0.9fr_1fr_1.25fr_1fr_1fr_1.6fr_1.6fr_1fr] items-center gap-x-4 rounded-full border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 transition hover:bg-slate-50/50">
-                                <div className="font-medium uppercase">{assetText}</div>
-                                <div>{row.network}</div>
-                                <div className="flex flex-col">
-                                    <span className="font-medium">{datePart}</span>
-                                    <span className="text-xs text-slate-500">{timePart}</span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="font-semibold">{row.amount}</span>
-                                    <span className="text-xs text-slate-500">≈ ₺0.00</span>
-                                </div>
-                                <div>
-                                    <TransactionStatusPill status={row.status} t={t} withMinWidth />
-                                </div>
+export function CryptoTransactionsTab({
+  rows,
+  loading,
+  t,
+  copyWithToast,
+  onDetailClick,
+}: CryptoTransactionsTabProps) {
+  const CopyCell = ({ value }: { value: string }) => (
+    <span className="flex min-w-0 items-center gap-2">
+      <span className="w-[120px] shrink-0 truncate">{compactHash(value)}</span>
+      {hasValue(value) && (
+        <button
+          type="button"
+          className="shrink-0 rounded p-1 text-[#788084] transition hover:bg-white/5 hover:text-[#F4F7F8]"
+          onClick={() => copyWithToast(value)}
+        >
+          <Copy className="h-4 w-4" />
+        </button>
+      )}
+    </span>
+  );
 
-                                <div className="flex min-w-0 items-center gap-2">
-                                    <span className="truncate">{compactHash(row.address)}</span>
-                                    {hasValue(row.address) && (
-                                        <button
-                                            type="button"
-                                            className="rounded p-1 text-slate-500 hover:bg-slate-100"
-                                            onClick={() => copyWithToast(row.address)}
-                                        >
-                                            <Copy className="h-4 w-4" />
-                                        </button>
-                                    )}
-                                </div>
-                                <div className="flex min-w-0 items-center gap-2">
-                                    <span className="truncate">{compactHash(row.txId)}</span>
-                                    {hasValue(row.txId) && (
-                                        <button
-                                            type="button"
-                                            className="rounded p-1 text-slate-500 hover:bg-slate-100"
-                                            onClick={() => copyWithToast(row.txId)}
-                                        >
-                                            <Copy className="h-4 w-4" />
-                                        </button>
-                                    )}
-                                </div>
-                                <div className="flex justify-end">
-                                    {isDeclared ? (
-                                        <span className="inline-flex items-center rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                                            {t("transactions.crypto.declared")}
-                                        </span>
-                                    ) : shouldShowDeclare ? (
-                                        <button
-                                            className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-sm whitespace-nowrap"
-                                            onClick={() => onDeclareClick(row.type, row.transactionId)}
-                                        >
-                                            {t("transactions.crypto.declare")}
-                                        </button>
-                                    ) : (
-                                        <button
-                                            type="button"
-                                            onClick={() => onDetailClick(row)}
-                                            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-50 shadow-sm"
-                                        >
-                                            <ChevronRight className="h-4 w-4" />
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Mobile View */}
-                            <div className="lg:hidden rounded-[28px] border border-slate-200 bg-white p-5 text-sm text-slate-900">
-                                <div className="mb-6 flex items-start justify-between">
-                                    <div className="flex flex-col">
-                                        <span className="text-[16px] font-semibold tracking-tight text-slate-900">{datePart}</span>
-                                        <span className="text-sm text-slate-500">{timePart}</span>
-                                    </div>
-                                    {!shouldShowDeclare && (
-                                        <button
-                                            type="button"
-                                            onClick={() => onDetailClick(row)}
-                                            className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-800 bg-white text-slate-800 transition"
-                                        >
-                                            <ChevronRight className="h-4 w-4" />
-                                        </button>
-                                    )}
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">{t("transactions.crypto.headers.asset")}</span>
-                                        <span className="text-base font-medium uppercase">{assetText}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">{t("transactions.crypto.headers.network")}</span>
-                                        <span className="text-base font-medium">{row.network}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">{t("transactions.crypto.headers.amount")}</span>
-                                        <div className="text-right">
-                                            <div className="text-[16px] font-semibold">{row.amount}</div>
-                                            <div className="text-xs text-slate-500">≈ ₺0.00</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">{t("transactions.table.headers.status")}</span>
-                                        <TransactionStatusPill status={row.status} t={t} withMinWidth />
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">{t("transactions.crypto.headers.address")}</span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="truncate max-w-[140px] text-base font-medium">{compactHash(row.address)}</span>
-                                            {hasValue(row.address) && (
-                                                <button
-                                                    type="button"
-                                                    className="rounded p-1 text-slate-500 hover:bg-slate-100"
-                                                    onClick={() => copyWithToast(row.address)}
-                                                >
-                                                    <Copy className="h-4 w-4" />
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">{t("transactions.crypto.headers.txid")}</span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="truncate max-w-[140px] text-base font-medium">{compactHash(row.txId)}</span>
-                                            {hasValue(row.txId) && (
-                                                <button
-                                                    type="button"
-                                                    className="rounded p-1 text-slate-500 hover:bg-slate-100"
-                                                    onClick={() => copyWithToast(row.txId)}
-                                                >
-                                                    <Copy className="h-4 w-4" />
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {isDeclared ? (
-                                    <div className="mt-4">
-                                        <span className="inline-flex items-center rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                                            {t("transactions.crypto.declared")}
-                                        </span>
-                                    </div>
-                                ) : shouldShowDeclare ? (
-                                    <button
-                                        className="mt-4 w-full rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 whitespace-nowrap"
-                                        onClick={() => onDeclareClick(row.type, row.transactionId)}
-                                    >
-                                        {t("transactions.crypto.declare")}
-                                    </button>
-                                ) : null}
-                            </div>
-                        </div>
-                    );
-                })}
-
-                {!loading && rows.length === 0 && (
-                    <EmptyState
-                        title={t("common.emptyState.title")}
-                        description={t("common.emptyState.description")}
-                    />
-                )}
-            </div>
+  const columns: DataTableColumn<CryptoTransaction>[] = [
+    {
+      id: "asset",
+      header: t("transactions.crypto.headers.asset"),
+      width: "13%",
+      cellClassName: "font-medium uppercase",
+      skeleton: <Skeleton className="h-4 w-16 bg-white/10" />,
+      cell: (row) => String(row.asset || "-").toUpperCase(),
+    },
+    {
+      id: "date",
+      header: t("transactions.table.headers.date"),
+      width: "11%",
+      skeleton: <TwoLineSkeleton bottomW="w-12" />,
+      cell: (row) => {
+        const [datePart, timePart] = row.date.split(" ");
+        return (
+          <div className="flex flex-col">
+            <span className="font-medium text-[#F4F7F8]">{datePart}</span>
+            <span className="text-[11px] text-[#788084]">{timePart}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "amount",
+      header: t("transactions.crypto.headers.amount"),
+      width: "13%",
+      skeleton: <TwoLineSkeleton />,
+      cell: (row) => (
+        <div className="flex flex-col">
+          <span className="font-semibold text-[#F4F7F8]">{row.amount}</span>
+          <span className="text-[11px] text-[#788084]">{row.amountApprox ?? "≈ ₺0.00"}</span>
         </div>
-    );
+      ),
+    },
+    {
+      id: "fee",
+      header: t("transactions.crypto.headers.fee"),
+      width: "13%",
+      skeleton: <Skeleton className="h-4 w-16 bg-white/10" />,
+      cell: (row) => <span className="text-[#C5C9CC]">{row.fee ?? "-"}</span>,
+    },
+    {
+      id: "status",
+      header: t("transactions.table.headers.status"),
+      width: "11%",
+      skeleton: <Skeleton className="h-6 w-20 rounded-full bg-white/10" />,
+      cell: (row) => <TransactionStatusPill status={row.status} t={t} />,
+    },
+    {
+      id: "address",
+      header: t("transactions.crypto.headers.address"),
+      width: "17%",
+      skeleton: <Skeleton className="h-4 w-32 bg-white/10" />,
+      cell: (row) => <CopyCell value={row.address} />,
+    },
+    {
+      id: "txid",
+      header: t("transactions.crypto.headers.txid"),
+      width: "16%",
+      skeleton: <Skeleton className="h-4 w-32 bg-white/10" />,
+      cell: (row) => <CopyCell value={row.txId} />,
+    },
+    {
+      id: "action",
+      header: "",
+      width: "6%",
+      align: "right",
+      hideOnMobile: true,
+      skeleton: (
+        <div className="flex justify-end">
+          <Skeleton className="h-9 w-9 rounded-full bg-white/10" />
+        </div>
+      ),
+      cell: (row) => (
+        <button
+          type="button"
+          onClick={() => onDetailClick(row)}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      ),
+    },
+  ];
+
+  return (
+    <DataTable<CryptoTransaction>
+      columns={columns}
+      data={rows}
+      isLoading={loading}
+      tableLayout="fixed"
+      getRowId={(row) => row.id}
+      rowClassName={() => "hover:[&>td]:bg-[#121516]"}
+      empty={
+        <EmptyState
+          title={t("common.emptyState.title")}
+          description={t("common.emptyState.description")}
+        />
+      }
+    />
+  );
 }

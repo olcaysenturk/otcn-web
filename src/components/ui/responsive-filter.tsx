@@ -1,16 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronDown, X } from "lucide-react";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { Check, X } from "lucide-react";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import { FilterPill } from "@/components/ui/filter-pill";
 import {
     Select,
     SelectContent,
     SelectItem,
-    SelectTrigger,
-    SelectValue,
 } from "@/components/ui/select";
 import {
     Drawer,
@@ -47,18 +47,16 @@ export function ResponsiveFilter({
     if (isDesktop) {
         return (
             <Select value={value} onValueChange={onValueChange}>
-                <SelectTrigger className={cn("h-10 w-auto min-w-[140px] rounded-full border border-slate-200 bg-white px-4 py-2 text-sm transition-colors hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600 [&>span]:line-clamp-1", className)}>
-                    <div className="flex items-center gap-2 whitespace-nowrap">
-                        <span className="text-sm font-normal text-slate-500 dark:text-slate-400">{label}</span>
-                        <span className="text-slate-300 dark:text-slate-600">|</span>
-                        <SelectValue className="text-sm font-medium text-slate-900 dark:text-white">
-                            {selectedOption?.label}
-                        </SelectValue>
-                    </div>
-                </SelectTrigger>
-                <SelectContent className="bg-white text-slate-900 dark:bg-slate-800 dark:text-white">
+                <SelectPrimitive.Trigger asChild>
+                    <FilterPill label={label} value={selectedOption?.label} className={className} />
+                </SelectPrimitive.Trigger>
+                <SelectContent className="min-w-[var(--radix-select-trigger-width)] rounded-[14px] border-[#3A4043] bg-[#0E0F10] p-2 text-[#F4F7F8]">
                     {options.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
+                        <SelectItem
+                            key={option.value}
+                            value={option.value}
+                            className="cursor-pointer rounded-[8px] px-3 py-2 text-[14px] font-medium tracking-[-0.21px] text-[#C5C9CC] focus:bg-white/5 focus:text-[#F4F7F8] data-[state=checked]:bg-[#C7F022]/10 data-[state=checked]:text-[#C7F022] [&>span:first-child]:hidden"
+                        >
                             {option.label}
                         </SelectItem>
                     ))}
@@ -70,33 +68,21 @@ export function ResponsiveFilter({
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <button
-                    type="button"
-                    className={cn(
-                        "flex h-10 min-w-[140px] items-center justify-between rounded-full border border-slate-200 bg-white px-4 py-2 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white",
-                        className
-                    )}
-                >
-                    <div className="flex items-center gap-2 whitespace-nowrap">
-                        <span className="text-sm font-normal text-slate-500 dark:text-slate-400">{label}</span>
-                        <span className="text-slate-300 dark:text-slate-600">|</span>
-                        <span className="text-sm font-medium text-slate-900 dark:text-white">{selectedOption?.label}</span>
-                    </div>
-                    <ChevronDown className="h-4 w-4 text-slate-500" />
-                </button>
+                <FilterPill label={label} value={selectedOption?.label} className={className} />
             </DrawerTrigger>
-            <DrawerContent>
-                <DrawerHeader className="flex items-center justify-between px-4 py-4">
-                    <DrawerTitle>{drawerTitle || label}</DrawerTitle>
+            <DrawerContent className="border border-[#C7F022]">
+                <DrawerHeader className="items-center justify-between bg-[#C7F022] px-5 py-4">
+                    <DrawerTitle className="text-base font-semibold text-[#0E0F10]">{drawerTitle || label}</DrawerTitle>
                     <DrawerClose asChild>
-                        <button className="rounded-full p-2">
-                            <X className="h-5 w-5 text-white" />
+                        <button className="rounded-full p-1 text-[#0E0F10] transition hover:bg-black/10" aria-label="close">
+                            <X className="h-5 w-5" />
                         </button>
                     </DrawerClose>
                 </DrawerHeader>
-                <div className="p-4 bg-white rounded-t-[20px]">
-                    <div className="flex flex-col gap-2">
-                        {options.map((option) => (
+                <div className="max-h-[70vh] overflow-auto bg-[#0E0F10] px-5 pb-6 pt-2">
+                    {options.map((option) => {
+                        const active = value === option.value;
+                        return (
                             <button
                                 key={option.value}
                                 onClick={() => {
@@ -104,17 +90,15 @@ export function ResponsiveFilter({
                                     setOpen(false);
                                 }}
                                 className={cn(
-                                    "flex items-center justify-between rounded-xl p-4 text-left text-sm font-medium transition-colors",
-                                    value === option.value
-                                        ? "bg-violet-50 text-violet-700"
-                                        : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+                                    "flex w-full items-center justify-between py-4 text-left text-base font-medium transition-colors",
+                                    active ? "text-[#C7F022]" : "text-[#F4F7F8] hover:text-[#C7F022]",
                                 )}
                             >
                                 {option.label}
-                                {value === option.value && <Check className="h-4 w-4 text-violet-600" />}
+                                {active && <Check className="h-5 w-5 text-[#C7F022]" />}
                             </button>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
             </DrawerContent>
         </Drawer>

@@ -77,13 +77,8 @@ export type MarketTableProps = {
   assets: MarketAsset[];
   favorites: Set<string>;
   sortKey?: MarketSortKey;
+  sortDirection?: "asc" | "desc";
   onSort: (key: MarketSortKey) => void;
-  onToggleFavorite: (symbol: string) => void;
-};
-
-export type MarketAssetRowProps = {
-  asset: MarketAsset;
-  isFavorite: boolean;
   onToggleFavorite: (symbol: string) => void;
 };
 

@@ -21,6 +21,8 @@ import { clearAuthSession } from "@/lib/auth/clientSession";
 import { invalidateSession } from "@/lib/api/session";
 import { HamburgerIcon } from "./HamburgerIcon";
 import { MobileMenu } from "./MobileMenu";
+import { NavLink } from "./topbar/NavLink";
+import { TransactionsNav } from "./topbar/TransactionsNav";
 import { cn } from "@/lib/utils";
 import { getInternalPath } from "@/lib/i18n/navigation";
 
@@ -296,7 +298,6 @@ function DashboardTopbar({
   onLogout: () => void;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTransactionsOpen, setIsTransactionsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -363,61 +364,29 @@ function DashboardTopbar({
           </Link>
 
           <div className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-9">
-            {navWithActive.map((item) => (
-              <div key={item.label} className="relative">
-                {item.label === t("header.transactions") ? (
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setIsTransactionsOpen((prev) => !prev)}
-                      className={cn(
-                        "relative flex h-[42px] items-center gap-1.5 whitespace-nowrap text-[16px] font-medium text-white/90 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#8F84FF] xl:gap-2",
-                        item.active ? "text-[#9B91FF] after:w-full" : "hover:text-white after:w-0",
-                      )}
-                    >
-                      {item.label}
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                    {isTransactionsOpen && (
-                      <div className="absolute left-0 top-full z-50 mt-2 w-56 rounded-2xl border border-[#E8EDF3] bg-white p-3 text-left shadow-xl dark:border-gray-700 dark:bg-gray-900">
-                        <div className="space-y-1">
-                          {transactionLinks.map((link) => (
-                            <Link
-                              key={link.href}
-                              href={link.href}
-                              onClick={() => {
-                                setIsTransactionsOpen(false);
-                                setIsMenuOpen(false);
-                              }}
-                              className="block rounded-xl px-3 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800"
-                            >
-                              {link.title}
-                              <span className="mt-1 block text-xs font-normal text-gray-500 dark:text-gray-300">
-                                {link.desc}
-                              </span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    href={item.href}
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsTransactionsOpen(false);
-                    }}
-                    className={cn(
-                      "relative flex h-[42px] items-center whitespace-nowrap text-[16px] font-medium text-white/90 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#8F84FF]",
-                      item.active ? "text-[#9B91FF] after:w-full" : "hover:text-white after:w-0",
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                )}
-              </div>
-            ))}
+            {navWithActive.map((item) =>
+              item.activeInternalPrefix === "/transaction" ? (
+                <TransactionsNav
+                  key={item.label}
+                  label={item.label}
+                  active={item.active}
+                  links={transactionLinks.map((link) => ({
+                    href: link.href,
+                    title: link.title,
+                    description: link.desc,
+                  }))}
+                  onNavigate={() => setIsMenuOpen(false)}
+                />
+              ) : (
+                <NavLink
+                  key={item.label}
+                  href={item.href}
+                  label={item.label}
+                  active={item.active}
+                  onClick={() => setIsMenuOpen(false)}
+                />
+              ),
+            )}
           </div>
         </div>
 

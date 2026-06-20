@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -38,15 +37,12 @@ const DrawerContent = React.forwardRef<
         <DialogPrimitive.Content
             ref={ref}
             className={cn(
-                "fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[96%] flex-col gap-4  duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom sm:max-w-lg sm:rounded-lg",
-                "rounded-t-[20px]",
+                "fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[96%] flex-col overflow-hidden rounded-t-[20px] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom sm:mx-auto sm:max-w-lg",
                 className
             )}
             {...props}
         >
-            <div className="bg-gradient-button rounded-t-[20px] px-1">
-                {children}
-            </div>
+            {children}
         </DialogPrimitive.Content>
     </DrawerPortal>
 ));
