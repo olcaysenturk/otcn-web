@@ -156,9 +156,23 @@ export function DepositWithdrawPage() {
   }, [apiLocale, cryptoRefreshTick]);
 
   const handleTabChange = (newTab: string) => {
-    resetFiltersToDefault();
     const typedTab = newTab === "crypto" ? "crypto" : "fiat";
+    if (typedTab === tab) return;
+
+    resetFiltersToDefault();
     setTab(typedTab);
+    // Switch loading atomically with the tab so the OLD tab never flashes its
+    // skeleton and the NEW tab shows its skeleton immediately (not stale rows).
+    if (typedTab === "crypto") {
+      setCryptoLoading(true);
+      setCryptoTransactions([]);
+      setFiatLoading(false);
+    } else {
+      setFiatLoading(true);
+      setFiatTransactions([]);
+      setCryptoLoading(false);
+    }
+
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", newTab);
     router.push(`?${params.toString()}`, { scroll: false });
