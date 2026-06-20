@@ -1,51 +1,27 @@
 "use client";
+
 import { useEffect, useMemo, useState } from "react";
+import { ArrowDown, ChevronDown, Info, Loader2, Plus } from "lucide-react";
+import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
 
+import { CoinIcon } from "@/components/ui/CoinIcon";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 import { useI18n } from "@/lib/i18n/I18nProvider";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
-import { TradeInput } from "@/components/trade/TradeInput";
-import { TradePercentSelector } from "@/components/trade/TradePercentSelector";
-import { createOtcOrder } from "@/services/otc";
-import { getSession } from "@/lib/api/session";
-import { fetchWalletAssets } from "@/services/wallet";
-import type { WalletSidebarAsset } from "@/types/wallet";
-import { UiPair } from "@/types/otc";
-import { formatDecimalFromString } from "@/lib/math/formatDecimal";
 import { D } from "@/lib/math/decimal";
+import { formatDecimalFromString } from "@/lib/math/formatDecimal";
+import { fetchBinancePrices } from "@/services/binance";
+import { createMarketOrder } from "@/services/otc";
+import { fetchWalletAssets } from "@/services/wallet";
+import type { UiPair } from "@/types/otc";
+import type { WalletSidebarAsset } from "@/types/wallet";
 
-function parseInput(value: string | number, precision: number) {
-  try {
-    if (!value) return D.zero(precision);
-    const valStr = value.toString().replace(",", ".");
-
-    if (valStr === "0") return D.zero(precision);
-
-    const parsed = D.parse(valStr, precision);
-
-    if (
-      Number.isNaN(parsed.integer) ||
-      Number.isNaN(parsed.decimal) ||
-      typeof parsed.integer !== "number" ||
-      typeof parsed.decimal !== "number"
-    ) {
-      console.warn("Parsed invalid decimal:", parsed);
-      return D.zero(precision);
-    }
-
-    return parsed;
-  } catch (e) {
-    console.error("Error parsing input:", e);
-    return D.zero(precision);
-  }
-}
-
-function precisionFor(symbol: string, isQuote: boolean) {
-  if (symbol === "TRY") return 2;
-  if (symbol === "USDT") return 2;
-  return isQuote ? 2 : 8;
-}
+type Side = "buy" | "sell";
 
 interface TradeOrderFormProps {
   pair: UiPair;
@@ -55,247 +31,210 @@ interface TradeOrderFormProps {
   walletRefreshKey?: number;
 }
 
-export function TradeOrderForm({ pair, pairs, onPairChange, onOrderCreated, walletRefreshKey = 0 }: TradeOrderFormProps) {
+function precisionFor(symbol: string, isQuote: boolean) {
+  if (symbol === "TRY" || symbol === "USDT") return 2;
+  return isQuote ? 2 : 8;
+}
+
+function safeDecimal(value: string, precision: number) {
+  try {
+    return value ? D.parse(value, precision) : D.zero(precision);
+  } catch {
+    return D.zero(precision);
+  }
+}
+
+function AssetSelect({
+  value,
+  pair,
+  pairs,
+  side,
+  position,
+  onChange,
+}: {
+  value: string;
+  pair: UiPair;
+  pairs: UiPair[];
+  side: Side;
+  position: "input" | "output";
+  onChange: (pair: UiPair) => void;
+}) {
+  const selectsBase = (side === "buy" && position === "output") ||
+    (side === "sell" && position === "input");
+
+  const options = useMemo(() => {
+    const symbols = selectsBase
+      ? pairs.map((item) => item.base)
+      : pairs.map((item) => item.quote);
+
+    return Array.from(new Set(symbols))
+      .map((symbol) => {
+        const matchingCurrentPair = pairs.find(
+          (item) =>
+            (selectsBase ? item.base === symbol : item.quote === symbol) &&
+            (selectsBase ? item.quote === pair.quote : item.base === pair.base),
+        );
+        return (
+          matchingCurrentPair ??
+          pairs.find((item) => (selectsBase ? item.base === symbol : item.quote === symbol))
+        );
+      })
+      .filter((item): item is UiPair => Boolean(item));
+  }, [pair.base, pair.quote, pairs, selectsBase]);
+
+  return (
+    <Select
+      value={value}
+      onValueChange={(symbol) => {
+        const next = options.find((item) => (selectsBase ? item.base : item.quote) === symbol);
+        if (next) onChange(next);
+      }}
+    >
+      <SelectTrigger className="h-12 w-auto min-w-[126px] gap-2 rounded-full border-0 bg-[#F1F4F2] px-3.5 shadow-none focus:ring-0 data-[size=default]:h-12 [&>svg]:hidden">
+        <span className="flex items-center gap-2">
+          <CoinIcon symbol={value} size={28} />
+          <span className="text-[15px] font-bold text-[#101515]">{value}</span>
+          <ChevronDown className="h-4 w-4 text-[#697474]" />
+        </span>
+      </SelectTrigger>
+      <SelectContent className="max-h-72 rounded-2xl border-[#E1E7E4] bg-white p-1.5">
+        {options.map((item) => {
+          const symbol = selectsBase ? item.base : item.quote;
+          return (
+            <SelectItem key={symbol} value={symbol} className="rounded-xl py-2.5">
+              <span className="flex items-center gap-2.5">
+                <CoinIcon symbol={symbol} size={26} />
+                <span>
+                  <span className="block font-semibold text-[#101515]">{symbol}</span>
+                  {selectsBase && (
+                    <span className="block text-xs text-[#788282]">{item.baseName}</span>
+                  )}
+                </span>
+              </span>
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
+    </Select>
+  );
+}
+
+export function TradeOrderForm({
+  pair,
+  pairs,
+  onPairChange,
+  onOrderCreated,
+  walletRefreshKey = 0,
+}: TradeOrderFormProps) {
   const { t, locale } = useI18n();
-  const [side, setSide] = useState<"buy" | "sell">("buy");
-  const [price, setPrice] = useState("");
-  const [amount, setAmount] = useState("");
-  const [total, setTotal] = useState("");
-  const [percent, setPercent] = useState<number | null>(null);
+  const [side, setSide] = useState<Side>("buy");
+  const [inputValue, setInputValue] = useState("");
+  const [price, setPrice] = useState(0);
+  const [isPriceLoading, setIsPriceLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [walletAssets, setWalletAssets] = useState<WalletSidebarAsset[]>([]);
   const [walletLoading, setWalletLoading] = useState(true);
 
   const basePrecision = precisionFor(pair.base, false);
   const quotePrecision = precisionFor(pair.quote, true);
-  const maxAssetSymbol = side === "buy" ? pair.quote : pair.base;
-  const maxPrecision = maxAssetSymbol === pair.quote ? quotePrecision : basePrecision;
+  const inputSymbol = side === "buy" ? pair.quote : pair.base;
+  const outputSymbol = side === "buy" ? pair.base : pair.quote;
+  const inputPrecision = side === "buy" ? quotePrecision : basePrecision;
+  const outputPrecision = side === "buy" ? basePrecision : quotePrecision;
+  const selectedWalletAsset = walletAssets.find((asset) => asset.symbol === inputSymbol);
+  const availableRaw = selectedWalletAsset?.available ?? "0";
+  const available = formatDecimalFromString(availableRaw, inputPrecision, { minDecimals: 2 });
 
-  const selectedWalletAsset = useMemo(
-    () => walletAssets.find((asset) => asset.symbol === maxAssetSymbol),
-    [walletAssets, maxAssetSymbol],
-  );
-  const maxAvailableRaw = selectedWalletAsset?.available ?? "0";
-  const maxAvailable = formatDecimalFromString(maxAvailableRaw, maxPrecision, { minDecimals: 2 });
-  const maxAvailableDecimal = D.parse(maxAvailableRaw, maxPrecision);
-  const pairSymbol = `${pair.base}${pair.quote}`;
+  const outputValue = useMemo(() => {
+    if (!inputValue || !price) return "";
+    const input = safeDecimal(inputValue, inputPrecision);
+    const marketPrice = D.parse(String(price), quotePrecision);
+    if (marketPrice.isZero()) return "";
+    return side === "buy"
+      ? D.div(input, marketPrice, outputPrecision).str()
+      : D.mul(input, marketPrice, outputPrecision).str();
+  }, [inputPrecision, inputValue, outputPrecision, price, quotePrecision, side]);
 
+  useEffect(() => {
+    setInputValue("");
+  }, [pair.value, side]);
 
   useEffect(() => {
     let cancelled = false;
-
     const loadWallet = async () => {
       setWalletLoading(true);
       try {
-        const data = await fetchWalletAssets({ locale });
-        if (!cancelled) setWalletAssets(data);
+        const assets = await fetchWalletAssets({ locale });
+        if (!cancelled) setWalletAssets(assets);
+      } catch {
+        if (!cancelled) setWalletAssets([]);
       } finally {
         if (!cancelled) setWalletLoading(false);
       }
     };
-
     loadWallet();
-
     return () => {
       cancelled = true;
     };
   }, [locale, walletRefreshKey]);
 
-  // Removed useEffect for synchronization
+  useEffect(() => {
+    let cancelled = false;
 
-  const updateAmount = (rawTotal: string, rawPrice: string) => {
-    if (!rawPrice || rawPrice === "0") return;
-    const totalVal = parseInput(rawTotal, quotePrecision);
-    const priceVal = parseInput(rawPrice, quotePrecision);
-
-    if (priceVal.isZero()) return;
-
-    const amountVal = D.div(totalVal, priceVal, basePrecision);
-    // Use raw string for state to ensure NumericFormat handles it correctly
-    setAmount(amountVal.str());
-  };
-
-  const updateTotal = (rawAmount: string, rawPrice: string) => {
-    if (!rawPrice || !rawAmount) {
-      setTotal("");
-      return;
-    }
-    const amountVal = parseInput(rawAmount, basePrecision);
-    const priceVal = parseInput(rawPrice, quotePrecision);
-    const totalVal = D.mul(amountVal, priceVal, quotePrecision);
-    setTotal(totalVal.str());
-  };
-
-  const handlePriceChange = (val: string) => {
-    setPercent(null);
-    setPrice(val);
-    updateTotal(amount, val);
-  };
-
-  const handleAmountChange = (val: string) => {
-    setPercent(null);
-    setAmount(val);
-    updateTotal(val, price);
-  };
-
-  const handleTotalChange = (val: string) => {
-    setPercent(null);
-    setTotal(val);
-    updateAmount(val, price);
-  };
-
-  const handlePercentClick = (nextPercent: number) => {
-    if (percent === nextPercent) {
-      setPercent(null);
-      return;
-    }
-
-    setPercent(nextPercent);
-    const ratio = D.from(nextPercent / 100);
-    const priceValue = parseInput(price, quotePrecision);
-
-    if (side === "buy") {
-      const nextTotal = D.mul(maxAvailableDecimal, ratio, quotePrecision);
-      setTotal(nextTotal.str()); // Store raw string
-      if (priceValue.dgreater(D.zero(quotePrecision))) {
-        const amountValue = D.div(nextTotal, priceValue, basePrecision);
-        setAmount(amountValue.str());
+    const loadPrice = async () => {
+      setIsPriceLoading(true);
+      const prices = await fetchBinancePrices([pair.value]);
+      if (!cancelled) {
+        setPrice(prices[pair.value] ?? 0);
+        setIsPriceLoading(false);
       }
-      return;
-    }
+    };
 
-    const nextAmount = D.mul(maxAvailableDecimal, ratio, basePrecision);
-    setAmount(nextAmount.str());
-    if (priceValue.dgreater(D.zero(quotePrecision))) {
-      const totalValue = D.mul(nextAmount, priceValue, quotePrecision);
-      setTotal(totalValue.str());
-    }
+    loadPrice();
+    const timer = setInterval(loadPrice, 10_000);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [pair.value]);
+
+  const useAllBalance = () => {
+    setInputValue(availableRaw);
   };
 
   const handleSubmit = async () => {
-    if (!price || !amount || !total) {
+    const entered = safeDecimal(inputValue, inputPrecision);
+    const balance = safeDecimal(availableRaw, inputPrecision);
+
+    if (entered.isZero() || !price) {
       toast.error(t("trade.errors.invalidAmount"));
       return;
     }
-
-    const amountDecimal = parseInput(amount, basePrecision);
-    const totalDecimal = parseInput(total, quotePrecision);
-    const priceDecimal = parseInput(price, quotePrecision);
-
-    if (amountDecimal.isZero() || totalDecimal.isZero() || priceDecimal.isZero()) {
-      toast.error(t("trade.errors.invalidAmount"));
-      return;
-    }
-
-    const exceedsAvailable =
-      side === "buy"
-        ? totalDecimal.dgreater(maxAvailableDecimal)
-        : amountDecimal.dgreater(maxAvailableDecimal);
-
-    if (exceedsAvailable) {
+    if (entered.dgreater(balance)) {
       toast.error(t("trade.errors.insufficientBalance"));
       return;
     }
 
     setIsSubmitting(true);
-
     try {
-      const session = await getSession();
-      const accountId = session?.accountIds?.[0];
-
-      if (!accountId) {
-        toast.error(t("trade.errors.generic"));
-        setIsSubmitting(false);
-        return;
-      }
-
-      const res = await createOtcOrder(locale, accountId, {
-        symbol: pairSymbol,
-        quantity: amount, // Sending raw string is fine
+      const { response, body } = await createMarketOrder(locale, {
+        clientId: "web",
+        price: "0",
+        quantity: side === "sell" ? inputValue : "0",
         side: side === "buy" ? "BUY" : "SELL",
-        price: price,
+        symbol: pair.value,
+        total: side === "buy" ? inputValue : "0",
+        triggerPrice: "0",
+        type: "MARKET",
       });
 
-      if (!res?.ok) {
-        const readApiErrorMessage = async (response: Response) => {
-          try {
-            const contentType = response.headers.get("content-type") || "";
-            if (contentType.includes("application/json")) {
-              const payload = (await response.json().catch(() => null)) as unknown;
-              if (!payload) return "";
-              if (typeof payload === "string") return payload;
-
-              if (typeof payload === "object") {
-                const payloadRecord = payload as Record<string, unknown>;
-                if (typeof payloadRecord.message === "string") return payloadRecord.message;
-                if (typeof payloadRecord.error === "string") return payloadRecord.error;
-                if (typeof payloadRecord.detail === "string") return payloadRecord.detail;
-                if (typeof payloadRecord.title === "string") return payloadRecord.title;
-
-                if (Array.isArray(payloadRecord.errors) && typeof payloadRecord.errors[0] === "string") {
-                  return payloadRecord.errors[0];
-                }
-
-                if (payloadRecord.errors && typeof payloadRecord.errors === "object") {
-                  const errorsRecord = payloadRecord.errors as Record<string, unknown>;
-                  const firstKey = Object.keys(errorsRecord)[0];
-                  const firstValue = firstKey ? errorsRecord[firstKey] : null;
-
-                  if (Array.isArray(firstValue) && typeof firstValue[0] === "string") return firstValue[0];
-                  if (typeof firstValue === "string") return firstValue;
-                }
-              }
-
-              return "";
-            }
-            return (await response.text().catch(() => "")).trim();
-          } catch {
-            return "";
-          }
-        };
-
-        const mapOrderErrorMessage = (rawMessage: string, statusCode: number) => {
-          const m = (rawMessage || "").toLowerCase();
-
-          const isInsufficientBalance =
-            m.includes("insufficient") ||
-            m.includes("yetersiz") ||
-            m.includes("balance") ||
-            m.includes("bakiye");
-
-          const isAmountTooLarge =
-            statusCode === 413 ||
-            (statusCode === 400 && m.includes("amount")) ||
-            (statusCode === 422 && m.includes("amount")) ||
-            m.includes("too large") ||
-            m.includes("too big") ||
-            m.includes("exceed") ||
-            m.includes("maximum") ||
-            m.includes("overflow");
-
-          const isInvalidAmount =
-            m.includes("minimum") ||
-            m.includes("invalid") ||
-            m.includes("precision") ||
-            m.includes("format");
-
-          if (isInsufficientBalance) return t("trade.errors.insufficientBalance");
-          if (isAmountTooLarge) return t("trade.errors.amountTooLarge");
-          if (isInvalidAmount) return t("trade.errors.invalidAmount");
-          if (rawMessage) return rawMessage;
-          return t("trade.errors.generic");
-        };
-
-        const apiError = await readApiErrorMessage(res);
-        toast.error(mapOrderErrorMessage(apiError, res.status));
+      if (!response.ok || body?.hasError || body?.content?.ok === false) {
+        toast.error(body?.message || t("trade.errors.generic"));
         return;
       }
 
       toast.success(t("trade.orderSuccess"));
-      setAmount("");
-      setPrice("");
-      setTotal("");
-      setPercent(null);
+      setInputValue("");
       onOrderCreated?.();
     } catch {
       toast.error(t("trade.errors.generic"));
@@ -305,146 +244,141 @@ export function TradeOrderForm({ pair, pairs, onPairChange, onOrderCreated, wall
   };
 
   return (
-    <div
-      className="relative rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-[0_20px_60px_rgba(31,14,70,0.08)] md:rounded-4xl md:p-6"
-      aria-busy={isSubmitting}
-    >
+    <div className="relative overflow-hidden rounded-[28px] bg-white p-4 shadow-[0_24px_80px_rgba(0,0,0,0.18)] sm:p-6 md:rounded-[32px] md:p-8">
       {isSubmitting && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-white/50 backdrop-blur-[2px] md:rounded-4xl">
-          <Loader2 className="h-6 w-6 animate-spin text-slate-900" />
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+          <Loader2 className="h-7 w-7 animate-spin text-[#1C2425]" />
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2 rounded-full border border-slate-200 bg-white p-1 text-sm font-semibold text-gray-700">
-        <button
-          type="button"
-          onClick={() => setSide("buy")}
-          className={[
-            "rounded-full py-2.5 transition",
-            side === "buy"
-              ? "bg-slate-900 text-white shadow-sm"
-              : "text-gray-600 hover:text-gray-900",
-          ].join(" ")}
-        >
-          {t("trade.buy")}
-        </button>
-        <button
-          type="button"
-          onClick={() => setSide("sell")}
-          className={[
-            "rounded-full py-2.5 transition",
-            side === "sell"
-              ? "bg-slate-900 text-white shadow-sm"
-              : "text-gray-600 hover:text-gray-900",
-          ].join(" ")}
-        >
-          {t("trade.sell")}
-        </button>
-      </div>
-
-      <div className="mt-4 space-y-4">
-        <div className="space-y-1">
-          <label className="text-xs font-semibold text-gray-700">{pair.base}/{pair.quote}</label>
-          <Select
-            value={pair.value}
-            onValueChange={(val) => {
-              const next = pairs.find((p) => p.value === val);
-              if (next) onPairChange(next);
-            }}
+      <div className="grid grid-cols-2 rounded-full bg-[#F1F4F2] p-1">
+        {(["buy", "sell"] as const).map((item) => (
+          <button
+            key={item}
+            type="button"
+            onClick={() => setSide(item)}
+            className={[
+              "h-12 rounded-full text-[15px] font-bold transition-all",
+              side === item
+                ? "bg-[#1C2425] text-white shadow-sm"
+                : "text-[#697474] hover:text-[#1C2425]",
+            ].join(" ")}
           >
-            <SelectTrigger className="h-12 w-full rounded-xl border border-border bg-white px-4 text-left text-lg font-semibold text-gray-900 focus:ring-primary data-[size=default]:h-12">
-              <div className="flex h-12 items-center">
-                <div className="flex flex-col leading-tight">
-                  <span className="text-sm font-medium">{pair.base}/{pair.quote}</span>
-                </div>
-              </div>
-            </SelectTrigger>
-            <SelectContent className="bg-white text-gray-900">
-              {pairs.map((p) => (
-                <SelectItem key={p.value} value={p.value}>
-                  <div className="flex flex-col leading-tight">
-                    <span className="text-sm">{p.base}/{p.quote}</span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-1">
-          <TradeInput
-            label={side === "buy" ? t("trade.buyPriceLabel") : t("trade.sellPriceLabel")}
-            value={price}
-            onValueChange={handlePriceChange}
-            decimalScale={quotePrecision}
-            className="w-full"
-          />
-        </div>
-
-        <div className="space-y-1">
-          <TradeInput
-            label={t("trade.amountLabel")}
-            value={amount}
-            onValueChange={handleAmountChange}
-            decimalScale={basePrecision}
-            suffix={pair.base}
-          />
-        </div>
-
-        <div className="space-y-1">
-          <TradeInput
-            label={t("trade.totalLabel")}
-            value={total}
-            onValueChange={handleTotalChange}
-            decimalScale={quotePrecision}
-            suffix={pair.quote}
-          />
-        </div>
-
-        <TradePercentSelector value={percent} onChange={handlePercentClick} />
-
-        <div className="flex items-center justify-between text-sm font-semibold text-gray-700">
-          <span className="text-gray-500 font-normal">{t("wallet.totalBalance.available")}</span>
-          <span>
-            {walletLoading ? "-" : maxAvailable} {maxAssetSymbol}
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between text-sm text-gray-700">
-          <span>{t("trade.feeLabel")}</span>
-          <span className="font-semibold text-emerald-600">%4.5</span>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className={[
-            "mt-2 hidden w-full rounded-full py-3 text-sm font-semibold text-white transition disabled:opacity-60 md:block",
-            "bg-linear-to-r from-[#8B5CF6] to-[#3B1F86]",
-          ].join(" ")}
-        >
-          {side === "buy"
-            ? `${pair.base} ${t("trade.buyCtaLabel")}`
-            : `${pair.base} ${t("trade.sellCtaLabel")}`}
-        </button>
+            {t(`trade.${item}`)}
+          </button>
+        ))}
       </div>
 
-      <div className="sticky bottom-0 z-30 -mx-5 mt-4 bg-white/90 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] shadow-[0_-12px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className={[
-            "flex w-full items-center justify-center rounded-full px-4 py-4 text-base font-semibold text-white transition disabled:opacity-60",
-            "bg-linear-to-r from-[#8B5CF6] to-[#3B1F86]",
-          ].join(" ")}
-        >
-          {side === "buy"
-            ? `${pair.base} ${t("trade.buyCtaLabel")}`
-            : `${pair.base} ${t("trade.sellCtaLabel")}`}
-        </button>
+      <div className="mt-6 flex items-center justify-between rounded-2xl bg-[#F7F9F8] px-4 py-3.5">
+        <span className="flex items-center gap-2 text-sm text-[#697474]">
+          {t("trade.marketPrice")}
+          <Info className="h-4 w-4" />
+        </span>
+        <span className="text-right text-[15px] font-bold text-[#1C2425]">
+          {isPriceLoading ? (
+            <span className="inline-block h-5 w-24 animate-pulse rounded bg-[#E3E8E5]" />
+          ) : price ? (
+            `≈ ${new Intl.NumberFormat(locale, {
+              minimumFractionDigits: Math.min(2, quotePrecision),
+              maximumFractionDigits: quotePrecision,
+            }).format(price)} ${pair.quote}`
+          ) : (
+            "-"
+          )}
+        </span>
       </div>
+
+      <div className="mt-5">
+        <div className="mb-2 flex items-center justify-between px-1">
+          <label className="text-sm font-medium text-[#566161]">
+            {side === "buy" ? t("trade.youPay") : t("trade.youSell")}
+          </label>
+          <button
+            type="button"
+            onClick={useAllBalance}
+            className="text-xs font-medium text-[#697474] transition hover:text-[#1C2425]"
+          >
+            {t("trade.balance")}:{" "}
+            <span className="font-bold text-[#1C2425]">
+              {walletLoading ? "-" : available} {inputSymbol}
+            </span>
+          </button>
+        </div>
+
+        <div className="flex min-h-[86px] items-center gap-3 rounded-[20px] border border-[#DDE4E0] bg-white px-4 transition focus-within:border-[#9EAA00] focus-within:ring-2 focus-within:ring-[#C8FF00]/30">
+          <NumericFormat
+            value={inputValue}
+            onValueChange={(values, sourceInfo) => {
+              if (!sourceInfo || sourceInfo.source === "event") setInputValue(values.value);
+            }}
+            placeholder="0.00"
+            thousandSeparator={false}
+            decimalSeparator="."
+            allowedDecimalSeparators={[".", ","]}
+            decimalScale={inputPrecision}
+            allowNegative={false}
+            className="min-w-0 flex-1 bg-transparent text-[26px] font-medium text-[#101515] outline-none placeholder:text-[#B7C0BC] md:text-[30px]"
+          />
+          <AssetSelect
+            value={inputSymbol}
+            pair={pair}
+            pairs={pairs}
+            side={side}
+            position="input"
+            onChange={onPairChange}
+          />
+        </div>
+      </div>
+
+      <div className="relative my-[-7px] flex justify-center">
+        <span className="z-10 flex h-10 w-10 items-center justify-center rounded-full border-4 border-white bg-[#F1F4F2] text-[#697474]">
+          <ArrowDown className="h-4 w-4" />
+        </span>
+      </div>
+
+      <div>
+        <label className="mb-2 block px-1 text-sm font-medium text-[#566161]">
+          {side === "buy" ? t("trade.youReceive") : t("trade.youGet")}
+        </label>
+        <div className="flex min-h-[86px] items-center gap-3 rounded-[20px] bg-[#F7F9F8] px-4">
+          <NumericFormat
+            value={outputValue}
+            displayType="text"
+            decimalScale={outputPrecision}
+            placeholder="0.00"
+            renderText={(value) => (
+              <span className="min-w-0 flex-1 truncate text-[26px] font-medium text-[#101515] md:text-[30px]">
+                {value || "0.00"}
+              </span>
+            )}
+          />
+          <AssetSelect
+            value={outputSymbol}
+            pair={pair}
+            pairs={pairs}
+            side={side}
+            position="output"
+            onChange={onPairChange}
+          />
+        </div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-between px-1 text-sm">
+        <span className="text-[#697474]">{t("trade.feeLabel")}</span>
+        <span className="font-semibold text-[#1C2425]">%4.5</span>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSubmit}
+        disabled={isSubmitting || !inputValue || !price}
+        className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#C8FF00] px-5 text-base font-bold text-[#101515] transition hover:bg-[#B8EB00] disabled:cursor-not-allowed disabled:bg-[#E7EBE8] disabled:text-[#9BA5A1]"
+      >
+        {side === "buy"
+          ? t("trade.buyAsset").replace("{asset}", pair.base)
+          : t("trade.sellAsset").replace("{asset}", pair.base)}
+        <Plus className="h-4 w-4" />
+      </button>
     </div>
   );
 }

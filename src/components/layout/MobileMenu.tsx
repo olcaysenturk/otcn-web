@@ -55,6 +55,7 @@ export function MobileMenu({
     const currentPathname = usePathname();
     const internalPath = getInternalPath(pathname);
     const [isTransactionsOpen, setIsTransactionsOpen] = useState(false);
+    const [isTradeOpen, setIsTradeOpen] = useState(false);
     const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
     useEffect(() => {
@@ -100,7 +101,18 @@ export function MobileMenu({
 
     const authNavItems: NavItem[] = [
         { label: t("header.overview"), href: "/dashboard", icon: LayoutDashboard },
-        { label: t("header.trade"), href: "/trade", icon: CandlestickChart },
+        {
+            label: t("header.trade"),
+            icon: CandlestickChart,
+            isExpandable: true,
+            isOpen: isTradeOpen,
+            setOpen: setIsTradeOpen,
+            subItems: [
+                { label: t("header.tradeMenu.easyTrade"), href: "/trade/easy" },
+                { label: t("header.tradeMenu.spotTrade"), href: "/trade/spot" },
+                { label: t("header.tradeMenu.futureTrade"), href: "/trade/future" },
+            ]
+        },
         { label: t("header.market"), href: "/market", icon: ChartNoAxesCombined },
         {
             label: t("header.transactions"),

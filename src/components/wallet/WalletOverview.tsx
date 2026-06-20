@@ -209,7 +209,7 @@ export function WalletOverview() {
                     className="border-0 bg-[#C8FF00] text-black shadow-none hover:bg-[#B7EA00]"
                     onClick={(e) => {
                       e.stopPropagation();
-                      router.push(withLocale("/trade", locale));
+                      router.push(withLocale("/trade/easy", locale));
                     }}
                   >
                     {t("wallet.actions.trade")}
@@ -311,7 +311,7 @@ export function WalletOverview() {
                               className="border-0 bg-[#C8FF00] text-black shadow-none hover:bg-[#B7EA00]"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                router.push(withLocale("/trade", locale));
+                                router.push(withLocale("/trade/easy", locale));
                               }}
                             >
                               {t("wallet.actions.trade")}

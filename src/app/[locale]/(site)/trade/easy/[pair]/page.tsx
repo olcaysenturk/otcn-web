@@ -1,5 +1,5 @@
 import { TradeForm } from "@/components/trade/TradeForm";
 
-export default function TradePairPage() {
+export default function TradeEasyPairPage() {
   return <TradeForm />;
 }

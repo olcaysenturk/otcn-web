@@ -213,7 +213,7 @@ export function AssetDetailModal() {
                     variant="outline"
                     onClick={() => {
                       closeModal();
-                      router.push(withLocale("/trade", locale));
+                      router.push(withLocale("/trade/easy", locale));
                     }}
                     className={cn(
                       "rounded-full h-9 px-4 border-gray-300 font-semibold text-[11px] shadow-none",

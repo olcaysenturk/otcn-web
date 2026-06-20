@@ -8,6 +8,7 @@ import {
   Bell,
   ChevronDown,
   Globe2,
+  TrendingUp,
   User,
   Zap,
 } from "lucide-react";
@@ -43,6 +44,29 @@ const siteNavItems: Array<{
   { labelKey: "header.trade", href: "/trade", hasDropdown: true },
   { labelKey: "header.blog", href: "/" },
 ] as const;
+
+function buildTradeMenuItems(t: (key: string) => string) {
+  return [
+    {
+      icon: Zap,
+      title: t("header.tradeMenu.easyTrade"),
+      desc: t("header.tradeMenu.easyTradeDesc"),
+      href: "/trade/easy",
+    },
+    {
+      icon: BarChart3,
+      title: t("header.tradeMenu.spotTrade"),
+      desc: t("header.tradeMenu.spotTradeDesc"),
+      href: "/trade/spot",
+    },
+    {
+      icon: TrendingUp,
+      title: t("header.tradeMenu.futureTrade"),
+      desc: t("header.tradeMenu.futureTradeDesc"),
+      href: "/trade/future",
+    },
+  ];
+}
 
 export function Topbar({ isAuthenticated }: { isAuthenticated: boolean }) {
   const pathname = usePathname() || "/";
@@ -117,20 +141,7 @@ function SiteTopbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTradeMenuOpen, setIsTradeMenuOpen] = useState(false);
 
-  const tradeMenuItems = [
-    {
-      icon: BarChart3,
-      title: t("header.tradeMenu.proTrade"),
-      desc: t("header.tradeMenu.proTradeDesc"),
-      href: "/trade",
-    },
-    {
-      icon: Zap,
-      title: t("header.tradeMenu.easyTrade"),
-      desc: t("header.tradeMenu.easyTradeDesc"),
-      href: "/trade",
-    },
-  ];
+  const tradeMenuItems = buildTradeMenuItems(t);
 
   const handleAuthClick = () => {
     if (isAuthenticated) {
@@ -298,6 +309,7 @@ function DashboardTopbar({
   onLogout: () => void;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isTradeOpen, setIsTradeOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -319,11 +331,12 @@ function DashboardTopbar({
   const navItems: NavItem[] = [
     { label: t("header.dashboard"), href: withLocale("/dashboard", locale), activeInternalPrefix: "/dashboard" },
     { label: t("header.wallet"), href: withLocale("/wallet", locale), activeInternalPrefix: "/wallet" },
-    { label: t("header.proTrade"), href: withLocale("/trade", locale), activeInternalPrefix: "/trade" },
-    { label: t("header.easyTrade"), href: withLocale("/trade", locale) },
+    { label: t("header.trade"), href: withLocale("/trade/easy", locale), activeInternalPrefix: "/trade" },
     { label: t("header.market"), href: withLocale("/market", locale), activeInternalPrefix: "/market" },
     { label: t("header.transactions"), href: withLocale("/transaction/deposit-withdraw", locale), activeInternalPrefix: "/transaction" },
   ];
+
+  const tradeMenuItems = buildTradeMenuItems(t);
 
   const navWithActive = navItems.map((item) => ({
     ...item,
@@ -377,6 +390,49 @@ function DashboardTopbar({
                   }))}
                   onNavigate={() => setIsMenuOpen(false)}
                 />
+              ) : item.label === t("header.trade") ? (
+                <div key={item.label} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsTradeOpen((prev) => !prev)}
+                    className={cn(
+                      "relative flex h-[42px] items-center gap-1.5 whitespace-nowrap text-[16px] font-medium text-white/90 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#8F84FF] xl:gap-2",
+                      item.active ? "text-[#9B91FF] after:w-full" : "hover:text-white after:w-0",
+                    )}
+                  >
+                    {item.label}
+                    <ChevronDown className="h-4 w-4" />
+                  </button>
+                  {isTradeOpen && (
+                    <div className="absolute left-0 top-full z-50 mt-2 w-80 text-left">
+                      <div className="space-y-1 rounded-2xl border border-[#E8EDF3] bg-white p-3 shadow-xl dark:border-gray-700 dark:bg-gray-900">
+                        {tradeMenuItems.map((menuItem) => (
+                          <Link
+                            key={menuItem.title}
+                            href={withLocale(menuItem.href, locale)}
+                            onClick={() => {
+                              setIsTradeOpen(false);
+                              setIsMenuOpen(false);
+                            }}
+                            className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                          >
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F4F2FF] text-[#5932D1]">
+                              <menuItem.icon className="h-5 w-5" />
+                            </span>
+                            <span>
+                              <span className="block text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {menuItem.title}
+                              </span>
+                              <span className="mt-0.5 block text-xs font-normal text-gray-500 dark:text-gray-300">
+                                {menuItem.desc}
+                              </span>
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <NavLink
                   key={item.label}

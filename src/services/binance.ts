@@ -9,7 +9,7 @@ export async function fetchBinancePrices(symbols: string[]): Promise<Record<stri
   const priceMap: Record<string, number> = {};
   
   try {
-    const symbolsParam = `[${symbols.join(",")}]`;
+    const symbolsParam = JSON.stringify(symbols);
     // Use internal proxy to avoid CORS
     const res = await fetch(
       `/api/binance/ticker?symbols=${encodeURIComponent(symbolsParam)}`

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { TradeOrderForm } from "@/components/trade/TradeOrderForm";
-import { TradeOpenOrders } from "@/components/trade/TradeOpenOrders";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { fetchOtcInfo } from "@/services/otc";
 import type { UiPair } from "@/types/otc";
@@ -13,7 +12,6 @@ export function TradeForm() {
   const { t, locale } = useI18n();
   const params = useParams();
   const pairParam = (params?.pair as string | undefined) ?? "";
-  const [ordersRefreshKey, setOrdersRefreshKey] = useState(0);
   const [walletRefreshKey, setWalletRefreshKey] = useState(0);
   const [pairs, setPairs] = useState<UiPair[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +19,7 @@ export function TradeForm() {
 
   const toPairSlug = (p: UiPair) => `${p.base.toLowerCase()}-${p.quote.toLowerCase()}`;
   const toPairSymbolFromParam = (slug: string) => slug.replace(/-/g, "").toUpperCase();
-  const tradeBasePath = withLocale("/trade", locale);
+  const tradeBasePath = withLocale("/trade/easy", locale);
   const updateTradeUrl = useCallback((nextPair: UiPair) => {
     if (typeof window === "undefined") return;
     const nextPath = `${tradeBasePath}/${toPairSlug(nextPair)}`;
@@ -80,14 +78,27 @@ export function TradeForm() {
   }, [pairParam, pairs, updateTradeUrl]);
 
   if (loading || !pair) {
-    return null;
+    return (
+      <div className="min-h-[720px] animate-pulse rounded-[32px] bg-[#222B2C] p-5 md:p-10">
+        <div className="h-8 w-44 rounded-full bg-white/10" />
+        <div className="mt-3 h-5 w-80 max-w-full rounded-full bg-white/10" />
+        <div className="mx-auto mt-12 h-[560px] max-w-[640px] rounded-[32px] bg-white/10" />
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 rounded-4xl md:rounded-44 bg-white p-4 md:p-6">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-0">{t("trade.title")}</h1>
-      <p className="text-base text-gray-500">{t("trade.subtitle")}</p>
-      <div className="mt-6 grid gap-6 lg:grid-cols-[40%_1fr]">
+    <section className="min-h-[720px] animate-in fade-in rounded-[32px] bg-[#222B2C] px-4 py-7 duration-500 sm:px-7 md:rounded-[44px] md:px-10 md:py-10">
+      <div>
+        <h1 className="text-[28px] font-medium leading-tight text-white md:text-[32px]">
+          {t("trade.title")}
+        </h1>
+        <p className="mt-2 max-w-[620px] text-[15px] leading-6 text-[#9CA7A8] md:text-base">
+          {t("trade.subtitle")}
+        </p>
+      </div>
+
+      <div className="mx-auto mt-8 w-full max-w-[620px] md:mt-10">
         <TradeOrderForm
           pair={pair}
           pairs={pairs}
@@ -96,17 +107,11 @@ export function TradeForm() {
             updateTradeUrl(nextPair);
           }}
           onOrderCreated={() => {
-            setOrdersRefreshKey((prev) => prev + 1);
             setWalletRefreshKey((prev) => prev + 1);
           }}
           walletRefreshKey={walletRefreshKey}
         />
-        <TradeOpenOrders
-          refreshKey={ordersRefreshKey}
-          symbol={pair.value}
-          allPairs={pairs}
-        />
       </div>
-    </div>
+    </section>
   );
 }
