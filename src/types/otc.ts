@@ -47,6 +47,30 @@ export type CreateOtcOrderRequest = {
   price: string;
 };
 
+export type CreateMarketOrderRequest = {
+  clientId: "web";
+  price: "0";
+  quantity: string;
+  side: "BUY" | "SELL";
+  symbol: string;
+  total: string;
+  triggerPrice: "0";
+  type: "MARKET";
+};
+
+export type MarketOrderResult = {
+  ok?: boolean;
+  quantity?: string;
+  leftQuantity?: string;
+  matchedTotal?: string;
+};
+
+export type MarketOrderResponse = {
+  content?: MarketOrderResult;
+  message?: string;
+  hasError?: boolean;
+};
+
 export type OtcOrderItem = {
   id?: number;
   symbol?: string;

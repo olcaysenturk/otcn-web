@@ -68,7 +68,7 @@ export function MarketAssetRow({
       </td>
       <td className="w-[76px] px-2 text-center">
         <Link
-          href={withLocale(`/trade/${asset.symbol.toLowerCase()}-usdt`, locale)}
+          href={withLocale(`/trade/easy/${asset.symbol.toLowerCase()}-usdt`, locale)}
           className="inline-flex h-10 items-center justify-center rounded-[12px] border border-[#F4F7F8] px-4 text-[12px] font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
         >
           {t("marketPage.trade")}

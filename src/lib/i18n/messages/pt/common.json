@@ -1252,8 +1252,6 @@
     "overview": "Visão Geral",
     "buyCrypto": "Comprar Cripto",
     "blog": "Blog",
-    "proTrade": "Pro Trade",
-    "easyTrade": "Easy Trade",
     "otc": "OTC",
     "market": "Mercado",
     "trade": "Negociar",
@@ -1269,10 +1267,12 @@
       "tradeOrdersDesc": "Veja todas as suas negociações de compra/venda"
     },
     "tradeMenu": {
-      "proTrade": "Pro Trade",
-      "proTradeDesc": "Negocie cripto com ferramentas profissionais",
       "easyTrade": "Easy Trade",
-      "easyTradeDesc": "Compre e venda cripto instantaneamente com facilidade"
+      "easyTradeDesc": "Compre e venda cripto instantaneamente com facilidade",
+      "spotTrade": "Spot",
+      "spotTradeDesc": "Negocie pares de criptomoedas a preços de mercado em tempo real",
+      "futureTrade": "Futuros",
+      "futureTradeDesc": "Negocie com alavancagem em futuros de criptomoedas"
     }
   },
   "transactions": {
@@ -1344,10 +1344,18 @@
     }
   },
   "trade": {
-    "title": "Compra / Venda OTC",
-    "subtitle": "Execute grandes negociações instantaneamente com taxas competitivas e liquidez profunda.",
+    "title": "Negocie Fácil",
+    "subtitle": "Selecione e confirme a sua criptomoeda; os seus ativos serão transferidos instantaneamente para a carteira.",
     "buy": "Compra",
     "sell": "Venda",
+    "marketPrice": "Preço de mercado",
+    "youPay": "Você paga",
+    "youSell": "Você vende",
+    "youReceive": "Você recebe",
+    "youGet": "Você obtém",
+    "balance": "Saldo",
+    "buyAsset": "Comprar {asset}",
+    "sellAsset": "Vender {asset}",
     "priceLabel": "Preço",
     "buyPriceLabel": "Preço de Compra",
     "sellPriceLabel": "Preço de Venda",
@@ -1357,12 +1365,45 @@
     "buyCtaLabel": "COMPRAR",
     "sellCtaLabel": "VENDER",
     "maxLabel": "Máx",
-    "orderSuccess": "Ordem registrada com sucesso",
+    "orderSuccess": "A sua negociação foi concluída com sucesso",
     "errors": {
       "insufficientBalance": "Saldo insuficiente. Reduza o valor.",
       "amountTooLarge": "O valor inserido é muito alto. Tente um valor menor.",
       "invalidAmount": "Valor inválido. Verifique o preço e a quantidade.",
       "generic": "A ordem não pôde ser enviada. Tente novamente."
+    },
+    "landing": {
+      "hero": {
+        "tagline": "NÓS SÓ OFERECEMOS",
+        "descriptionLine1": "Negocie criptomoedas em minutos.",
+        "descriptionLine2": "Compre, venda e acompanhe os mercados com dados em tempo real.",
+        "toConvert": "Para Converter",
+        "toReceive": "Para Receber",
+        "conversionRate": "Taxa de Conversão: 1 {base} ≈ {rate} {quote}"
+      },
+      "gettingStarted": {
+        "title": "Primeiros passos com",
+        "titleHighlight": "criptomoedas",
+        "steps": [
+          {
+            "title": "Crie uma conta",
+            "description": "Configure a sua conta em poucos minutos. Cadastre-se com o seu e-mail ou número de telefone, ative a autenticação de dois fatores e escolha a sua localização para definir automaticamente a sua moeda preferida."
+          },
+          {
+            "title": "Complete a verificação de identidade (KYC)",
+            "description": "Envie um documento de identidade válido e conclua uma breve verificação de vivacidade para cumprir os requisitos locais. Na maioria dos casos, o processo de verificação é concluído em minutos."
+          },
+          {
+            "title": "Compre criptomoedas",
+            "description": "Dependendo das opções de pagamento disponíveis no seu país, pode comprar criptomoedas instantaneamente com cartão de débito ou crédito, Apple Pay, Google Pay, ou através de transferência bancária / ACH para beneficiar de taxas mais baixas e limites mais altos."
+          }
+        ]
+      }
+    },
+    "future": {
+      "eyebrow": "Futuros",
+      "title": "Em breve",
+      "description": "A negociação de futuros está a caminho. Estamos a finalizar os detalhes das ferramentas de alavancagem e margem."
     }
   },
   "tradeOrders": {

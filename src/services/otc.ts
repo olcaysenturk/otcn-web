@@ -1,7 +1,7 @@
 import { clientFetch } from "@/lib/api/clientFetch";
 import { getApiBase } from "@/lib/api/getApiBase";
 import { buildSearchParams } from "@/lib/api/utils";
-import type { CreateDepositCryptoAddressResponse, CreateOtcOrderRequest, CryptoWithdrawPayload, CryptoWithdrawResponse, DepositCryptoAddress, OtcHistoryFilter, OtcInfo, OtcOrdersResponse, OtcTradesFilter, OtcTransactionsFilter } from "@/types/otc";
+import type { CreateDepositCryptoAddressResponse, CreateMarketOrderRequest, CreateOtcOrderRequest, CryptoWithdrawPayload, CryptoWithdrawResponse, DepositCryptoAddress, MarketOrderResponse, OtcHistoryFilter, OtcInfo, OtcOrdersResponse, OtcTradesFilter, OtcTransactionsFilter } from "@/types/otc";
 
 export async function fetchOtcInfo(locale: string) {
   const base = getApiBase();
@@ -27,6 +27,21 @@ export async function createOtcOrder(locale: string, accountId: number, payload:
     },
     body: JSON.stringify(payload),
   });
+}
+
+export async function createMarketOrder(locale: string, payload: CreateMarketOrderRequest) {
+  const base = getApiBase();
+  const res = await clientFetch(`${base}/v1/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept-Language": locale,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const body = (await res.json().catch(() => null)) as MarketOrderResponse | null;
+  return { response: res, body };
 }
 
 export async function fetchDashboardTransactions(locale: string, filters: OtcTransactionsFilter = {}) {

@@ -1249,8 +1249,6 @@
     "overview": "Overview",
     "buyCrypto": "Buy Crypto",
     "blog": "Blog",
-    "proTrade": "Pro Trade",
-    "easyTrade": "Easy Trade",
     "otc": "OTC",
     "market": "Market",
     "trade": "Trade",
@@ -1266,10 +1264,12 @@
       "tradeOrdersDesc": "See all of your buy/sell trades"
     },
     "tradeMenu": {
-      "proTrade": "Pro Trade",
-      "proTradeDesc": "Trade crypto with professional tools",
       "easyTrade": "Easy Trade",
-      "easyTradeDesc": "Buy and sell crypto instantly with ease"
+      "easyTradeDesc": "Buy and sell crypto instantly with ease",
+      "spotTrade": "Spot Trade",
+      "spotTradeDesc": "Trade crypto pairs at live market prices",
+      "futureTrade": "Futures Trade",
+      "futureTradeDesc": "Trade with leverage on crypto futures"
     }
   },
   "footer": {
@@ -1354,10 +1354,18 @@
     }
   },
   "trade": {
-    "title": "OTC Buy / Sell",
-    "subtitle": "Execute large trades instantly with competitive rates and deep liquidity.",
+    "title": "Easy Trade",
+    "subtitle": "Select and confirm your cryptocurrency, and your assets will be transferred to your wallet instantly.",
     "buy": "Buy",
     "sell": "Sell",
+    "marketPrice": "Market price",
+    "youPay": "You pay",
+    "youSell": "You sell",
+    "youReceive": "You receive",
+    "youGet": "You get",
+    "balance": "Balance",
+    "buyAsset": "Buy {asset}",
+    "sellAsset": "Sell {asset}",
     "priceLabel": "Price",
     "buyPriceLabel": "Buy Price",
     "sellPriceLabel": "Sell Price",
@@ -1367,12 +1375,45 @@
     "buyCtaLabel": "BUY",
     "sellCtaLabel": "SELL",
     "maxLabel": "Max",
-    "orderSuccess": "Order successfully placed",
+    "orderSuccess": "Your trade was completed successfully",
     "errors": {
       "insufficientBalance": "Insufficient balance. Please reduce the amount.",
       "amountTooLarge": "The entered amount is too high. Please try a lower amount.",
       "invalidAmount": "Invalid amount. Please check price and quantity.",
       "generic": "Order could not be submitted. Please try again."
+    },
+    "landing": {
+      "hero": {
+        "tagline": "WE JUST PROVIDE",
+        "descriptionLine1": "Trade crypto in minutes.",
+        "descriptionLine2": "Buy, sell, and track markets with real-time data.",
+        "toConvert": "To Convert",
+        "toReceive": "To Receive",
+        "conversionRate": "Conversion Rate: 1 {base} ≈ {rate} {quote}"
+      },
+      "gettingStarted": {
+        "title": "Getting started with",
+        "titleHighlight": "cryptocurrency",
+        "steps": [
+          {
+            "title": "Create an account",
+            "description": "Set up your account in just a few minutes. Sign up using your email address or phone number, enable two-factor authentication, and choose your location to automatically set your preferred currency."
+          },
+          {
+            "title": "Complete identity verification (KYC)",
+            "description": "Submit a valid ID and finish a short liveness check to comply with local requirements. In most cases, the verification process is completed within minutes."
+          },
+          {
+            "title": "Buy crypto",
+            "description": "Depending on the payment options available in your country, you can buy crypto instantly using a debit or credit card, Apple Pay, Google Pay, or make a bank transfer / ACH to benefit from lower fees and higher limits."
+          }
+        ]
+      }
+    },
+    "future": {
+      "eyebrow": "Futures Trade",
+      "title": "Coming soon",
+      "description": "Futures trading is on its way. We're putting the finishing touches on leverage and margin tools."
     }
   },
   "tradeOrders": {

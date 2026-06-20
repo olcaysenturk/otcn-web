@@ -7,7 +7,13 @@
       "Bash(node shot.mjs)",
       "Bash(npx tsc *)",
       "Bash(node shot2.mjs)",
-      "Bash(node shot5.mjs)"
+      "Bash(node shot5.mjs)",
+      "Bash(curl -s -o /dev/null -w \"/trade -> %{http_code}\\\\n\" http://localhost:3000/en/trade)",
+      "Bash(curl -sD - -o /dev/null http://localhost:3000/en/trade)",
+      "Bash(curl -sD - -o /dev/null http://localhost:3000/en/trade/spot)",
+      "Bash(node header-check.mjs)",
+      "Bash(node header-check2.mjs)",
+      "Bash(node input-check.mjs)"
     ],
     "additionalDirectories": [
       "/Users/olcay.senturk/.npm/_npx/e41f203b7505f1fb"
