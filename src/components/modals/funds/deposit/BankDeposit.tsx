@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { InfoBox } from "@/components/ui/infobox";
-import { cn } from "@/lib/utils";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { DepositBankItem } from "@/types/bank";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -37,28 +37,19 @@ export function BankDeposit({
       </InfoBox>
 
       {/* Currency Tabs */}
-      <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1 text-sm font-semibold text-white shadow-sm">
-        {(["TRY", "USD", "EUR"] as const).map((code) => {
-          const isDisabled = !availableCurrencies.has(code) && bankList.length > 0;
-          return (
-            <button
+      <Tabs value={currency} onValueChange={setCurrency} variant="subtle">
+        <TabsList animated>
+          {(["TRY", "USD", "EUR"] as const).map((code) => (
+            <TabsTrigger
               key={code}
-              type="button"
-              disabled={isDisabled}
-              onClick={() => !isDisabled && setCurrency(code)}
-              className={cn(
-                "flex-1 rounded-xl px-3 py-2 transition",
-                currency === code
-                  ? "bg-[#0F1415] text-white shadow-sm"
-                  : "text-gray-400 hover:text-white",
-                isDisabled && "opacity-50 cursor-not-allowed hover:text-gray-400"
-              )}
+              value={code}
+              disabled={!availableCurrencies.has(code) && bankList.length > 0}
             >
               {code}
-            </button>
-          );
-        })}
-      </div>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* Bank List */}
       <div className="space-y-3">

@@ -1,10 +1,20 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+/**
+ * `default` — pill toggle used across the app (white active pill on a dark rail).
+ * `subtle` — soft toggle used inside dark cards/modals (dark active pill on a
+ * translucent `white/5` rail, full-width triggers).
+ * `compact` — small toggle used in dense toolbars (dark active pill on a
+ * `#1F2628` rail, auto-width triggers).
+ */
+type TabsVariant = "default" | "subtle" | "compact";
+
 type TabsContextValue = {
   value: string | undefined;
   onChange: (value: string) => void;
   animated: boolean;
+  variant: TabsVariant;
   /** True once the sliding indicator has been measured on the client. */
   indicatorReady: boolean;
 };
@@ -15,11 +25,12 @@ type TabsProps = {
   defaultValue?: string;
   value?: string;
   onValueChange?: (value: string) => void;
+  variant?: TabsVariant;
   className?: string;
   children: React.ReactNode;
 };
 
-export function Tabs({ defaultValue, value, onValueChange, className, children }: TabsProps) {
+export function Tabs({ defaultValue, value, onValueChange, variant = "default", className, children }: TabsProps) {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
   const activeValue = value ?? internalValue;
 
@@ -29,7 +40,7 @@ export function Tabs({ defaultValue, value, onValueChange, className, children }
   };
 
   return (
-    <TabsContext.Provider value={{ value: activeValue, onChange: handleChange, animated: false, indicatorReady: false }}>
+    <TabsContext.Provider value={{ value: activeValue, onChange: handleChange, animated: false, variant, indicatorReady: false }}>
       <div className={className}>{children}</div>
     </TabsContext.Provider>
   );
@@ -45,6 +56,7 @@ type TabsListProps = React.HTMLAttributes<HTMLDivElement> & {
 
 export function TabsList({ className, animated = false, children, ...props }: TabsListProps) {
   const ctx = React.useContext(TabsContext);
+  const variant = ctx?.variant ?? "default";
   const listRef = React.useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = React.useState<{ left: number; width: number } | null>(null);
 
@@ -80,8 +92,13 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
         ref={listRef}
         role="tablist"
         className={cn(
-          "relative inline-flex h-12 items-center justify-center rounded-full border border-[#3A4043] bg-[#0E0F10] p-1 text-[#788084]",
-          animated && "border-transparent",
+          variant === "subtle" &&
+            "relative flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1 text-sm font-semibold text-white shadow-sm",
+          variant === "compact" &&
+            "relative flex w-max rounded-[10px] bg-[#1F2628] p-1",
+          variant === "default" &&
+            "relative inline-flex h-12 items-center justify-center rounded-full border border-[#3A4043] bg-[#0E0F10] p-1 text-[#788084]",
+          animated && variant === "default" && "border-transparent",
           className,
         )}
         {...props}
@@ -89,7 +106,12 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
         {animated && indicator && (
           <span
             aria-hidden
-            className="pointer-events-none absolute top-1 bottom-1 left-0 rounded-[12px] bg-[#F4F7F8] shadow-[0px_1px_2px_1px_rgba(21,21,20,0.05)] transition-[transform,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            className={cn(
+              "pointer-events-none absolute top-1 bottom-1 left-0 transition-[transform,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+              variant === "subtle" && "rounded-xl bg-[#0F1415] shadow-sm",
+              variant === "compact" && "rounded-[7px] bg-[#0E0F10] shadow-sm",
+              variant === "default" && "rounded-[12px] bg-[#F4F7F8] shadow-[0px_1px_2px_1px_rgba(21,21,20,0.05)]",
+            )}
             style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
           />
         )}
@@ -102,11 +124,13 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
 type TabsTriggerProps = React.HTMLAttributes<HTMLElement> & {
   value: string;
   asChild?: boolean;
+  disabled?: boolean;
 };
 
 export function TabsTrigger({ className, value, children, asChild, onClick, ...props }: TabsTriggerProps) {
   const ctx = React.useContext(TabsContext);
   const isActive = ctx?.value === value;
+  const variant = ctx?.variant ?? "default";
   const animated = ctx?.animated ?? false;
   const indicatorReady = ctx?.indicatorReady ?? false;
 
@@ -120,19 +144,47 @@ export function TabsTrigger({ className, value, children, asChild, onClick, ...p
   // In animated mode the white pill is measured on the client. Until it is ready
   // (SSR + first paint), the active trigger paints its own background so the
   // selected state is visible immediately, then hands off to the sliding pill.
-  const baseClass = cn(
-    "relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C7F022]/40 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50",
-    animated
-      ? isActive
-        ? indicatorReady
-          ? "text-[#0E0F10]"
-          : "bg-[#F4F7F8] text-[#0E0F10] shadow-sm"
-        : "text-[#C5C9CC] hover:text-[#F4F7F8]"
-      : isActive
-        ? "bg-[#F4F7F8] text-[#0E0F10] shadow-sm"
-        : "text-[#788084] hover:text-[#F4F7F8]",
-    className,
-  );
+  const baseClass = variant === "subtle"
+    ? cn(
+        "relative z-10 inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold transition focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+        animated
+          ? isActive
+            ? indicatorReady
+              ? "text-white"
+              : "bg-[#0F1415] text-white shadow-sm"
+            : "text-gray-400 hover:text-white"
+          : isActive
+            ? "bg-[#0F1415] text-white shadow-sm"
+            : "text-gray-400 hover:text-white",
+        className,
+      )
+    : variant === "compact"
+    ? cn(
+        "relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-[7px] px-3 py-1 text-[11px] font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 sm:text-[12px]",
+        animated
+          ? isActive
+            ? indicatorReady
+              ? "text-[#F4F7F8]"
+              : "bg-[#0E0F10] text-[#F4F7F8] shadow-sm"
+            : "text-[#C5C9CC]"
+          : isActive
+            ? "bg-[#0E0F10] text-[#F4F7F8]"
+            : "text-[#C5C9CC]",
+        className,
+      )
+    : cn(
+        "relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C7F022]/40 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50",
+        animated
+          ? isActive
+            ? indicatorReady
+              ? "text-[#0E0F10]"
+              : "bg-[#F4F7F8] text-[#0E0F10] shadow-sm"
+            : "text-[#C5C9CC] hover:text-[#F4F7F8]"
+          : isActive
+            ? "bg-[#F4F7F8] text-[#0E0F10] shadow-sm"
+            : "text-[#788084] hover:text-[#F4F7F8]",
+        className,
+      );
 
   if (asChild && React.isValidElement(children)) {
     const childProps = (children as React.ReactElement<{ className?: string }>).props;

@@ -125,6 +125,7 @@ export function FiatTransactionsTab({ rows, loading, t, expanded, onExpand, onDe
       columns={columns}
       data={rows}
       isLoading={loading}
+      skeletonRows={5}
       tableLayout="fixed"
       getRowId={(row) => row.id}
       expandedRowId={expanded}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ResponsiveTimeFilter } from "@/components/transactions/ResponsiveTimeFilter";
 import { TransactionsResponsiveFilter } from "@/components/transactions/TransactionsResponsiveFilter";
@@ -34,7 +34,7 @@ import { WalletNotification } from "@/components/wallet/WalletNotification";
 // ⚠️ TEMPORARY DEMO FLAGS — when true the tabs show mock rows (see ./mockData).
 // Set to false (and remove the mock blocks below) once the API returns real data.
 const USE_CRYPTO_MOCK = true;
-const USE_FIAT_MOCK = true;
+const USE_FIAT_MOCK = false;
 
 export function DepositWithdrawPage() {
   const { t, locale } = useI18n();
@@ -43,6 +43,10 @@ export function DepositWithdrawPage() {
   const tabParam = (searchParams.get("tab") as "fiat" | "crypto") || "fiat";
   const openModal = useModalStore((state) => state.openModal);
   const [tab, setTab] = useState<"fiat" | "crypto">(tabParam);
+  // Tracks the tab we intend to be on, so the URL-sync effect below doesn't
+  // revert an in-flight click while router.push() lags behind (the prod-only
+  // "old-tab skeleton flash" bug).
+  const tabRef = useRef<"fiat" | "crypto">(tabParam);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const today = useMemo(() => new Date(), []);
@@ -114,17 +118,36 @@ export function DepositWithdrawPage() {
     setCryptoRefreshTick((prev) => prev + 1);
   }, [t, defaultFrom, today]);
 
+  // Switch tab + loading atomically so the previous tab never flashes its
+  // skeleton and the new tab goes straight to its own skeleton (no stale rows).
+  const applyTab = useCallback((next: "fiat" | "crypto") => {
+    tabRef.current = next;
+    setTab(next);
+    if (next === "crypto") {
+      setCryptoLoading(true);
+      setCryptoTransactions([]);
+      setFiatLoading(false);
+    } else {
+      setFiatLoading(true);
+      setFiatTransactions([]);
+      setCryptoLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Only react to EXTERNAL url changes (back/forward). `tab` is intentionally not
+  // a dependency: an internal click sets tabRef synchronously, so this effect
+  // won't fire (and revert) while router.push()'s url update is still in flight.
   useEffect(() => {
     if (!mounted) return;
-    if (tab !== tabParam) {
+    if (tabParam !== tabRef.current) {
       resetFiltersToDefault();
-      setTab(tabParam);
+      applyTab(tabParam);
     }
-  }, [mounted, tabParam, tab, resetFiltersToDefault]);
+  }, [mounted, tabParam, resetFiltersToDefault, applyTab]);
 
   useEffect(() => {
     const onUpdated = () => setCryptoRefreshTick((prev) => prev + 1);
@@ -160,21 +183,10 @@ export function DepositWithdrawPage() {
     if (typedTab === tab) return;
 
     resetFiltersToDefault();
-    setTab(typedTab);
-    // Switch loading atomically with the tab so the OLD tab never flashes its
-    // skeleton and the NEW tab shows its skeleton immediately (not stale rows).
-    if (typedTab === "crypto") {
-      setCryptoLoading(true);
-      setCryptoTransactions([]);
-      setFiatLoading(false);
-    } else {
-      setFiatLoading(true);
-      setFiatTransactions([]);
-      setCryptoLoading(false);
-    }
+    applyTab(typedTab);
 
     const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", newTab);
+    params.set("tab", typedTab);
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
@@ -340,16 +352,10 @@ export function DepositWithdrawPage() {
     }
   };
 
+  // "custom" never arrives here — ResponsiveTimeFilter reveals the calendar
+  // locally and applies via onApplyRange; draft sync is done via onCustomOpen.
   const handleTimeChange = (value: SharedTimeFilterValue) => {
-    if (value === "custom") {
-      setTimeFilter(value);
-      setDraftRange(appliedRange);
-      // Logic for opening handled by component for desktop (customOpen state)
-      // Mobile logic also handled inside component (value check)
-      return;
-    }
     setTimeFilter(value);
-    // setRangeOpen(false); // No longer needed
   };
 
   const handleCancelRange = () => {
@@ -411,7 +417,6 @@ export function DepositWithdrawPage() {
       )}
 
       <TransactionsTableCard
-        minHeightClassName="min-h-200"
         filters={(
           <>
             <TransactionsResponsiveFilter
@@ -439,6 +444,7 @@ export function DepositWithdrawPage() {
               onDraftRangeChange={setDraftRange}
               onApplyRange={handleApplyRange}
               onCancelRange={handleCancelRange}
+              onCustomOpen={() => setDraftRange(appliedRange)}
               rangeSummary={rangeSummary}
               drawerTitle={t("transactions.filters.time.label")}
             />
@@ -487,7 +493,7 @@ export function DepositWithdrawPage() {
         )}
         footer={rows.length > 0 ? (
           <TransactionsTableFooter
-            pageSizeLabel="Show"
+            pageSizeLabel={t("wallet.table.pagination.perPage")}
             pageSize={tab === "crypto" ? cryptoLimit : fiatLimit}
             onPageSizeChange={(nextLimit) => {
               if (tab === "crypto") {

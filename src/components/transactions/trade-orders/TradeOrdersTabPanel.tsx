@@ -5,7 +5,6 @@ import type { UiRow } from "./types";
 import { OpenOrdersTab } from "./OpenOrdersTab";
 import { OrderHistoryTab } from "./OrderHistoryTab";
 import { TradeHistoryTab } from "./TradeHistoryTab";
-import { TransactionsTableSkeleton } from "../TransactionSkeleton";
 
 type TradeOrdersTabPanelProps = {
   tab: "open" | "orders" | "history";
@@ -28,10 +27,6 @@ export function TradeOrdersTabPanel({
   onOrderDetailClick,
   onTradeDetailClick,
 }: TradeOrdersTabPanelProps) {
-  if (loading) {
-    return <TransactionsTableSkeleton />;
-  }
-
   if (tab === "open") {
     return (
       <OpenOrdersTab

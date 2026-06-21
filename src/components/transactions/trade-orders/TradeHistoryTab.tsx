@@ -1,132 +1,131 @@
 "use client";
 
-import React from "react";
 import { ChevronRight } from "lucide-react";
+
+import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { TradeOrdersTabProps } from "./types";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import { TradeOrdersTabProps, type UiRow } from "./types";
+
+function TwoLineSkeleton({ topW = "w-24", bottomW = "w-14" }: { topW?: string; bottomW?: string }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Skeleton className={`h-4 ${topW} bg-white/10`} />
+      <Skeleton className={`h-3 ${bottomW} bg-white/10`} />
+    </div>
+  );
+}
 
 export function TradeHistoryTab({ rows, loading, t, onDetailClick }: TradeOrdersTabProps) {
-    return (
-        <div className="mt-6">
-            <div className="hidden lg:grid items-center px-4 text-sm text-slate-500 grid-cols-[1.2fr_1.2fr_0.8fr_1fr_1.4fr_1.4fr_1.4fr_0.4fr]">
-                <span>{t("tradeOrders.table.headers.date")}</span>
-                <span>{t("tradeOrders.table.headers.pair")}</span>
-                <span>{t("tradeOrders.table.headers.side")}</span>
-                <span>{t("tradeOrders.table.headers.filled")}</span>
-                <span>{t("tradeOrders.table.headers.price")}</span>
-                <span>{t("tradeOrders.table.headers.fee")}</span>
-                <span>{t("tradeOrders.table.headers.total")}</span>
-                <span />
-            </div>
-
-            <div className="mt-4 space-y-3">
-                {rows.map((row, idx) => (
-                    <div key={`${row.id}-${idx}`}>
-                        {/* Desktop View */}
-                        <div className="hidden lg:grid items-center rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 transition hover:bg-slate-50/50 grid-cols-[1.2fr_1.2fr_0.8fr_1fr_1.4fr_1.4fr_1.4fr_0.4fr]">
-                            <div className="flex flex-col">
-                                <span className="font-medium">{row.date}</span>
-                                <span className="text-xs text-slate-500">{row.time}</span>
-                            </div>
-                            <span className="font-medium">{row.pair}</span>
-                            <span className={row.side === "buy" ? "font-medium text-emerald-600" : "font-medium text-rose-500"}>
-                                {t(`tradeOrders.side.${row.side}`)}
-                            </span>
-                            <span>{row.amount}</span>
-
-                            <div className="flex flex-col">
-                                <span>{row.price}</span>
-                                <span className="text-xs text-slate-400 font-normal">≈ ₺0.00</span>
-                            </div>
-
-                            <div className="flex flex-col">
-                                <span>{row.price}</span>
-                                <span className="text-xs text-slate-400 font-normal">≈ ₺0.00</span>
-                            </div>
-
-                            <div className="flex flex-col">
-                                <span>{row.total}</span>
-                                <span className="text-xs text-slate-400 font-normal">≈ ₺0.00</span>
-                            </div>
-
-                            <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    onClick={() => onDetailClick(row)}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-50 shadow-sm"
-                                >
-                                    <ChevronRight className="h-4 w-4" />
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Mobile View */}
-                        <div className="lg:hidden rounded-3xl border border-slate-200 bg-white p-4 text-sm text-slate-900">
-                            <div className="flex items-start justify-between">
-                                <div>
-                                    <div className="font-medium">{row.date}</div>
-                                    <div className="text-xs text-slate-500">{row.time}</div>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => onDetailClick(row)}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-50 shadow-sm"
-                                >
-                                    <ChevronRight className="h-4 w-4" />
-                                </button>
-                            </div>
-                            <div className="mt-4 space-y-3 text-sm">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-slate-500">{t("tradeOrders.table.headers.pair")}</span>
-                                    <span className="font-medium">{row.pair}</span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-slate-500">{t("tradeOrders.table.headers.side")}</span>
-                                    <span className={row.side === "buy" ? "font-medium text-emerald-600" : "font-medium text-rose-500"}>
-                                        {t(`tradeOrders.side.${row.side}`)}
-                                    </span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-slate-500">{t("tradeOrders.table.headers.filled")}</span>
-                                    <span>{row.amount}</span>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <span className="text-slate-500">{t("tradeOrders.table.headers.price")}</span>
-                                    <div className="flex flex-col items-end">
-                                        <span>{row.price}</span>
-                                        <span className="text-xs text-slate-400">≈ ₺0.00</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <span className="text-slate-500">{t("tradeOrders.table.headers.fee")}</span>
-                                    <div className="flex flex-col items-end">
-                                        <span>{row.price}</span>
-                                        <span className="text-xs text-slate-400">≈ ₺0.00</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <span className="text-slate-500">{t("tradeOrders.table.headers.total")}</span>
-                                    <div className="flex flex-col items-end">
-                                        <span>{row.total}</span>
-                                        <span className="text-xs text-slate-400">≈ ₺0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {!loading && rows.length === 0 && (
-                <EmptyState
-                    title={t("common.emptyState.title")}
-                    description={t("common.emptyState.description")}
-                    className="mt-4"
-                />
-            )}
+  const columns: DataTableColumn<UiRow>[] = [
+    {
+      id: "date",
+      header: t("tradeOrders.table.headers.date"),
+      width: "14%",
+      skeleton: <TwoLineSkeleton bottomW="w-10" />,
+      cell: (row) => (
+        <div className="flex flex-col">
+          <span className="font-medium text-[#F4F7F8]">{row.date}</span>
+          <span className="text-[11px] text-[#788084]">{row.time}</span>
         </div>
-    );
+      ),
+    },
+    {
+      id: "pair",
+      header: t("tradeOrders.table.headers.pair"),
+      width: "14%",
+      cellClassName: "font-medium",
+      skeleton: <Skeleton className="h-4 w-20 bg-white/10" />,
+      cell: (row) => row.pair,
+    },
+    {
+      id: "side",
+      header: t("tradeOrders.table.headers.side"),
+      width: "13%",
+      skeleton: <Skeleton className="h-4 w-12 bg-white/10" />,
+      cell: (row) => (
+        <span className={cn("font-medium", row.side === "buy" ? "text-[#27E9A6]" : "text-[#FF4D6D]")}>
+          {t(`tradeOrders.side.${row.side}`)}
+        </span>
+      ),
+    },
+    {
+      id: "filled",
+      header: t("tradeOrders.table.headers.filled"),
+      width: "13%",
+      skeleton: <Skeleton className="h-4 w-12 bg-white/10" />,
+      cell: (row) => row.amount,
+    },
+    {
+      id: "price",
+      header: t("tradeOrders.table.headers.price"),
+      width: "14%",
+      skeleton: <TwoLineSkeleton />,
+      cell: (row) => (
+        <div className="flex flex-col">
+          <span className="text-[#F4F7F8]">{row.price}</span>
+          <span className="text-[11px] text-[#788084]">≈ ₺0.00</span>
+        </div>
+      ),
+    },
+    {
+      id: "fee",
+      header: t("tradeOrders.table.headers.fee"),
+      width: "14%",
+      skeleton: <Skeleton className="h-4 w-16 bg-white/10" />,
+      cell: (row) => <span className="text-[#C5C9CC]">{row.fee ?? "-"}</span>,
+    },
+    {
+      id: "total",
+      header: t("tradeOrders.table.headers.total"),
+      width: "13%",
+      skeleton: <TwoLineSkeleton />,
+      cell: (row) => (
+        <div className="flex flex-col">
+          <span className="text-[#F4F7F8]">{row.total}</span>
+          <span className="text-[11px] text-[#788084]">≈ ₺0.00</span>
+        </div>
+      ),
+    },
+    {
+      id: "action",
+      header: "",
+      width: "5%",
+      align: "right",
+      hideOnMobile: true,
+      skeleton: (
+        <div className="flex justify-end">
+          <Skeleton className="h-9 w-9 rounded-full bg-white/10" />
+        </div>
+      ),
+      cell: (row) => (
+        <button
+          type="button"
+          onClick={() => onDetailClick(row)}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      ),
+    },
+  ];
+
+  return (
+    <DataTable<UiRow>
+      columns={columns}
+      data={rows}
+      isLoading={loading}
+      skeletonRows={5}
+      tableLayout="fixed"
+      getRowId={(row, index) => `${row.id}-${index}`}
+      rowClassName={() => "hover:[&>td]:bg-[#121516]"}
+      empty={
+        <EmptyState
+          title={t("common.emptyState.title")}
+          description={t("common.emptyState.description")}
+        />
+      }
+    />
+  );
 }

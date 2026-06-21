@@ -10,6 +10,8 @@ export type UiRow = {
   filledPercent: number;
   filledAmount: string;
   total: string;
+  /** Trade commission shown in the Trade History "İşlem Ücreti" column. */
+  fee?: string;
   trigger: string;
   status?: string | number;
 };

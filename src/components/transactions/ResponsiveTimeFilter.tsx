@@ -29,6 +29,9 @@ interface ResponsiveTimeFilterProps {
     onDraftRangeChange?: (range: DateRange | undefined) => void;
     onApplyRange?: () => void;
     onCancelRange?: () => void;
+    /** Fired when the custom-range calendar is revealed, so the parent can sync
+     *  the draft range to the currently applied range before editing. */
+    onCustomOpen?: () => void;
     rangeSummary?: string;
     className?: string;
     drawerTitle?: string;
@@ -42,6 +45,7 @@ export function ResponsiveTimeFilter({
     onDraftRangeChange,
     onApplyRange,
     onCancelRange,
+    onCustomOpen,
     rangeSummary,
     className,
     drawerTitle,
@@ -54,6 +58,11 @@ export function ResponsiveTimeFilter({
     const dayPickerLocale = getDateFnsLocale(locale);
     const weekStartsOn = locale === "en" ? 0 : 1;
     const maxDate = React.useMemo(() => new Date(), []);
+
+    // Desktop: reveal the calendar LOCALLY when "custom" is picked, without telling
+    // the parent yet — so no fetch happens until the user presses Apply.
+    const [showCustom, setShowCustom] = React.useState(value === "custom");
+    React.useEffect(() => { setShowCustom(value === "custom"); }, [value]);
 
     const options: { label: string; value: SharedTimeFilterValue }[] = [
         { label: t("transactions.filters.time.today"), value: "today" },
@@ -74,7 +83,9 @@ export function ResponsiveTimeFilter({
     if (isDesktop) {
         const handleDesktopSelect = (next: SharedTimeFilterValue) => {
             if (next === "custom") {
-                onValueChange("custom"); // reveal calendar, keep popover open
+                // Only reveal the calendar — do NOT apply/fetch until Apply is pressed.
+                onCustomOpen?.();
+                setShowCustom(true);
                 return;
             }
             onValueChange(next);
@@ -82,7 +93,13 @@ export function ResponsiveTimeFilter({
         };
 
         return (
-            <Popover.Root open={desktopOpen} onOpenChange={setDesktopOpen}>
+            <Popover.Root
+                open={desktopOpen}
+                onOpenChange={(o) => {
+                    setDesktopOpen(o);
+                    if (!o) setShowCustom(value === "custom");
+                }}
+            >
                 <Popover.Trigger asChild>
                     <FilterPill label={label} value={selectedLabel} className={className} />
                 </Popover.Trigger>
@@ -94,7 +111,7 @@ export function ResponsiveTimeFilter({
                     >
                         <ul className="flex w-[180px] flex-col gap-1 rounded-[14px] border border-[#3A4043] bg-[#0E0F10] p-2 shadow-[0px_10px_14px_0px_rgba(15,42,81,0.03)]">
                             {options.map((option) => {
-                                const active = value === option.value;
+                                const active = option.value === "custom" ? showCustom : value === option.value && !showCustom;
                                 return (
                                     <li key={option.value}>
                                         <button
@@ -114,7 +131,7 @@ export function ResponsiveTimeFilter({
                             })}
                         </ul>
 
-                        {value === "custom" && (
+                        {showCustom && (
                             <DateRangePicker
                                 selected={draftRange}
                                 onSelect={onDraftRangeChange}
@@ -131,6 +148,7 @@ export function ResponsiveTimeFilter({
                                 }}
                                 onCancel={() => {
                                     onCancelRange?.();
+                                    setShowCustom(false);
                                     setDesktopOpen(false);
                                 }}
                             />
@@ -143,7 +161,12 @@ export function ResponsiveTimeFilter({
 
     // Mobile View
     const handleMobileTriggerClick = () => {
-        setCustomOpen(value === "custom");
+        if (value === "custom") {
+            onCustomOpen?.();
+            setCustomOpen(true);
+        } else {
+            setCustomOpen(false);
+        }
     };
 
     return (
@@ -225,7 +248,8 @@ export function ResponsiveTimeFilter({
                                         key={option.value}
                                         onClick={() => {
                                             if (option.value === "custom") {
-                                                onValueChange("custom");
+                                                // Only reveal the calendar — apply/fetch happens on Apply.
+                                                onCustomOpen?.();
                                                 setCustomOpen(true);
                                             } else {
                                                 onValueChange(option.value);

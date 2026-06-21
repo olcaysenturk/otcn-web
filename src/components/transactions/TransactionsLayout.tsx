@@ -24,7 +24,7 @@ export function TransactionsPageShell({
   return (
     <div
       className={cn(
-        "min-h-[1000px] space-y-8 animate-in fade-in duration-500 rounded-4xl md:rounded-44 border border-[#1F2526] bg-[#0E0F10]/40 p-4 md:p-6",
+        "space-y-8 animate-in fade-in duration-500 rounded-4xl md:rounded-44 border border-[#1F2526] bg-[#0E0F10]/40 p-4 md:p-6",
         className,
       )}
     >
@@ -43,7 +43,6 @@ type TransactionsTableCardProps = {
   filters: ReactNode;
   children: ReactNode;
   footer?: ReactNode;
-  minHeightClassName?: string;
   filtersClassName?: string;
 };
 
@@ -51,11 +50,10 @@ export function TransactionsTableCard({
   filters,
   children,
   footer,
-  minHeightClassName = "min-h-[800px]",
   filtersClassName,
 }: TransactionsTableCardProps) {
   return (
-    <div className={cn(minHeightClassName, "rounded-3xl border border-[#1F2526] bg-[#0E0F10] p-4 flex flex-col")}>
+    <div className="flex flex-col rounded-3xl border border-[#1F2526] bg-[#0E0F10] p-4">
       <div
         className={cn(
           // Mobile: single horizontal scrollable row of filter pills.

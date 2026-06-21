@@ -2,6 +2,7 @@
 
 import { ChevronDown, ListFilter, Search } from "lucide-react";
 
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { marketCategories } from "@/data/market";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
@@ -22,21 +23,15 @@ export function MarketFilterPanel({
   return (
     <section>
       <div className="overflow-hidden rounded-[14px] border border-[#3A4043]/70 bg-[#0E0F10] p-3">
-        <div className="flex w-max rounded-[10px] bg-[#1F2628] p-1">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => onTabChange(tab)}
-              className={cn(
-                "rounded-[7px] px-3 py-1 text-[11px] font-medium text-[#C5C9CC] transition-colors sm:text-[12px]",
-                activeTab === tab && "bg-[#0E0F10] text-[#F4F7F8]",
-              )}
-            >
-              {t(`marketPage.tabs.${tab}`)}
-            </button>
-          ))}
-        </div>
+        <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as MarketTabKey)} variant="compact">
+          <TabsList animated>
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab} value={tab}>
+                {t(`marketPage.tabs.${tab}`)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
 
         <div className="mt-3 flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {marketCategories.map((category) => (

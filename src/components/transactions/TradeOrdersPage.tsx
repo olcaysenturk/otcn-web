@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ResponsiveTimeFilter } from "@/components/transactions/ResponsiveTimeFilter";
 import { DateRange } from "react-day-picker";
@@ -22,12 +22,17 @@ import { cn } from "@/lib/utils";
 import { useModalStore } from "@/stores/useModalStore";
 import { TradeOrderStatusBadge } from "./trade-orders/TradeOrderStatusBadge";
 import { UiRow } from "./trade-orders/types";
-import { TransactionPageSkeleton } from "./TransactionSkeleton";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TransactionsPageShell, TransactionsTableCard, TransactionsTableFooter } from "./TransactionsLayout";
 import { resolveTimeRange, type SharedTimeFilterValue } from "./timeRange";
 import { TradeOrdersTabPanel } from "./trade-orders/TradeOrdersTabPanel";
 import { mapOtcOrdersToUiRows } from "./trade-orders/mappers";
+import { MOCK_TRADE_ROWS } from "./trade-orders/mockData";
 import { TransactionsResponsiveFilter } from "./TransactionsResponsiveFilter";
+
+// ⚠️ TEMPORARY DEMO FLAG — when true the tabs show mock rows (see ./trade-orders/mockData).
+// Set to false (and remove the mock block below) once the API returns real data.
+const USE_TRADE_MOCK = true;
 
 const DEFAULT_PAGE_SIZE = 8;
 const TRANSACTION_STATUS = {
@@ -51,9 +56,12 @@ export function TradeOrdersPage() {
   const intlLocale = getIntlLocale(appPreferences);
   const timeZone = appPreferences.timezone;
   const [tab, setTab] = useState<"open" | "orders" | "history">(currentTab);
+  // See DepositWithdrawPage: keeps the URL-sync effect from reverting an
+  // in-flight tab click while router.push() lags (prod-only skeleton flash).
+  const tabRef = useRef<"open" | "orders" | "history">(currentTab);
   const [mounted, setMounted] = useState(false);
   const [orders, setOrders] = useState<OtcOrderItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [cancelOrderId, setCancelOrderId] = useState<number | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -123,6 +131,18 @@ export function TradeOrdersPage() {
 
     const loadData = async () => {
       setLoading(true);
+
+      // ⚠️ TEMPORARY DEMO MOCK — shows the skeleton briefly, then mock rows.
+      // Remove this block (and ./trade-orders/mockData) once the API is wired.
+      if (USE_TRADE_MOCK) {
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        if (!cancelled) {
+          setTotalPages(1);
+          setLoading(false);
+        }
+        return;
+      }
+
       try {
         const { from, to } = resolveTimeRange({
           timeFilter,
@@ -207,27 +227,41 @@ export function TradeOrdersPage() {
     };
   }, [apiLocale, mounted, tab, timeFilter, appliedFromTs, appliedToTs, baseFilter, quoteFilter, currencyFilter, refreshKey, page, pageSize]);
 
+  // Switch tab + loading atomically (clear old rows) so the new columns never
+  // render against the previous tab's data.
+  const applyTab = useCallback((next: "open" | "orders" | "history") => {
+    tabRef.current = next;
+    setTab(next);
+    setLoading(true);
+    setOrders([]);
+  }, []);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Only react to EXTERNAL url changes (back/forward); `tab` is not a dep so an
+  // internal click can't be reverted while router.push()'s url update is in flight.
   useEffect(() => {
     if (!mounted) return;
-    if (tab !== tabParam) {
+    if (tabParam !== tabRef.current) {
       resetFiltersToDefault();
-      setTab(tabParam);
+      applyTab(tabParam);
     }
-  }, [mounted, tabParam, tab, resetFiltersToDefault]);
+  }, [mounted, tabParam, resetFiltersToDefault, applyTab]);
 
-  const handleTabChange = (newTab: "open" | "orders" | "history") => {
+  const handleTabChange = (newTab: string) => {
+    const typedTab = newTab === "orders" ? "orders" : newTab === "history" ? "history" : "open";
+    if (typedTab === tab) return;
     resetFiltersToDefault();
-    setTab(newTab);
+    applyTab(typedTab);
     const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", newTab);
+    params.set("tab", typedTab);
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
   const rows = useMemo<UiRow[]>(() => {
+    if (USE_TRADE_MOCK) return MOCK_TRADE_ROWS;
     return mapOtcOrdersToUiRows(orders, intlLocale, timeZone);
   }, [orders, intlLocale, timeZone]);
 
@@ -265,40 +299,27 @@ export function TradeOrdersPage() {
     }
   };
 
-  // Show full page skeleton before mount or during initial data load
-  if (!mounted) {
-    return <TransactionPageSkeleton />;
-  }
-
   return (
     <TransactionsPageShell
       title={t("tradeOrders.title")}
       subtitle={t("tradeOrders.subtitle")}
       toolbar={(
-        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2 py-1 text-sm font-semibold text-slate-700">
-          <button
-            onClick={() => handleTabChange("open")}
-            className={`rounded-full px-4 py-2 transition ${tab === "open" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900"}`}
-          >
-            {t("tradeOrders.tabs.open")}
-          </button>
-          <button
-            onClick={() => handleTabChange("orders")}
-            className={`rounded-full px-4 py-2 transition ${tab === "orders" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900"}`}
-          >
-            {t("tradeOrders.tabs.orders")}
-          </button>
-          <button
-            onClick={() => handleTabChange("history")}
-            className={`rounded-full px-4 py-2 transition ${tab === "history" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900"}`}
-          >
-            {t("tradeOrders.tabs.history")}
-          </button>
-        </div>
+        <Tabs value={tab} onValueChange={handleTabChange} className="mb-3 w-auto">
+          <TabsList animated className="h-auto w-auto gap-0.5 rounded-[14px] p-1">
+            <TabsTrigger value="open" className="rounded-[12px] px-4 py-1.5 text-sm tracking-[-0.16px]">
+              {t("tradeOrders.tabs.open")}
+            </TabsTrigger>
+            <TabsTrigger value="orders" className="rounded-[12px] px-4 py-1.5 text-sm tracking-[-0.16px]">
+              {t("tradeOrders.tabs.orders")}
+            </TabsTrigger>
+            <TabsTrigger value="history" className="rounded-[12px] px-4 py-1.5 text-sm tracking-[-0.16px]">
+              {t("tradeOrders.tabs.history")}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       )}
     >
       <TransactionsTableCard
-        minHeightClassName="min-h-[800px]"
         filtersClassName={cn(loading && "pointer-events-none opacity-80")}
         filters={(
           <>
@@ -306,10 +327,6 @@ export function TradeOrdersPage() {
               label={t("tradeOrders.filters.time")}
               value={timeFilter}
               onValueChange={(v) => {
-                if (v === "custom") {
-                  setDraftRange(appliedRange);
-                  return;
-                }
                 setTimeFilter(v);
                 setPage(1);
               }}
@@ -317,6 +334,7 @@ export function TradeOrdersPage() {
               onDraftRangeChange={setDraftRange}
               onApplyRange={handleApplyRange}
               onCancelRange={handleCancelRange}
+              onCustomOpen={() => setDraftRange(appliedRange)}
               rangeSummary={rangeSummary}
               drawerTitle={t("tradeOrders.filters.time")}
             />
@@ -373,7 +391,8 @@ export function TradeOrdersPage() {
 
             <div className="ml-auto flex items-center gap-4 text-sm">
               <button
-                className="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                type="button"
+                className="inline-flex h-[38px] items-center rounded-[12px] border border-[#C7F022] px-4 text-sm font-semibold text-[#C7F022] transition-colors hover:bg-[#C7F022]/10"
                 onClick={resetFiltersToDefault}
               >
                 {t("tradeOrders.filters.actions.clearAll")}
@@ -381,7 +400,7 @@ export function TradeOrdersPage() {
             </div>
           </>
         )}
-        footer={(
+        footer={!loading && rows.length > 0 ? (
           <TransactionsTableFooter
             pageSizeLabel={t("wallet.table.pagination.perPage")}
             pageSize={pageSize}
@@ -396,7 +415,7 @@ export function TradeOrdersPage() {
               setPage(nextPage);
             }}
           />
-        )}
+        ) : undefined}
       >
           <TradeOrdersTabPanel
             tab={tab}

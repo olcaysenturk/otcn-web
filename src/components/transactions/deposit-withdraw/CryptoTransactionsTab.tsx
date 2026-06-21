@@ -140,6 +140,7 @@ export function CryptoTransactionsTab({
       columns={columns}
       data={rows}
       isLoading={loading}
+      skeletonRows={5}
       tableLayout="fixed"
       getRowId={(row) => row.id}
       rowClassName={() => "hover:[&>td]:bg-[#121516]"}
