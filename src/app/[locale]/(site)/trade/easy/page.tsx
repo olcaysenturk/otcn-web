@@ -5,6 +5,7 @@ import { TradeGettingStarted } from "@/components/trade/TradeGettingStarted";
 import { FAQSection } from "@/components/home/FAQSection";
 import { MarketTabsShowcase } from "@/components/home/MarketTabsShowcase";
 import { AnimatedSection } from "@/components/layout/AnimatedSection";
+import { WhatIsCryptoSection } from "@/components/trade/WhatIsCryptoSection";
 
 export async function generateMetadata({
   params,
@@ -28,6 +29,9 @@ export default function TradeEasyPage() {
       </AnimatedSection>
       <AnimatedSection id="trade-market-highlights">
         <MarketTabsShowcase />
+      </AnimatedSection>
+      <AnimatedSection id="trade-what-is-crypto">
+        <WhatIsCryptoSection />
       </AnimatedSection>
       <AnimatedSection id="trade-faq">
         <FAQSection />
