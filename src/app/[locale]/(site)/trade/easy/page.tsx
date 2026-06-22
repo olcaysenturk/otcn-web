@@ -3,6 +3,7 @@ import { getLocalizedMetadata } from "@/lib/seo/metadata";
 import { TradeLandingHero } from "@/components/trade/TradeLandingHero";
 import { TradeGettingStarted } from "@/components/trade/TradeGettingStarted";
 import { FAQSection } from "@/components/home/FAQSection";
+import { MarketTabsShowcase } from "@/components/home/MarketTabsShowcase";
 import { AnimatedSection } from "@/components/layout/AnimatedSection";
 
 export async function generateMetadata({
@@ -25,7 +26,9 @@ export default function TradeEasyPage() {
       <AnimatedSection id="trade-getting-started">
         <TradeGettingStarted />
       </AnimatedSection>
-      
+      <AnimatedSection id="trade-market-highlights">
+        <MarketTabsShowcase />
+      </AnimatedSection>
       <AnimatedSection id="trade-faq">
         <FAQSection />
       </AnimatedSection>

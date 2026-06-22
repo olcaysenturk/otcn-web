@@ -4,6 +4,7 @@ import {
   I18nProvider,
   type Messages,
 } from "@/lib/i18n/I18nProvider";
+import { fetchIcrypexExchangeInfo } from "@/services/icrypex";
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import type { ReactNode } from "react";
@@ -31,10 +32,12 @@ export async function AppShell({ children, locale, messages, requireAuth = true 
     cookieStore.get("access_token")?.value,
   ) || true;
 
+  const exchangeInfo = await fetchIcrypexExchangeInfo();
+
   return (
     <I18nProvider locale={locale} messages={messages}>
       <LocaleLangSetter locale={locale} />
-      <DataInitializer locale={locale} />
+      <DataInitializer locale={locale} initialExchangeInfo={exchangeInfo} />
       <AuthGate isAuthenticated={isAuthenticated} requireAuth={requireAuth}>
         <div className="flex min-h-screen w-full max-w-full overflow-x-hidden">
           <div className="flex flex-1 flex-col min-w-0">

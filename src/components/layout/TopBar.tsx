@@ -40,7 +40,7 @@ const siteNavItems: Array<{
   hasDropdown?: boolean;
 }> = [
   { labelKey: "header.buyCrypto", href: "/" },
-  { labelKey: "header.market", href: "/market" },
+  { labelKey: "header.market", href: "/markets" },
   { labelKey: "header.trade", href: "/trade", hasDropdown: true },
   { labelKey: "header.blog", href: "/" },
 ] as const;
@@ -93,7 +93,7 @@ export function Topbar({ isAuthenticated }: { isAuthenticated: boolean }) {
 
   const internalPath = getInternalPath(pathname);
   const isHome = internalPath === "/";
-  const isPublicMarket = internalPath.startsWith("/market");
+  const isPublicMarket = internalPath.startsWith("/markets");
   const isPublicSpotDetail = internalPath.startsWith("/trade/spot");
 
   if ((isHome || isPublicMarket || isPublicSpotDetail) && !authed) {
@@ -332,7 +332,7 @@ function DashboardTopbar({
     { label: t("header.dashboard"), href: withLocale("/dashboard", locale), activeInternalPrefix: "/dashboard" },
     { label: t("header.wallet"), href: withLocale("/wallet", locale), activeInternalPrefix: "/wallet" },
     { label: t("header.trade"), href: withLocale("/trade/easy", locale), activeInternalPrefix: "/trade" },
-    { label: t("header.market"), href: withLocale("/market", locale), activeInternalPrefix: "/market" },
+    { label: t("header.market"), href: withLocale("/markets", locale), activeInternalPrefix: "/markets" },
     { label: t("header.transactions"), href: withLocale("/transaction/deposit-withdraw", locale), activeInternalPrefix: "/transaction" },
   ];
 

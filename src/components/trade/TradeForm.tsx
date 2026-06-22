@@ -44,10 +44,16 @@ export function TradeForm() {
               base: p.base,
               quote: p.quote,
               baseName: baseAsset?.name || p.base,
+              quantityPrecision: p.quantityPrecision,
+              pricePrecision: p.pricePrecision,
+              totalPrecision: p.totalPrecision,
             };
           });
+          const defaultPair =
+            mappedPairs.find((pair) => pair.value.toUpperCase() === "BTCUSDT") ??
+            mappedPairs[0];
           setPairs(mappedPairs);
-          setPair(mappedPairs[0]);
+          setPair(defaultPair);
         }
       } catch (e) {
         console.error("Failed to fetch OTC info:", e);
@@ -68,7 +74,9 @@ export function TradeForm() {
 
     const symbolFromParam = pairParam ? toPairSymbolFromParam(pairParam) : "";
     const selectedPair =
-      pairs.find((p) => p.value.toUpperCase() === symbolFromParam) ?? pairs[0];
+      pairs.find((p) => p.value.toUpperCase() === symbolFromParam) ??
+      pairs.find((p) => p.value.toUpperCase() === "BTCUSDT") ??
+      pairs[0];
 
     setPair(selectedPair);
 

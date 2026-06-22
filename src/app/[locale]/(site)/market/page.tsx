@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { MarketPage } from "@/components/market/MarketPage";
-
-export const metadata: Metadata = {
-  title: "Market | OTCN",
-  description: "Kripto varlık fiyatlarını ve piyasa hareketlerini takip edin.",
+type LegacyMarketRouteProps = {
+  params: Promise<{ locale: string }>;
 };
 
-export default function MarketRoute() {
-  return <MarketPage />;
+export default async function LegacyMarketRoute({
+  params,
+}: LegacyMarketRouteProps) {
+  const { locale } = await params;
+
+  redirect(`/${locale}/markets`);
 }

@@ -6,6 +6,7 @@ import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
 
 import { CoinIcon } from "@/components/ui/CoinIcon";
+import { FORMAT_CONFIG } from "@/config/format";
 import {
   Select,
   SelectContent,
@@ -15,9 +16,9 @@ import {
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { D } from "@/lib/math/decimal";
 import { formatDecimalFromString } from "@/lib/math/formatDecimal";
-import { fetchBinancePrices } from "@/services/binance";
 import { createMarketOrder } from "@/services/otc";
 import { fetchWalletAssets } from "@/services/wallet";
+import { useTickerStore } from "@/stores/useTickerStore";
 import type { UiPair } from "@/types/otc";
 import type { WalletSidebarAsset } from "@/types/wallet";
 
@@ -29,11 +30,6 @@ interface TradeOrderFormProps {
   onPairChange: (pair: UiPair) => void;
   onOrderCreated?: () => void;
   walletRefreshKey?: number;
-}
-
-function precisionFor(symbol: string, isQuote: boolean) {
-  if (symbol === "TRY" || symbol === "USDT") return 2;
-  return isQuote ? 2 : 8;
 }
 
 function safeDecimal(value: string, precision: number) {
@@ -129,14 +125,16 @@ export function TradeOrderForm({
   const { t, locale } = useI18n();
   const [side, setSide] = useState<Side>("buy");
   const [inputValue, setInputValue] = useState("");
-  const [price, setPrice] = useState(0);
-  const [isPriceLoading, setIsPriceLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [walletAssets, setWalletAssets] = useState<WalletSidebarAsset[]>([]);
   const [walletLoading, setWalletLoading] = useState(true);
+  const ticker = useTickerStore((state) => state.tickers[pair.value]);
+  const priceRaw = side === "buy" ? ticker?.a : ticker?.b;
+  const price = Number(priceRaw ?? 0);
+  const isPriceLoading = !priceRaw;
 
-  const basePrecision = precisionFor(pair.base, false);
-  const quotePrecision = precisionFor(pair.quote, true);
+  const basePrecision = pair.quantityPrecision;
+  const quotePrecision = pair.totalPrecision;
   const inputSymbol = side === "buy" ? pair.quote : pair.base;
   const outputSymbol = side === "buy" ? pair.base : pair.quote;
   const inputPrecision = side === "buy" ? quotePrecision : basePrecision;
@@ -148,12 +146,12 @@ export function TradeOrderForm({
   const outputValue = useMemo(() => {
     if (!inputValue || !price) return "";
     const input = safeDecimal(inputValue, inputPrecision);
-    const marketPrice = D.parse(String(price), quotePrecision);
+    const marketPrice = D.parse(String(price), pair.pricePrecision);
     if (marketPrice.isZero()) return "";
     return side === "buy"
       ? D.div(input, marketPrice, outputPrecision).str()
       : D.mul(input, marketPrice, outputPrecision).str();
-  }, [inputPrecision, inputValue, outputPrecision, price, quotePrecision, side]);
+  }, [inputPrecision, inputValue, outputPrecision, pair.pricePrecision, price, side]);
 
   useEffect(() => {
     setInputValue("");
@@ -177,26 +175,6 @@ export function TradeOrderForm({
       cancelled = true;
     };
   }, [locale, walletRefreshKey]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadPrice = async () => {
-      setIsPriceLoading(true);
-      const prices = await fetchBinancePrices([pair.value]);
-      if (!cancelled) {
-        setPrice(prices[pair.value] ?? 0);
-        setIsPriceLoading(false);
-      }
-    };
-
-    loadPrice();
-    const timer = setInterval(loadPrice, 10_000);
-    return () => {
-      cancelled = true;
-      clearInterval(timer);
-    };
-  }, [pair.value]);
 
   const useAllBalance = () => {
     setInputValue(availableRaw);
@@ -260,7 +238,9 @@ export function TradeOrderForm({
             className={[
               "h-12 rounded-full text-[15px] font-bold transition-all",
               side === item
-                ? "bg-[#1C2425] text-white shadow-sm"
+                ? item === "sell"
+                  ? "bg-[#FF4D6D] text-white shadow-sm"
+                  : "bg-[#1C2425] text-white shadow-sm"
                 : "text-[#697474] hover:text-[#1C2425]",
             ].join(" ")}
           >
@@ -280,7 +260,7 @@ export function TradeOrderForm({
           ) : price ? (
             `≈ ${new Intl.NumberFormat(locale, {
               minimumFractionDigits: Math.min(2, quotePrecision),
-              maximumFractionDigits: quotePrecision,
+              maximumFractionDigits: pair.pricePrecision,
             }).format(price)} ${pair.quote}`
           ) : (
             "-"
@@ -312,11 +292,12 @@ export function TradeOrderForm({
               if (!sourceInfo || sourceInfo.source === "event") setInputValue(values.value);
             }}
             placeholder="0.00"
-            thousandSeparator={false}
-            decimalSeparator="."
+            thousandSeparator={FORMAT_CONFIG.thousandSeparator}
+            decimalSeparator={FORMAT_CONFIG.fractionSeparator}
             allowedDecimalSeparators={[".", ","]}
             decimalScale={inputPrecision}
             allowNegative={false}
+            valueIsNumericString
             className="min-w-0 flex-1 bg-transparent text-[26px] font-medium text-[#101515] outline-none placeholder:text-[#B7C0BC] md:text-[30px]"
           />
           <AssetSelect
@@ -344,7 +325,10 @@ export function TradeOrderForm({
           <NumericFormat
             value={outputValue}
             displayType="text"
+            thousandSeparator={FORMAT_CONFIG.thousandSeparator}
+            decimalSeparator={FORMAT_CONFIG.fractionSeparator}
             decimalScale={outputPrecision}
+            valueIsNumericString
             placeholder="0.00"
             renderText={(value) => (
               <span className="min-w-0 flex-1 truncate text-[26px] font-medium text-[#101515] md:text-[30px]">
@@ -372,7 +356,12 @@ export function TradeOrderForm({
         type="button"
         onClick={handleSubmit}
         disabled={isSubmitting || !inputValue || !price}
-        className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#C8FF00] px-5 text-base font-bold text-[#101515] transition hover:bg-[#B8EB00] disabled:cursor-not-allowed disabled:bg-[#E7EBE8] disabled:text-[#9BA5A1]"
+        className={[
+          "mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full px-5 text-base font-bold transition disabled:cursor-not-allowed disabled:bg-[#E7EBE8] disabled:text-[#9BA5A1]",
+          side === "sell"
+            ? "bg-[#FF4D6D] text-white hover:bg-[#E94361]"
+            : "bg-[#C8FF00] text-[#101515] hover:bg-[#B8EB00]",
+        ].join(" ")}
       >
         {side === "buy"
           ? t("trade.buyAsset").replace("{asset}", pair.base)

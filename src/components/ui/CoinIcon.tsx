@@ -1,8 +1,12 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
+import { useState } from "react";
+
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { cn } from "@/lib/utils";
 
-const COIN_ICON_PATHS: Record<string, string> = {
+const LEGACY_COIN_ICON_PATHS: Record<string, string> = {
   APT: "/assets/coin-logo/APT.svg",
   ATR: "/assets/coin-logo/ATR.svg",
   BNB: "/assets/coin-logo/BNB.svg",
@@ -41,9 +45,21 @@ type CoinIconProps = {
   className?: string;
 };
 
-export function CoinIcon({ symbol, size = 40, className }: CoinIconProps) {
-  const normalizedSymbol = symbol.toUpperCase();
-  const src = COIN_ICON_PATHS[normalizedSymbol];
+type ResolvedCoinIconProps = CoinIconProps & {
+  normalizedSymbol: string;
+};
+
+function ResolvedCoinIcon({
+  normalizedSymbol,
+  size = 40,
+  className,
+}: ResolvedCoinIconProps) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const sources = [
+    getCoinIconPath(normalizedSymbol),
+    LEGACY_COIN_ICON_PATHS[normalizedSymbol],
+  ].filter((source): source is string => Boolean(source));
+  const src = sources[sourceIndex];
 
   if (!src) {
     return (
@@ -67,6 +83,21 @@ export function CoinIcon({ symbol, size = 40, className }: CoinIconProps) {
       width={size}
       height={size}
       className={cn("shrink-0 rounded-full object-contain", className)}
+      onError={() => setSourceIndex((currentIndex) => currentIndex + 1)}
+    />
+  );
+}
+
+export function CoinIcon({ symbol, size = 40, className }: CoinIconProps) {
+  const normalizedSymbol = symbol.toUpperCase();
+
+  return (
+    <ResolvedCoinIcon
+      key={normalizedSymbol}
+      normalizedSymbol={normalizedSymbol}
+      symbol={symbol}
+      size={size}
+      className={className}
     />
   );
 }

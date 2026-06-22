@@ -17,6 +17,14 @@ function ChangeValue({ value }: { value: string }) {
   );
 }
 
+function PerpBadge() {
+  return (
+    <span className="inline-flex items-center rounded-[4px] border border-[#C7F022]/40 bg-[#C7F022]/10 px-1 py-[1px] text-[9px] font-bold tracking-wide text-[#C7F022]">
+      PERP
+    </span>
+  );
+}
+
 export function MarketTable({
   assets,
   favorites,
@@ -34,12 +42,18 @@ export function MarketTable({
       minWidth: "180px",
       cell: (asset) => (
         <Link
-          href={withLocale(`/trade/spot/${asset.symbol.toLowerCase()}`, locale)}
+          href={withLocale(
+            asset.isPerpetual ? "/trade/future" : `/trade/spot/${asset.symbol.toLowerCase()}`,
+            locale,
+          )}
           className="flex items-center gap-3"
         >
           <CoinIcon symbol={asset.symbol} size={32} />
           <span>
-            <span className="block text-[14px] font-medium text-[#F4F7F8]">{asset.name}</span>
+            <span className="flex items-center gap-1.5">
+              <span className="block text-[14px] font-medium text-[#F4F7F8]">{asset.name}</span>
+              {asset.isPerpetual && <PerpBadge />}
+            </span>
             <span className="mt-0.5 block text-[11px] text-[#C5C9CC]">({asset.symbol})</span>
           </span>
         </Link>
@@ -53,25 +67,11 @@ export function MarketTable({
       cell: (asset) => asset.price,
     },
     {
-      id: "change1h",
-      header: t("marketPage.table.change1h"),
-      sortable: true,
-      cellClassName: "whitespace-nowrap",
-      cell: (asset) => <ChangeValue value={asset.change1h} />,
-    },
-    {
       id: "change24h",
       header: t("marketPage.table.change24h"),
       sortable: true,
       cellClassName: "whitespace-nowrap",
       cell: (asset) => <ChangeValue value={asset.change24h} />,
-    },
-    {
-      id: "change7d",
-      header: t("marketPage.table.change7d"),
-      sortable: true,
-      cellClassName: "whitespace-nowrap",
-      cell: (asset) => <ChangeValue value={asset.change7d} />,
     },
     {
       id: "marketCap",
@@ -106,7 +106,10 @@ export function MarketTable({
       align: "center",
       cell: (asset) => (
         <Link
-          href={withLocale(`/trade/${asset.symbol.toLowerCase()}-usdt`, locale)}
+          href={withLocale(
+            asset.isPerpetual ? "/trade/future" : `/trade/easy/${asset.symbol.toLowerCase()}-usdt`,
+            locale,
+          )}
           className="inline-flex h-10 items-center justify-center rounded-[12px] border border-[#F4F7F8] px-4 text-[12px] font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
         >
           {t("marketPage.trade")}
@@ -122,10 +125,10 @@ export function MarketTable({
         <button
           type="button"
           aria-label={`${asset.name} favorite`}
-          onClick={() => onToggleFavorite(asset.symbol)}
+          onClick={() => onToggleFavorite(asset.id)}
           className="inline-flex text-[#F4F7F8] transition hover:text-[#C7F022]"
         >
-          <Star className={cn("h-4 w-4", favorites.has(asset.symbol) && "fill-[#C7F022] text-[#C7F022]")} />
+          <Star className={cn("h-4 w-4", favorites.has(asset.id) && "fill-[#C7F022] text-[#C7F022]")} />
         </button>
       ),
     },
@@ -136,7 +139,7 @@ export function MarketTable({
       <DataTable<MarketAsset, MarketSortKey>
         columns={columns}
         data={assets}
-        getRowId={(asset) => asset.symbol}
+        getRowId={(asset) => asset.id}
         minWidth="1160px"
         sort={sortKey ? { key: sortKey, direction: sortDirection } : null}
         onSortChange={onSort}
@@ -178,30 +181,38 @@ export function MarketTable({
             const isNegative = asset.change24h.trim().startsWith("-");
             return (
               <div
-                key={asset.symbol}
+                key={asset.id}
                 className="grid min-h-[60px] grid-cols-[minmax(0,1.1fr)_minmax(90px,1fr)_80px] items-center gap-1 px-1 py-2"
               >
                 <div className="flex min-w-0 items-center gap-2">
                   <button
                     type="button"
                     aria-label={`${asset.name} favorite`}
-                    onClick={() => onToggleFavorite(asset.symbol)}
+                    onClick={() => onToggleFavorite(asset.id)}
                     className="shrink-0 text-[#F4F7F8]"
                   >
                     <Star
                       className={cn(
                         "h-3.5 w-3.5",
-                        favorites.has(asset.symbol) && "fill-[#C7F022] text-[#C7F022]",
+                        favorites.has(asset.id) && "fill-[#C7F022] text-[#C7F022]",
                       )}
                     />
                   </button>
                   <Link
-                    href={withLocale(`/trade/spot/${asset.symbol.toLowerCase()}`, locale)}
+                    href={withLocale(
+                      asset.isPerpetual
+                        ? "/trade/future"
+                        : `/trade/spot/${asset.symbol.toLowerCase()}`,
+                      locale,
+                    )}
                     className="flex min-w-0 items-center gap-2"
                   >
                     <CoinIcon symbol={asset.symbol} size={24} />
-                    <span className="truncate text-[11px] font-medium text-[#F4F7F8]">
-                      {asset.symbol}
+                    <span className="flex min-w-0 items-center gap-1">
+                      <span className="truncate text-[11px] font-medium text-[#F4F7F8]">
+                        {asset.symbol}
+                      </span>
+                      {asset.isPerpetual && <PerpBadge />}
                     </span>
                   </Link>
                 </div>

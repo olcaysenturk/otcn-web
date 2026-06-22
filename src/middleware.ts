@@ -59,8 +59,8 @@ export function middleware(request: NextRequest) {
   const isAuthRoute = currentInternalPath.startsWith("/auth");
   const isHome = currentInternalPath === "/" || currentInternalPath === "";
   const isPublicMarket =
-    currentInternalPath === "/market" ||
-    currentInternalPath.startsWith("/market/");
+    currentInternalPath === "/markets" ||
+    currentInternalPath.startsWith("/markets/");
   const isPublicSpotDetail =
     currentInternalPath === "/trade/spot" ||
     currentInternalPath.startsWith("/trade/spot/");

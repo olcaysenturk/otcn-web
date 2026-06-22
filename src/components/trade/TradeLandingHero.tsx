@@ -1,21 +1,48 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 
 import { CoinIcon } from "@/components/ui/CoinIcon";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
-import { tradeLandingPairs } from "@/data/tradeLanding";
+import { FORMAT_CONFIG } from "@/config/format";
+import { getSession } from "@/lib/api/session";
 import { withLocale } from "@/lib/i18n/href";
 import { useI18n } from "@/lib/i18n/I18nProvider";
+import { D } from "@/lib/math/decimal";
+import { createMarketOrder } from "@/services/otc";
+import { fetchWalletAssets } from "@/services/wallet";
+import { useExchangeInfoStore } from "@/stores/useExchangeInfoStore";
+import { useTickerStore } from "@/stores/useTickerStore";
+import type { IcrypexPair } from "@/types/icrypex";
+import type { WalletSidebarAsset } from "@/types/wallet";
 
 type Side = "buy" | "sell";
 
-function precisionForSymbol(symbol: string) {
-  return symbol === "USDT" || symbol === "TRY" ? 2 : 8;
+const FALLBACK_BTC_USDT_PAIR: IcrypexPair = {
+  symbol: "BTCUSDT",
+  base: "BTC",
+  quote: "USDT",
+  quantityPrecision: 8,
+  pricePrecision: 2,
+  totalPrecision: 2,
+  commissionPrecision: 8,
+  displayOrder: 0,
+  status: "RUNNING",
+  marketTypes: ["SPOT"],
+  orderTypes: ["MARKET"],
+};
+
+function safeDecimal(value: string, precision: number) {
+  try {
+    return value ? D.parse(value, precision) : D.zero(precision);
+  } catch {
+    return D.zero(precision);
+  }
 }
 
 function AssetPicker({
@@ -51,62 +78,180 @@ function AssetPicker({
 }
 
 export function TradeLandingHero() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const router = useRouter();
   const params = useParams();
-  const locale = (params?.locale as string) || "en";
-
-  const [pairIndex, setPairIndex] = useState(0);
+  const routeLocale = (params?.locale as string) || locale || "en";
+  const exchangePairs = useExchangeInfoStore((state) => state.pairs);
+  const tickers = useTickerStore((state) => state.tickers);
   const [side, setSide] = useState<Side>("buy");
-  const [swapped, setSwapped] = useState(false);
-  const [fromAmount, setFromAmount] = useState("");
-  const [toAmount, setToAmount] = useState("");
+  const [pairSymbol, setPairSymbol] = useState("BTCUSDT");
+  const [inputAmount, setInputAmount] = useState("");
+  const [outputAmount, setOutputAmount] = useState("");
+  const [lastEditedAmount, setLastEditedAmount] = useState<"input" | "output">("input");
+  const [walletAssets, setWalletAssets] = useState<WalletSidebarAsset[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const pair = tradeLandingPairs[pairIndex];
-  const fromSymbol = swapped ? pair.quote : pair.base;
-  const toSymbol = swapped ? pair.base : pair.quote;
-  const fromPrecision = precisionForSymbol(fromSymbol);
-  const toPrecision = precisionForSymbol(toSymbol);
-
-  const baseOptions = useMemo(
-    () => Array.from(new Set(tradeLandingPairs.map((item) => item.base))),
-    [],
-  );
-  const quoteOptions = useMemo(
-    () => Array.from(new Set(tradeLandingPairs.map((item) => item.quote))),
-    [],
-  );
-  const fromOptions = swapped ? quoteOptions : baseOptions;
-  const toOptions = swapped ? baseOptions : quoteOptions;
-
-  const resetAmounts = () => {
-    setFromAmount("");
-    setToAmount("");
-  };
-
-  const handleFromChange = (symbol: string) => {
-    const idx = tradeLandingPairs.findIndex((item) =>
-      swapped ? item.quote === symbol : item.base === symbol,
+  const pairs = useMemo(() => {
+    const availablePairs = exchangePairs.filter(
+      (pair) =>
+        pair.status.toUpperCase() === "RUNNING" &&
+        pair.marketTypes.some((type) => type.toUpperCase() === "SPOT") &&
+        pair.orderTypes.some((type) => type.toUpperCase() === "MARKET"),
     );
-    if (idx >= 0) {
-      setPairIndex(idx);
-      resetAmounts();
-    }
+    return availablePairs.length > 0 ? availablePairs : [FALLBACK_BTC_USDT_PAIR];
+  }, [exchangePairs]);
+
+  const pair =
+    pairs.find((item) => item.symbol === pairSymbol) ??
+    pairs.find((item) => item.symbol === "BTCUSDT") ??
+    pairs[0];
+  const ticker = tickers[pair.symbol];
+  const price = side === "buy" ? ticker?.a : ticker?.b;
+  const inputSymbol = side === "buy" ? pair.quote : pair.base;
+  const outputSymbol = side === "buy" ? pair.base : pair.quote;
+  const inputPrecision = side === "buy" ? pair.totalPrecision : pair.quantityPrecision;
+  const outputPrecision = side === "buy" ? pair.quantityPrecision : pair.totalPrecision;
+  const availableRaw =
+    walletAssets.find((asset) => asset.symbol === inputSymbol)?.available ?? "0";
+
+  const inputOptions = useMemo(
+    () =>
+      Array.from(
+        new Set(pairs.map((item) => (side === "buy" ? item.quote : item.base))),
+      ),
+    [pairs, side],
+  );
+  const outputOptions = useMemo(
+    () =>
+      Array.from(
+        new Set(pairs.map((item) => (side === "buy" ? item.base : item.quote))),
+      ),
+    [pairs, side],
+  );
+
+  useEffect(() => {
+    if (pairs.some((item) => item.symbol === pairSymbol)) return;
+    const defaultPair = pairs.find((item) => item.symbol === "BTCUSDT") ?? pairs[0];
+    setPairSymbol(defaultPair.symbol);
+  }, [pairSymbol, pairs]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchWalletAssets({ locale })
+      .then((assets) => {
+        if (!cancelled) setWalletAssets(assets);
+      })
+      .catch(() => {
+        if (!cancelled) setWalletAssets([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
+
+  useEffect(() => {
+    setInputAmount("");
+    setOutputAmount("");
+  }, [pair.symbol, side]);
+
+  const calculateOutput = (value: string) => {
+    if (!value || !price) return "";
+    const input = safeDecimal(value, inputPrecision);
+    const marketPrice = safeDecimal(price, pair.pricePrecision);
+    if (marketPrice.isZero()) return "";
+    return side === "buy"
+      ? D.div(input, marketPrice, outputPrecision).str()
+      : D.mul(input, marketPrice, outputPrecision).str();
   };
 
-  const handleToChange = (symbol: string) => {
-    const idx = tradeLandingPairs.findIndex((item) =>
-      swapped ? item.base === symbol : item.quote === symbol,
+  const calculateInput = (value: string) => {
+    if (!value || !price) return "";
+    const output = safeDecimal(value, outputPrecision);
+    const marketPrice = safeDecimal(price, pair.pricePrecision);
+    if (marketPrice.isZero()) return "";
+    return side === "buy"
+      ? D.mul(output, marketPrice, inputPrecision).str()
+      : D.div(output, marketPrice, inputPrecision).str();
+  };
+
+  useEffect(() => {
+    if (lastEditedAmount === "input") {
+      setOutputAmount(calculateOutput(inputAmount));
+    } else {
+      setInputAmount(calculateInput(outputAmount));
+    }
+    // Recalculate the opposite field when the live ask/bid price changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [price]);
+
+  const selectPair = (symbol: string, position: "input" | "output") => {
+    const nextPair = pairs.find((item) => {
+      if (side === "buy") {
+        return position === "input"
+          ? item.quote === symbol && item.base === pair.base
+          : item.base === symbol && item.quote === pair.quote;
+      }
+      return position === "input"
+        ? item.base === symbol && item.quote === pair.quote
+        : item.quote === symbol && item.base === pair.base;
+    }) ?? pairs.find((item) =>
+      side === "buy"
+        ? position === "input"
+          ? item.quote === symbol
+          : item.base === symbol
+        : position === "input"
+          ? item.base === symbol
+          : item.quote === symbol,
     );
-    if (idx >= 0) {
-      setPairIndex(idx);
-      resetAmounts();
-    }
+
+    if (nextPair) setPairSymbol(nextPair.symbol);
   };
 
-  const handleSubmit = () => {
-    const slug = `${pair.base.toLowerCase()}-${pair.quote.toLowerCase()}`;
-    router.push(withLocale(`/trade/easy/${slug}`, locale));
+  const handleSubmit = async () => {
+    const session = await getSession();
+    if (!session?.authenticated) {
+      router.push(withLocale("/auth/login", routeLocale));
+      return;
+    }
+
+    const entered = safeDecimal(inputAmount, inputPrecision);
+    const balance = safeDecimal(availableRaw, inputPrecision);
+    if (entered.isZero() || !price) {
+      toast.error(t("trade.errors.invalidAmount"));
+      return;
+    }
+    if (entered.dgreater(balance)) {
+      toast.error(t("trade.errors.insufficientBalance"));
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const { response, body } = await createMarketOrder(locale, {
+        clientId: "web",
+        price: "0",
+        quantity: side === "sell" ? inputAmount : "0",
+        side: side === "buy" ? "BUY" : "SELL",
+        symbol: pair.symbol,
+        total: side === "buy" ? inputAmount : "0",
+        triggerPrice: "0",
+        type: "MARKET",
+      });
+      if (!response.ok || body?.hasError || body?.content?.ok === false) {
+        toast.error(body?.message || t("trade.errors.generic"));
+        return;
+      }
+      toast.success(t("trade.orderSuccess"));
+      setInputAmount("");
+      setOutputAmount("");
+      const assets = await fetchWalletAssets({ locale });
+      setWalletAssets(assets);
+    } catch {
+      toast.error(t("trade.errors.generic"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -143,7 +288,11 @@ export function TradeLandingHero() {
                 onClick={() => setSide(item)}
                 className={[
                   "h-11 rounded-full text-[15px] font-bold transition-all",
-                  side === item ? "bg-white text-[#101515]" : "text-white/50 hover:text-white",
+                  side === item
+                    ? item === "sell"
+                      ? "bg-[#FF4D6D] text-white"
+                      : "bg-white text-[#101515]"
+                    : "text-white/50 hover:text-white",
                 ].join(" ")}
               >
                 {t(`trade.${item}`)}
@@ -154,15 +303,27 @@ export function TradeLandingHero() {
           <div className="mt-5">
             
             <div className="flex items-center justify-between gap-3 rounded-[18px] bg-[#161b1b] px-4 py-3.5">
-              <AssetPicker symbol={fromSymbol} options={fromOptions} onChange={handleFromChange} />
+              <AssetPicker
+                symbol={inputSymbol}
+                options={inputOptions}
+                onChange={(symbol) => selectPair(symbol, "input")}
+              />
               <NumericFormat
-                value={fromAmount}
+                value={inputAmount}
                 onValueChange={(values, sourceInfo) => {
-                  if (!sourceInfo || sourceInfo.source === "event") setFromAmount(values.value);
+                  if (!sourceInfo || sourceInfo.source === "event") {
+                    setLastEditedAmount("input");
+                    setInputAmount(values.value);
+                    setOutputAmount(calculateOutput(values.value));
+                  }
                 }}
                 placeholder="0.00"
-                decimalScale={fromPrecision}
+                thousandSeparator={FORMAT_CONFIG.thousandSeparator}
+                decimalSeparator={FORMAT_CONFIG.fractionSeparator}
+                allowedDecimalSeparators={[".", ","]}
+                decimalScale={inputPrecision}
                 allowNegative={false}
+                valueIsNumericString
                 className="min-w-0 flex-1 bg-transparent text-right text-[15px] font-bold text-white outline-none placeholder:text-white/30"
               />
             </div>
@@ -172,8 +333,7 @@ export function TradeLandingHero() {
             <button
               type="button"
               onClick={() => {
-                setSwapped((prev) => !prev);
-                resetAmounts();
+                setSide((currentSide) => (currentSide === "buy" ? "sell" : "buy"));
               }}
               aria-label="Swap"
               className="z-10 flex h-10 w-10 items-center justify-center rounded-full border-4 border-black bg-[#161b1b] transition hover:bg-[#1f2626]"
@@ -185,15 +345,27 @@ export function TradeLandingHero() {
           <div>
            
             <div className="flex items-center justify-between gap-3 rounded-[18px] bg-[#161b1b] px-4 py-3.5">
-              <AssetPicker symbol={toSymbol} options={toOptions} onChange={handleToChange} />
+              <AssetPicker
+                symbol={outputSymbol}
+                options={outputOptions}
+                onChange={(symbol) => selectPair(symbol, "output")}
+              />
               <NumericFormat
-                value={toAmount}
+                value={outputAmount}
                 onValueChange={(values, sourceInfo) => {
-                  if (!sourceInfo || sourceInfo.source === "event") setToAmount(values.value);
+                  if (!sourceInfo || sourceInfo.source === "event") {
+                    setLastEditedAmount("output");
+                    setOutputAmount(values.value);
+                    setInputAmount(calculateInput(values.value));
+                  }
                 }}
                 placeholder="0.00"
-                decimalScale={toPrecision}
+                thousandSeparator={FORMAT_CONFIG.thousandSeparator}
+                decimalSeparator={FORMAT_CONFIG.fractionSeparator}
+                allowedDecimalSeparators={[".", ","]}
+                decimalScale={outputPrecision}
                 allowNegative={false}
+                valueIsNumericString
                 className="min-w-0 flex-1 bg-transparent text-right text-[15px] font-bold text-white outline-none placeholder:text-white/30"
               />
             </div>
@@ -202,18 +374,36 @@ export function TradeLandingHero() {
           <p className="mt-5 text-center text-sm text-white/45">
             {t("trade.landing.hero.conversionRate")
               .replace("{base}", pair.base)
-              .replace("{rate}", pair.rate)
+              .replace(
+                "{rate}",
+                price
+                  ? new Intl.NumberFormat(locale, {
+                      maximumFractionDigits: pair.pricePrecision,
+                    }).format(Number(price))
+                  : "-",
+              )
               .replace("{quote}", pair.quote)}
           </p>
 
           <button
             type="button"
             onClick={handleSubmit}
-            className="mt-5 flex h-14 w-full items-center justify-center rounded-full bg-[#C8FF00] text-base font-bold text-[#101515] transition hover:bg-[#B8EB00]"
+            disabled={isSubmitting || !inputAmount || !price}
+            className={[
+              "mt-5 flex h-14 w-full items-center justify-center rounded-full text-base font-bold transition",
+              side === "sell"
+                ? "bg-[#FF4D6D] text-white hover:bg-[#E94361] disabled:bg-[#6B303B]"
+                : "bg-[#C8FF00] text-[#101515] hover:bg-[#B8EB00] disabled:bg-[#596729]",
+              "disabled:cursor-not-allowed disabled:text-white/45",
+            ].join(" ")}
           >
-            {side === "buy"
-              ? t("trade.buyAsset").replace("{asset}", toSymbol)
-              : t("trade.sellAsset").replace("{asset}", fromSymbol)}
+            {isSubmitting ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : side === "buy" ? (
+              t("trade.buyAsset").replace("{asset}", pair.base)
+            ) : (
+              t("trade.sellAsset").replace("{asset}", pair.base)
+            )}
           </button>
         </div>
       </div>

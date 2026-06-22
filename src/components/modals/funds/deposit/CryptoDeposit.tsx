@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { AssetSelectDropdown } from "@/components/ui/AssetSelectDropdown";
 import { InfoBox } from "@/components/ui/infobox";
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { cn } from "@/lib/utils";
 import { createDepositCryptoAddress, fetchDepositCryptoAddress } from "@/services/otc";
 import { useCryptoStore } from "@/stores/useCryptoStore";
@@ -33,7 +34,7 @@ export function CryptoDeposit({
       (cryptoAssets ?? []).map((coin) => ({
         value: coin.assetSymbol,
         label: coin.assetSymbol,
-        iconSrc: `/assets/coin-logo/${coin.assetSymbol}.svg`,
+        iconSrc: getCoinIconPath(coin.assetSymbol),
       })),
     [cryptoAssets]
   );

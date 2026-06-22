@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { D, decimal } from "@/lib/math/decimal";
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { getCryptoAddresses } from "@/services/crypto";
 import { initiateWithdrawCrypto, withdrawCryptoComplete } from "@/services/otc";
 import { fetchWallet } from "@/services/wallet";
@@ -98,13 +99,11 @@ export function CryptoWithdraw({ t, onAddAddress, asset, onSuccess }: CryptoWith
 
   const form = watch();
   const selectedAsset = cryptoAssets?.find(a => a.assetSymbol === form.assetSymbol);
-  const getAssetIcon = (symbol?: string) =>
-    `/assets/coin-logo/${(symbol || "BTC").toUpperCase()}.svg`;
   const assetOptions = (cryptoAssets ?? []).map((coin) => ({
     value: coin.assetSymbol,
     label: coin.assetSymbol,
     meta: coin.assetName,
-    iconSrc: getAssetIcon(coin.assetSymbol),
+    iconSrc: getCoinIconPath(coin.assetSymbol),
   }));
 
   const selectedNetwork = useMemo(() => {

@@ -113,7 +113,7 @@ export function MobileMenu({
                 { label: t("header.tradeMenu.futureTrade"), href: "/trade/future" },
             ]
         },
-        { label: t("header.market"), href: "/market", icon: ChartNoAxesCombined },
+        { label: t("header.market"), href: "/markets", icon: ChartNoAxesCombined },
         {
             label: t("header.transactions"),
             icon: ReceiptText,

@@ -26,19 +26,16 @@ export type MarketTickerItem = {
   chartData: MarketPoint[];
 };
 
-export type MarketCategory = {
-  id: string;
-  labelKey: string;
-};
-
 export type MarketAsset = {
+  id: string;
   name: string;
   symbol: string;
+  quote: string;
   categories: string[];
+  isNew: boolean;
+  isPerpetual: boolean;
   price: string;
-  change1h: string;
   change24h: string;
-  change7d: string;
   marketCap: string;
   volume24h: string;
   volumeUnits: string;
@@ -49,9 +46,7 @@ export type MarketTabKey = "cryptos" | "favorites" | "spots" | "futures";
 
 export type MarketSortKey =
   | "price"
-  | "change1h"
   | "change24h"
-  | "change7d"
   | "marketCap"
   | "volume24h"
   | "circulatingSupply";
@@ -66,10 +61,11 @@ export type MarketTickerCardProps = {
 
 export type MarketFilterPanelProps = {
   activeTab: MarketTabKey;
-  activeCategory: string;
+  activeCategory: string | null;
+  categories: string[];
   searchQuery: string;
   onTabChange: (tab: MarketTabKey) => void;
-  onCategoryChange: (category: string) => void;
+  onCategoryChange: (category: string | null) => void;
   onSearchChange: (query: string) => void;
 };
 

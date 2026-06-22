@@ -10,7 +10,7 @@ const PUBLIC_ROUTES = [
     "/auth/login",
     "/auth/register",
     "/auth/forgot-password",
-    "/market",
+    "/markets",
     "/trade/spot",
 ];
 

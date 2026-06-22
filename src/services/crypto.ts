@@ -1,5 +1,6 @@
 import { clientFetch } from "@/lib/api/clientFetch";
 import { getApiBase } from "@/lib/api/getApiBase";
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { AddCryptoAddressPayload, AddCryptoAddressResponse, AddDepositDeclarationPayload, CryptoAddress, CryptoAsset, CryptoAssetResponse, CryptoPlatform, PendingDepositDeclaration } from "@/types/crypto";
 
 /**
@@ -59,7 +60,7 @@ export async function fetchCryptoAssets(locale: string) {
   })
   return res.map(asset => ({
     ...asset,
-    icon: `/assets/coin-logo/${asset.assetSymbol.toUpperCase()}.svg`
+    icon: getCoinIconPath(asset.assetSymbol)
   })) as CryptoAsset[];
 }
 

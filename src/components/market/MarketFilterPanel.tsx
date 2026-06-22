@@ -3,7 +3,6 @@
 import { ChevronDown, ListFilter, Search } from "lucide-react";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { marketCategories } from "@/data/market";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 import type { MarketFilterPanelProps, MarketTabKey } from "@/types/market";
@@ -13,6 +12,7 @@ const tabs: MarketTabKey[] = ["cryptos", "favorites", "spots", "futures"];
 export function MarketFilterPanel({
   activeTab,
   activeCategory,
+  categories,
   searchQuery,
   onTabChange,
   onCategoryChange,
@@ -34,19 +34,27 @@ export function MarketFilterPanel({
         </Tabs>
 
         <div className="mt-3 flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {marketCategories.map((category) => (
+          <button
+            type="button"
+            onClick={() => onCategoryChange(null)}
+            className={cn(
+              "shrink-0 rounded-[7px] border px-3 py-1.5 text-[11px] font-medium text-[#F4F7F8] transition-colors sm:text-[12px]",
+              activeCategory === null ? "border-[#C7F022]" : "border-[#3A4043]",
+            )}
+          >
+            {t("marketPage.categories.all")}
+          </button>
+          {categories.map((category) => (
             <button
-              key={category.id}
+              key={category}
               type="button"
-              onClick={() => onCategoryChange(category.id)}
+              onClick={() => onCategoryChange(category)}
               className={cn(
-                "shrink-0 rounded-[7px] border px-3 py-1.5 text-[11px] font-medium text-[#F4F7F8] transition-colors sm:text-[12px]",
-                activeCategory === category.id
-                  ? "border-[#C7F022]"
-                  : "border-[#3A4043]",
+                "shrink-0 rounded-[7px] border px-3 py-1.5 text-[11px] font-medium text-[#F4F7F8] capitalize transition-colors sm:text-[12px]",
+                activeCategory === category ? "border-[#C7F022]" : "border-[#3A4043]",
               )}
             >
-              {t(category.labelKey)}
+              {category}
             </button>
           ))}
         </div>

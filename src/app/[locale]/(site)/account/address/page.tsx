@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { withLocale } from "@/lib/i18n/href";
 import { getApiLocale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/I18nProvider";
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { useModalStore } from "@/stores/useModalStore";
 import { deleteCryptoAddress, fetchCryptoAssets, getCryptoAddresses } from "@/services/crypto";
 import type { CryptoAddress } from "@/types/crypto";
@@ -84,7 +85,7 @@ function toAddressRows(items: CryptoAddress[]): AddressRow[] {
       address: item.address || "-",
       memo: "-",
       network: item.networkName || "-",
-      icon: `/assets/coin-logo/${symbol}.svg`,
+      icon: getCoinIconPath(symbol),
     };
   });
 }

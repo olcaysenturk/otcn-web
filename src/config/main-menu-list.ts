@@ -4,7 +4,7 @@ export type MainMenuItem = {
 };
 
 export const mainMenuList: MainMenuItem[] = [
-  { key: "header.market", path: "/market" },
+  { key: "header.market", path: "/markets" },
   { key: "menu.experience", path: "#experience" },
   { key: "menu.aboutUs", path: "#testimonials" },
   { key: "menu.askedQuestions", path: "#faq" }

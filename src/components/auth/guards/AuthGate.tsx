@@ -25,7 +25,7 @@ export function AuthGate({
   const internalPath = getInternalPath(pathname);
   const isHome = internalPath.split("/").filter(Boolean).length <= 1;
   const isAuth = internalPath.startsWith("/auth");
-  const isPublicMarket = internalPath.startsWith("/market");
+  const isPublicMarket = internalPath.startsWith("/markets");
   const isPublicSpotDetail = internalPath.startsWith("/trade/spot");
   const shouldRequireAuth =
     requireAuth &&

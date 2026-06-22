@@ -32,6 +32,9 @@ export type UiPair = {
   base: string;
   quote: string;
   baseName: string;
+  quantityPrecision: number;
+  pricePrecision: number;
+  totalPrecision: number;
 };
 
 export type OtcInfo = {

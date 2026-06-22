@@ -45,7 +45,7 @@ export default async function SpotDetailPage({ params }: SpotDetailPageProps) {
           </div>
 
           <Link
-            href={withLocale("/market", locale)}
+            href={withLocale("/markets", locale)}
             className="inline-flex h-11 items-center justify-center rounded-full border border-white/20 px-5 text-sm font-semibold text-white transition hover:bg-white/10"
           >
             {t("home.coinDetail.back")}

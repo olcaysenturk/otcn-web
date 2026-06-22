@@ -1,5 +1,6 @@
 import type { OtcAsset } from "@/types/otc";
 import type { WalletApiItem, WalletSidebarAsset } from "@/types/wallet";
+import { getCoinIconPath } from "@/lib/coinIcons";
 
 export function mapWalletAssets(
   items: WalletApiItem[],
@@ -9,7 +10,7 @@ export function mapWalletAssets(
     const symbol = item.asset?.toUpperCase() || "UNKNOWN";
     const otcAsset = assetsBySymbol?.[symbol];
     const icon = otcAsset?.name
-      ? `/assets/coin-logo/${otcAsset.symbol}.svg`
+      ? getCoinIconPath(otcAsset.symbol)
       : "/assets/coin-logo/default.svg";
     const name = otcAsset?.name ?? symbol;
     const tryValue =
@@ -38,7 +39,7 @@ export function mapWalletAssets(
     mapped.push({
       id: "TRY-0",
       icon: tryAsset?.name
-        ? `/assets/coin-logo/${tryAsset.symbol}.png`
+        ? getCoinIconPath(tryAsset.symbol)
         : "/assets/coin-logo/TRY.svg",
       name: tryAsset?.name ?? "TRY",
       symbol: "TRY",

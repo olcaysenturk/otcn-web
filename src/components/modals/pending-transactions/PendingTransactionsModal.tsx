@@ -5,6 +5,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { useModalStore } from "@/stores/useModalStore";
 import { useI18n } from "@/lib/i18n/I18nProvider";
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { cn } from "@/lib/utils";
 import type { PendingDepositDeclaration } from "@/types/crypto";
 
@@ -41,7 +42,7 @@ export function PendingTransactionsModal({ items = [] }: PendingTransactionsModa
     amount: item.quantity,
     senderAddress: item.fromAddress,
     network: item.networkName,
-    icon: `/assets/coin-logo/${(item.assetSymbol || "").toUpperCase()}.svg`,
+    icon: getCoinIconPath(item.assetSymbol || ""),
   }));
 
   return (

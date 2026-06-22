@@ -7,75 +7,77 @@ import { MarketOverview } from "@/components/market/MarketOverview";
 import { MarketPagination } from "@/components/market/MarketPagination";
 import { MarketTable } from "@/components/market/MarketTable";
 import { MarketTickerStrip } from "@/components/market/MarketTickerStrip";
-import { marketAssets } from "@/data/market";
+import { buildMarketAssets } from "@/lib/market/buildMarketAssets";
+import { parseFormattedNumber } from "@/lib/market/parseFormattedNumber";
 import { useI18n } from "@/lib/i18n/I18nProvider";
+import { useExchangeInfoStore } from "@/stores/useExchangeInfoStore";
+import { useGlobalMarketStore } from "@/stores/useGlobalMarketStore";
+import { useTickerStore } from "@/stores/useTickerStore";
 import type { MarketSortKey, MarketTabKey } from "@/types/market";
 
 const PAGE_SIZE = 8;
-const MOCK_TOTAL_PAGES = 10;
-
-function numericValue(value: string) {
-  const normalized = value.replace(/[$,%\s]/g, "");
-  const multiplier = normalized.endsWith("T")
-    ? 1_000_000_000_000
-    : normalized.endsWith("B")
-      ? 1_000_000_000
-      : normalized.endsWith("M")
-        ? 1_000_000
-        : normalized.endsWith("K")
-          ? 1_000
-          : 1;
-
-  return Number.parseFloat(normalized.replace(/[TBMK]/g, "")) * multiplier || 0;
-}
 
 export function MarketPage() {
   const { t } = useI18n();
+  const assets = useExchangeInfoStore((state) => state.assets);
+  const pairs = useExchangeInfoStore((state) => state.pairs);
+  const tickers = useTickerStore((state) => state.tickers);
+  const marketAssets = useGlobalMarketStore((state) => state.assets);
+
   const [activeTab, setActiveTab] = useState<MarketTabKey>("cryptos");
-  const [activeCategory, setActiveCategory] = useState("gainers");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [sortKey, setSortKey] = useState<MarketSortKey>();
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const liveAssets = useMemo(
+    () => buildMarketAssets(assets, pairs, tickers, marketAssets),
+    [assets, pairs, tickers, marketAssets],
+  );
+
+  const categories = useMemo(() => {
+    const unique = new Set<string>();
+    liveAssets.forEach((asset) => asset.categories.forEach((category) => unique.add(category)));
+    return Array.from(unique).sort((a, b) => a.localeCompare(b));
+  }, [liveAssets]);
+
   const filteredAssets = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    let assets = marketAssets.filter((asset) => {
+    let items = liveAssets.filter((asset) => {
       const matchesSearch =
         !query ||
         asset.name.toLowerCase().includes(query) ||
         asset.symbol.toLowerCase().includes(query);
-      const matchesTab = activeTab !== "favorites" || favorites.has(asset.symbol);
-      const matchesCategory =
-        activeCategory === "all" ||
-        activeCategory === "gainers" ||
-        (activeCategory === "new" && ["VDA", "MATIC"].includes(asset.symbol)) ||
-        asset.categories.includes(activeCategory);
+      const matchesFavorites = activeTab !== "favorites" || favorites.has(asset.id);
+      const matchesMarketType =
+        activeTab === "futures"
+          ? asset.isPerpetual
+          : activeTab === "spots"
+            ? !asset.isPerpetual
+            : true;
+      const matchesCategory = !activeCategory || asset.categories.includes(activeCategory);
 
-      return matchesSearch && matchesTab && matchesCategory;
+      return matchesSearch && matchesFavorites && matchesMarketType && matchesCategory;
     });
 
     if (sortKey) {
-      assets = [...assets].sort((left, right) => {
-        const result = numericValue(left[sortKey]) - numericValue(right[sortKey]);
+      items = [...items].sort((left, right) => {
+        const result = parseFormattedNumber(left[sortKey]) - parseFormattedNumber(right[sortKey]);
         return sortDirection === "asc" ? result : -result;
       });
     }
 
-    return assets;
-  }, [activeCategory, activeTab, favorites, searchQuery, sortDirection, sortKey]);
+    return items;
+  }, [activeCategory, activeTab, favorites, liveAssets, searchQuery, sortDirection, sortKey]);
 
-  const dataPageCount = Math.max(1, Math.ceil(filteredAssets.length / PAGE_SIZE));
-  const totalPages = Math.max(MOCK_TOTAL_PAGES, dataPageCount);
+  const totalPages = Math.max(1, Math.ceil(filteredAssets.length / PAGE_SIZE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
-  const pageAssets =
-    filteredAssets.length <= PAGE_SIZE
-      ? filteredAssets
-      : filteredAssets.slice(
-          (safeCurrentPage - 1) * PAGE_SIZE,
-          safeCurrentPage * PAGE_SIZE,
-        );
+  const pageAssets = filteredAssets.slice(
+    (safeCurrentPage - 1) * PAGE_SIZE,
+    safeCurrentPage * PAGE_SIZE,
+  );
 
   const resetPage = () => setCurrentPage(1);
 
@@ -89,11 +91,11 @@ export function MarketPage() {
     resetPage();
   };
 
-  const handleToggleFavorite = (symbol: string) => {
+  const handleToggleFavorite = (id: string) => {
     setFavorites((current) => {
       const next = new Set(current);
-      if (next.has(symbol)) next.delete(symbol);
-      else next.add(symbol);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -107,6 +109,7 @@ export function MarketPage() {
           <MarketFilterPanel
             activeTab={activeTab}
             activeCategory={activeCategory}
+            categories={categories}
             searchQuery={searchQuery}
             onTabChange={(tab) => {
               setActiveTab(tab);

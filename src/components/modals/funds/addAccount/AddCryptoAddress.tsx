@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getProgressBarSteps } from "@/config/withdraw";
+import { getCoinIconPath } from "@/lib/coinIcons";
 import { cn } from "@/lib/utils";
 import { AddCryptoAddressFormValues, getAddCryptoAddressSchema } from "@/lib/validation/CryptoAddressSchema";
 import { addCryptoAddressComplete, addCryptoAddressInit } from "@/services/crypto";
@@ -91,7 +92,7 @@ export function AddCryptoAddress({
     const assetOptions = (cryptoAssets ?? []).map((coin) => ({
         value: coin.assetSymbol,
         label: coin.assetSymbol,
-        iconSrc: coin.icon || `/assets/coin-logo/${coin.assetSymbol}.svg`,
+        iconSrc: coin.icon || getCoinIconPath(coin.assetSymbol),
     }));
     const networkOptions = selectedAsset?.network.map(n => ({ value: n.networkName, label: n.networkLabel })) ?? [];
     const isIndividual = form.receiverType === "Individual";

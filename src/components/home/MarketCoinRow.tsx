@@ -8,7 +8,7 @@ export function MarketCoinRow({ coins, direction, locale }: MarketCoinRowProps) 
     <div className="market-coin-row relative w-full overflow-hidden">
       <div
         className={cn(
-          "market-coin-track flex w-max will-change-transform",
+          "market-coin-track flex w-max will-change-transform py-1",
           direction === "right"
             ? "animate-market-row-right"
             : "animate-market-row-left",
