@@ -1,34 +1,37 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Download, Plus, Trash2, Search, Building2, FileText, User, ArrowLeft, Edit2 } from "lucide-react";
-import Link from "next/link";
-
-import { AccountTabs } from "@/components/account/AccountTabs";
-import { AccountHeader } from "@/components/account/AccountHeader";
-import { PageCard } from "@/components/ui/page-card";
-import { ResponsivePageWrapper } from "@/components/ui/responsive-page-wrapper";
-import { useI18n } from "@/lib/i18n/I18nProvider";
-import { withLocale } from "@/lib/i18n/href";
+import { Building2, ChevronRight, Download, FileText, Plus, Search, Trash2, User } from "lucide-react";
+import { format } from "date-fns";
 import { toast } from "sonner";
-import { AccountProfileSkeleton, AccountTableSkeleton } from "@/components/account/AccountSkeleton";
 
+import { useI18n } from "@/lib/i18n/I18nProvider";
+import { getDateFnsLocale } from "@/lib/i18n/dateFnsLocale";
 import { useModalStore } from "@/stores/useModalStore";
 import { getApplicationDetail } from "@/services/account";
 import { ApplicationDetail } from "@/types/application";
-import { format } from "date-fns";
-import { getDateFnsLocale } from "@/lib/i18n/dateFnsLocale";
+import { DataTable, type DataTableColumn } from "@/components/ui/table";
+import { Pagination } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+
+type CorpDoc = {
+  key: string;
+  approve: string;
+  valid: string;
+  status: "approved" | "expired";
+};
+
+const DOC_PAGE_COUNT = 10;
+const CARD = "rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]";
 
 export default function AccountInfoPage() {
   const { t, locale } = useI18n();
   const { openModal } = useModalStore();
-  const [corpSection, setCorpSection] = useState<"info" | "docs">("info");
+  const [section, setSection] = useState<"info" | "docs">("docs");
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    console.log("application", application);
-  }, [application]);
+  const [docPage, setDocPage] = useState(1);
 
   const fetchApplicationData = useCallback(async () => {
     setIsLoading(true);
@@ -47,8 +50,6 @@ export default function AccountInfoPage() {
 
   useEffect(() => {
     fetchApplicationData();
-
-    // Listen for updates
     window.addEventListener("application-updated", fetchApplicationData);
     return () => window.removeEventListener("application-updated", fetchApplicationData);
   }, [fetchApplicationData]);
@@ -56,9 +57,7 @@ export default function AccountInfoPage() {
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return "-";
     try {
-      return format(new Date(dateStr), "dd.MM.yyyy", {
-        locale: getDateFnsLocale(locale)
-      });
+      return format(new Date(dateStr), "dd.MM.yyyy", { locale: getDateFnsLocale(locale) });
     } catch {
       return dateStr;
     }
@@ -66,232 +65,262 @@ export default function AccountInfoPage() {
 
   const shareHoldersList = useMemo(() => application?.shareHolders || [], [application]);
 
-  const corpDocs = useMemo(
+  const authorityRows = [
+    { label: t("form.firstName"), value: application?.userName || "-" },
+    { label: t("form.lastName"), value: application?.userSurname || "-" },
+    { label: t("account.profile.idNumber"), value: application?.userIdentityNumber || "-" },
+    { label: t("account.profile.birthDate"), value: formatDate(application?.userBirthDate) },
+    { label: t("modals.corporate.updateAuthority.fields.identitySerialNumber"), value: "-" },
+  ];
+
+  // ⚠️ TEMPORARY DEMO MOCK — company documents have no API yet.
+  const docs = useMemo<CorpDoc[]>(
     () => [
-      { key: "userDeclarationForm", approve: "Jun 02, 2025", valid: "Jun 02, 2025", status: "approved" as const },
-      { key: "accountOpeningPetition", approve: "Jun 03, 2025", valid: "Jun 03, 2025", status: "approved" as const },
-      { key: "signatureCircular", approve: "Jun 04, 2025", valid: "Jun 04, 2025", status: "approved" as const },
-      { key: "taxCertificate", approve: "Jun 05, 2025", valid: "Jun 05, 2025", status: "approved" as const },
-      { key: "activityCertificate", approve: "Jun 06, 2025", valid: "Jun 06, 2025", status: "approved" as const },
-      { key: "tradeRegistryGazette", approve: "Jun 07, 2025", valid: "Nov 12, 2025", status: "expired" as const },
-      { key: "shareholderInfo1", approve: "Jun 07, 2025", valid: "Jun 07, 2025", status: "approved" as const },
-      { key: "shareholderInfo2", approve: "Jun 09, 2025", valid: "Jun 09, 2025", status: "approved" as const },
-      { key: "invoiceSamples", approve: "Jun 10, 2025", valid: "Jun 10, 2025", status: "approved" as const },
-      { key: "uboDeclaration", approve: "Jun 10, 2025", valid: "Jun 10, 2025", status: "approved" as const },
+      { key: "userDeclarationForm", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "accountOpeningPetition", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "signatureCircular", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "taxCertificate", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "activityCertificate", approve: "09.11.2025", valid: "09.11.2025", status: "expired" },
+      { key: "tradeRegistryGazette", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "shareholderInfo1", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "shareholderInfo2", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "invoiceSamples", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
+      { key: "uboDeclaration", approve: "09.11.2025", valid: "09.11.2025", status: "approved" },
     ],
     [],
   );
 
-  const activeTabClass = "bg-white/10 text-white";
-  const inactiveTabClass = "bg-transparent text-gray-400 hover:bg-white/5 hover:text-white";
+  const StatusBadge = ({ status }: { status: CorpDoc["status"] }) => {
+    const approved = status === "approved";
+    return (
+      <span
+        className={cn(
+          "inline-flex items-center rounded-full border px-2 py-1 text-xs font-medium",
+          approved
+            ? "border-[#27E9A6]/40 bg-[#27E9A6]/10 text-[#27E9A6]"
+            : "border-[#FF4D6D]/40 bg-[#FF4D6D]/10 text-[#FF4D6D]",
+        )}
+      >
+        {approved ? t("account.corporateTable.status.approved") : t("account.corporateTable.status.expired")}
+      </span>
+    );
+  };
+
+  const columns: DataTableColumn<CorpDoc>[] = [
+    {
+      id: "product",
+      header: t("account.corporateTable.headers.product"),
+      width: "32%",
+      cellClassName: "font-medium",
+      skeleton: <Skeleton className="h-4 w-40 bg-white/10" />,
+      cell: (doc) => t(`account.corporateTable.documents.${doc.key}`),
+    },
+    {
+      id: "approve",
+      header: t("account.corporateTable.headers.approveDate"),
+      width: "18%",
+      skeleton: <Skeleton className="h-4 w-20 bg-white/10" />,
+      cell: (doc) => doc.approve,
+    },
+    {
+      id: "valid",
+      header: t("account.corporateTable.headers.validDate"),
+      width: "18%",
+      skeleton: <Skeleton className="h-4 w-20 bg-white/10" />,
+      cell: (doc) => (
+        <span className={doc.status === "expired" ? "text-[#FF4D6D]" : undefined}>{doc.valid}</span>
+      ),
+    },
+    {
+      id: "status",
+      header: t("account.corporateTable.headers.status"),
+      width: "20%",
+      skeleton: <Skeleton className="h-6 w-24 rounded-full bg-white/10" />,
+      cell: (doc) => <StatusBadge status={doc.status} />,
+    },
+    {
+      id: "action",
+      header: "",
+      width: "12%",
+      align: "right",
+      hideOnMobile: true,
+      skeleton: (
+        <div className="flex justify-end">
+          <Skeleton className="h-9 w-9 rounded-full bg-white/10" />
+        </div>
+      ),
+      cell: (doc) =>
+        doc.status === "expired" ? (
+          <button
+            type="button"
+            className="whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2 text-xs font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+          >
+            {t("account.corporateTable.upload")}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+          >
+            <Download className="h-4 w-4" />
+          </button>
+        ),
+    },
+  ];
 
   return (
-    <PageCard>
-      <ResponsivePageWrapper>
-        {/* Mobile Header */}
-        <div className="flex items-center gap-3 bg-[#0F1415] p-4 text-white lg:hidden">
-          <Link href={withLocale("/account", locale)} className="rounded p-1 hover:bg-white/10">
-            <ArrowLeft className="h-6 w-6" />
-          </Link>
-          <span className="text-lg font-semibold">{t("account.menu.corporate")}</span>
-        </div>
-
-        {/* Desktop Header */}
-        <AccountHeader
-          title={t("accountHeader.title")}
-          description={t("accountHeader.description")}
-        />
-
-        <div className="hidden lg:block">
-          <AccountTabs active="corporate" />
-        </div>
-
-
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[260px_1fr] lg:gap-8 lg:items-start bg-[#1C2425] lg:bg-transparent rounded-3xl lg:rounded-none p-3 lg:p-0">
-          {/* Sub Navigation */}
-          <div className="flex gap-4 overflow-x-auto lg:flex-col lg:gap-2 shrink-0 bg-[#1C2425] p-6 rounded-[32px] lg:border lg:border-white/10">
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[241px_1fr] lg:items-start">
+      {/* Left sub-navigation (Şirket Bilgileri / Şirket Evrakları) */}
+      <div className="flex shrink-0 gap-2 overflow-x-auto rounded-[26px] bg-[#0E0F10] p-4 no-scrollbar lg:flex-col lg:gap-3 lg:p-6">
+        {([
+          { key: "info", icon: Building2, label: t("account.corporateMenu.info") },
+          { key: "docs", icon: FileText, label: t("account.corporateMenu.docs") },
+        ] as const).map(({ key, icon: Icon, label }) => {
+          const active = section === key;
+          return (
             <button
-              onClick={() => setCorpSection("info")}
-              className={`flex items-center gap-2 px-6 py-3 lg:px-4 lg:py-3 rounded-xl lg:rounded-lg text-sm font-semibold transition-all whitespace-nowrap lg:w-full lg:justify-start ${corpSection === "info" ? activeTabClass : inactiveTabClass
-                }`}
+              key={key}
+              type="button"
+              onClick={() => setSection(key)}
+              className={cn(
+                "flex items-center justify-between gap-1 whitespace-nowrap rounded-[12px] px-2 py-[10px] text-left transition-colors lg:w-full",
+                active ? "bg-[rgba(25,49,51,0.5)]" : "hover:bg-white/5",
+              )}
             >
-              <Building2 className={`h-5 w-5 ${corpSection === "info" ? "text-white" : "text-gray-400"}`} />
-              {t("account.corporateMenu.info")}
+              <span className="flex items-center gap-2">
+                <Icon className={cn("h-5 w-5 shrink-0", active ? "text-[#C7F022]" : "text-[#C5C9CC]")} />
+                <span className={cn("text-[13px] font-medium", active ? "text-[#C7F022]" : "text-[#F4F7F8]")}>
+                  {label}
+                </span>
+              </span>
+              <ChevronRight className="h-4 w-4 shrink-0 text-[#5E666A]" />
             </button>
-            <button
-              onClick={() => setCorpSection("docs")}
-              className={`flex items-center gap-2 px-6 py-3 lg:px-4 lg:py-3 rounded-xl lg:rounded-lg text-sm font-semibold transition-all whitespace-nowrap lg:w-full lg:justify-start ${corpSection === "docs" ? activeTabClass : inactiveTabClass
-                }`}
-            >
-              <FileText className={`h-5 w-5 ${corpSection === "docs" ? "text-white" : "text-gray-400"}`} />
-              {t("account.corporateMenu.docs")}
-            </button>
-          </div>
+          );
+        })}
+      </div>
 
-          {isLoading ? (
-            <div className="w-full bg-[#1C2425] p-6 lg:p-8 rounded-[32px]">
-              {corpSection === "info" ? <AccountProfileSkeleton /> : <AccountTableSkeleton />}
-            </div>
-          ) : corpSection === "info" ? (
-            <div className="space-y-6 w-full bg-[#1C2425] p-6 rounded-[32px]">
-              {/* Shareholder Info */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-white">{t("account.corporateInfo.title")}</h2>
-                </div>
-
-                <div className="space-y-4">
-                  {shareHoldersList.length === 0 ? (
-                    <div className="py-10 text-center text-gray-400 text-sm">
-                      {t("account.corporateInfo.noShareholder")}
-                    </div>
-                  ) : (
-                    shareHoldersList.map((s, idx) => (
-                      <div key={s.shareHolderId || idx} className="flex items-center justify-between py-4 border-b border-white/10 last:border-0">
-                        <div className="flex items-center gap-4">
-                          <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-white">
-                            <User className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-[#9B91FF]">{s.shareHolderName} {s.shareHolderSurname}</p>
-                            <p className="text-sm text-gray-400">{formatDate(s.shareHolderBirthDate)}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
+      {/* Right content */}
+      <div className="min-w-0">
+        {section === "info" ? (
+          <div className="space-y-6">
+            {/* Hissedar Bilgileri */}
+            <div className={CARD}>
+              <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.corporateInfo.title")}</h2>
+                <button
+                  type="button"
+                  onClick={() => openModal("add-shareholder", application)}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[#27E9A6] px-4 py-2 text-xs font-bold text-[#27E9A6] transition hover:bg-[#27E9A6]/10"
+                >
+                  <Plus className="h-4 w-4" />
+                  {t("account.corporateInfo.add")}
+                </button>
               </div>
 
-              {/* Account Authority */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-white">{t("account.corporateInfo.managerTitle")}</h2>
-                  <button
-                    onClick={() => openModal("update-account-authority", application)}
-                    className="flex items-center gap-1.5 px-4 h-9 border border-white/20 rounded-full text-gray-300 text-sm font-semibold hover:bg-white/5 transition-colors"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                    {t("account.corporateInfo.edit")}
-                  </button>
+              {isLoading ? (
+                <div className="space-y-3 py-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <Skeleton key={i} className="h-14 w-full bg-white/10" />
+                  ))}
                 </div>
-
-                <div className="space-y-1">
-                  {[
-                    { label: t("account.profile.idNumber"), content: application?.userIdentityNumber || "-" },
-                    { label: t("account.profile.birthDate"), content: formatDate(application?.userBirthDate) },
-                    { label: t("account.profile.email"), content: application?.email || "-" },
-                  ].map((row) => (
+              ) : shareHoldersList.length === 0 ? (
+                <p className="py-8 text-center text-sm text-[#788084]">{t("account.corporateInfo.noShareholder")}</p>
+              ) : (
+                <div className="flex flex-col py-3">
+                  {shareHoldersList.map((s, idx) => (
                     <div
-                      key={row.label}
-                      className="flex flex-col gap-2 border-b border-white/10 py-5 last:border-b-0 md:grid md:grid-cols-[240px_1fr] md:gap-0 md:items-center"
+                      key={s.shareHolderId || idx}
+                      className="flex items-center justify-between gap-4 border-b border-[#3A4043] py-3 last:border-b-0"
                     >
-                      <span className="text-sm font-medium text-[#9B91FF]">{row.label}</span>
-                      <div className="text-sm text-gray-300">{row.content}</div>
+                      <div className="flex items-center gap-2">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#8F93FE]/10 text-[#8F93FE]">
+                          <User className="h-5 w-5" />
+                        </span>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+                            {s.shareHolderName} {s.shareHolderSurname}
+                          </span>
+                          <span className="text-sm text-[#5E666A]">{t("account.corporateInfo.role")}</span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        aria-label={t("account.bank.actions.delete")}
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#FF4D6D] text-[#FF4D6D] transition hover:bg-[#FF4D6D]/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
                   ))}
                 </div>
-              </div>
+              )}
             </div>
-          ) : (
-            /* Corporate Documents */
-            <div className="w-full">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-lg font-semibold text-white">{t("account.corporateTable.title")}</h2>
-                <span className="text-sm text-gray-400">{t("account.corporateTable.resultCount", { count: "120" })}</span>
-              </div>
 
-              <div className="relative mb-6">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder={t("account.corporateTable.searchPlaceholder")}
-                  className="w-full pl-11 pr-4 py-3 rounded-lg border border-white/10 bg-white/5 text-white shadow-sm placeholder:text-gray-500 focus:ring-2 focus:ring-white/20 focus:border-white/20 outline-none"
-                />
-              </div>
-
-              {/* Desktop Table */}
-              <div className="hidden md:block overflow-hidden rounded-xl border border-white/10 mt-6">
-                <table className="min-w-full divide-y divide-white/10">
-                  <thead className="bg-white/5">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">{t("account.corporateTable.headers.product")}</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">{t("account.corporateTable.headers.approveDate")}</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">{t("account.corporateTable.headers.validDate")}</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">{t("account.corporateTable.headers.status")}</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">{t("account.corporateTable.headers.action")}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-[#1C2425] divide-y divide-white/10">
-                    {corpDocs.map((doc, idx) => (
-                      <tr key={idx}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
-                          {t(`account.corporateTable.documents.${doc.key}`)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{doc.approve}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{doc.valid}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${doc.status === 'approved'
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                            : 'bg-red-500/10 text-red-400 border-red-500/30'
-                            }`}>
-                            {doc.status === 'approved'
-                              ? t("account.corporateTable.status.approved")
-                              : t("account.corporateTable.status.expired")}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                          <button className="p-2 hover:bg-white/10 rounded-full border border-white/15">
-                            <Download className="h-4 w-4 text-gray-300" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Mobile Card List */}
-              <div className="md:hidden space-y-4 mt-6">
-                {corpDocs.map((doc, idx) => (
-                  <div key={idx} className="border border-white/10 rounded-2xl p-5 hover:bg-white/5 transition-all bg-[#1C2425]">
-                    <div className="flex items-start justify-between mb-4">
-                      <span className="text-base font-medium text-white pr-4">
-                        {t(`account.corporateTable.documents.${doc.key}`)}
-                      </span>
-                      <button className="p-2 hover:bg-white/10 rounded-full border border-white/15 shrink-0">
-                        <Download className="h-4 w-4 text-gray-300" />
-                      </button>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">{t("account.corporateTable.headers.approveDate")}</span>
-                        <span className="font-medium text-white">{doc.approve}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">{t("account.corporateTable.headers.validDate")}</span>
-                        <span className="font-medium text-white">{doc.valid}</span>
-                      </div>
-                      <div className="flex justify-between items-center text-sm pt-2 border-t border-white/10">
-                        <span className="text-gray-400">{t("account.corporateTable.headers.status")}</span>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${doc.status === 'approved'
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                          : 'bg-red-500/10 text-red-400 border-red-500/30'
-                          }`}>
-                          {doc.status === 'approved'
-                            ? t("account.corporateTable.status.approved")
-                            : t("account.corporateTable.status.expired")}
+            {/* Hesap Yetkilisi */}
+            <div className={CARD}>
+              <h2 className="mb-2 text-lg font-medium text-[#F4F7F8]">{t("account.corporateInfo.managerTitle")}</h2>
+              <div className="flex flex-col py-3">
+                {(isLoading
+                  ? Array.from({ length: 5 }).map((_, i) => ({ label: "", value: "", _i: i }))
+                  : authorityRows
+                ).map((row, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col gap-2 border-b border-[#3A4043] py-5 last:border-b-0 md:flex-row md:items-center md:gap-[120px]"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Skeleton className="h-5 w-[160px] bg-white/10" />
+                        <Skeleton className="h-4 w-40 bg-white/10" />
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-[200px] shrink-0 text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+                          {row.label}
                         </span>
-                      </div>
-                    </div>
+                        <span className="break-all text-base text-[#C5C9CC]">{row.value}</span>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
-          )}
-        </div>
-      </ResponsivePageWrapper>
-    </PageCard>
+          </div>
+        ) : (
+          <div className="space-y-6 rounded-[26px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
+            <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.corporateTable.title")}</h2>
+
+            <div className="relative w-full max-w-[500px]">
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#5E666A]" />
+              <input
+                type="text"
+                placeholder={t("account.corporateTable.searchPlaceholder")}
+                className="h-10 w-full rounded-[24px] border border-[#3A4043] bg-[#0E0F10] pl-10 pr-3 text-sm text-[#F4F7F8] outline-none transition placeholder:text-[#5E666A] focus:border-[#5E666A]"
+              />
+            </div>
+
+            <DataTable<CorpDoc>
+              columns={columns}
+              data={docs}
+              isLoading={isLoading}
+              skeletonRows={5}
+              tableLayout="fixed"
+              getRowId={(doc) => doc.key}
+              rowClassName={() => "hover:[&>td]:bg-[#121516]"}
+            />
+
+            {!isLoading && (
+              <div className="mt-2 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm text-[#788084]">
+                  <span>{t("wallet.table.pagination.perPage")}</span>
+                  <span className="text-[#F4F7F8]">8</span>
+                </div>
+                <Pagination currentPage={docPage} totalPages={DOC_PAGE_COUNT} onPageChange={setDocPage} />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

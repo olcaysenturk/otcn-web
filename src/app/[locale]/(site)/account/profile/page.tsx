@@ -1,106 +1,82 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { format } from "date-fns";
+import { toast } from "sonner";
+
 import { useI18n } from "@/lib/i18n/I18nProvider";
-import { AccountTabs } from "@/components/account/AccountTabs";
-import { AccountHeader } from "@/components/account/AccountHeader";
-import { PageCard } from "@/components/ui/page-card";
-import { ResponsivePageWrapper } from "@/components/ui/responsive-page-wrapper";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { withLocale } from "@/lib/i18n/href";
+import { getDateFnsLocale } from "@/lib/i18n/dateFnsLocale";
 import { getAccountInfo } from "@/services/account";
 import { AccountInfo } from "@/types/account";
-import { format } from "date-fns";
-import { getDateFnsLocale } from "@/lib/i18n/dateFnsLocale";
-import { toast } from "sonner";
-import { AccountProfileSkeleton } from "@/components/account/AccountSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AccountProfilePage() {
-    const { t, locale } = useI18n();
-    const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const { t, locale } = useI18n();
+  const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    const fetchAccountInfo = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const data = await getAccountInfo();
-            if (data) {
-                setAccountInfo(data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch account info", error);
-            toast.error(t("common.error"));
-        } finally {
-            setIsLoading(false);
-        }
-    }, [t]);
+  const fetchAccountInfo = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await getAccountInfo();
+      if (data) setAccountInfo(data);
+    } catch (error) {
+      console.error("Failed to fetch account info", error);
+      toast.error(t("common.error"));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [t]);
 
-    useEffect(() => {
-        fetchAccountInfo();
-    }, [fetchAccountInfo]);
+  useEffect(() => {
+    fetchAccountInfo();
+  }, [fetchAccountInfo]);
 
-    const formatDate = (dateStr?: string) => {
-        if (!dateStr) return "-";
-        try {
-            return format(new Date(dateStr), "dd.MM.yyyy", {
-                locale: getDateFnsLocale(locale)
-            });
-        } catch (e) {
-            return dateStr;
-        }
-    };
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return "-";
+    try {
+      return format(new Date(dateStr), "dd.MM.yyyy", { locale: getDateFnsLocale(locale) });
+    } catch {
+      return dateStr;
+    }
+  };
 
-    const profileData = [
-        { label: t("account.profile.fullName"), content: accountInfo ? `${accountInfo.firstName} ${accountInfo.lastName}` : "-" },
-        { label: t("account.profile.email"), content: accountInfo?.email || "-" },
-        { label: t("account.profile.phone"), content: accountInfo?.phoneNumber || "-" },
-        { label: t("account.profile.idNumber"), content: accountInfo?.identityNumber || "-" },
-        { label: t("account.profile.birthDate"), content: formatDate(accountInfo?.dateOfBirth) },
-    ];
+  const rows = [
+    { label: t("account.profile.fullName"), value: accountInfo ? `${accountInfo.firstName} ${accountInfo.lastName}` : "-" },
+    { label: t("account.profile.email"), value: accountInfo?.email || "-" },
+    { label: t("account.profile.phone"), value: accountInfo?.phoneNumber || "-" },
+    { label: t("account.profile.idNumber"), value: accountInfo?.identityNumber || "-" },
+    { label: t("account.profile.birthDate"), value: formatDate(accountInfo?.dateOfBirth) },
+    { label: t("account.profile.customerNo"), value: accountInfo?.accountNumber || "-" },
+  ];
 
-    return (
-        <PageCard>
-            <ResponsivePageWrapper>
-                {/* Mobile Header */}
-                <div className="flex items-center gap-3 bg-[#0F1415] p-4 text-white lg:hidden mb-6">
-                    <Link href={withLocale("/account", locale)} className="rounded p-1 hover:bg-white/10">
-                        <ArrowLeft className="h-6 w-6" />
-                    </Link>
-                    <span className="text-lg font-semibold">{t("account.menu.profile")}</span>
-                </div>
+  return (
+    <div className="rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
+      <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.menu.profile")}</h2>
 
-                {/* Desktop Header */}
-                <AccountHeader
-                    title={t("accountHeader.title")}
-                    description={t("accountHeader.description")}
-                />
-
-                <div className="hidden lg:block">
-                    <AccountTabs active="profile" />
-                </div>
-
-                {/* Profile Info Card */}
-                <div className="bg-[#1C2425] rounded-3xl p-6 lg:p-8 border border-white/10 min-h-[calc(100vh-94px)] flex flex-col">
-                    <h2 className="mb-6 text-lg font-semibold text-white hidden lg:block">{t("account.menu.profile")}</h2>
-
-                    {isLoading ? (
-                        <AccountProfileSkeleton />
-                    ) : (
-                        <div className="space-y-1">
-                            {profileData.map((row) => (
-                                <div
-                                    key={row.label}
-                                    className="flex flex-col gap-2 border-b border-white/10 py-5 last:border-b-0 lg:grid lg:grid-cols-[240px_1fr] lg:gap-0 lg:items-center"
-                                >
-                                    <span className="text-sm font-medium text-[#9B91FF]">{row.label}</span>
-                                    <div className="text-sm text-gray-300">{row.content}</div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </ResponsivePageWrapper>
-        </PageCard>
-    );
+      <div className="mt-3 flex flex-col">
+        {isLoading
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex flex-col gap-2 border-b border-[#3A4043] py-5 last:border-b-0 md:flex-row md:items-center md:gap-[120px]"
+              >
+                <Skeleton className="h-5 w-[160px] bg-white/10" />
+                <Skeleton className="h-4 w-48 bg-white/10" />
+              </div>
+            ))
+          : rows.map((row) => (
+              <div
+                key={row.label}
+                className="flex flex-col gap-2 border-b border-[#3A4043] py-5 last:border-b-0 md:flex-row md:items-center md:gap-[120px]"
+              >
+                <span className="w-[200px] shrink-0 text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+                  {row.label}
+                </span>
+                <span className="break-all text-base text-[#C5C9CC]">{row.value}</span>
+              </div>
+            ))}
+      </div>
+    </div>
+  );
 }

@@ -1,11 +1,3 @@
-"use client";
-
-import { useMemo } from "react";
-import { useRouter } from "next/navigation";
-
-import { useI18n } from "@/lib/i18n/I18nProvider";
-import { withLocale } from "@/lib/i18n/href";
-
 export const ACCOUNT_TABS = [
   "profile",
   "corporate",
@@ -24,40 +16,15 @@ export const ACCOUNT_TAB_PATH: Record<(typeof ACCOUNT_TABS)[number], string> = {
   preferences: "/account/preferences",
 };
 
-export function AccountTabs({ active }: { active: (typeof ACCOUNT_TABS)[number] }) {
-  const { t, locale } = useI18n();
-  const router = useRouter();
-
-  const labels = useMemo(
-    () => ({
-      profile: t("account.menu.profile"),
-      corporate: t("account.menu.corporate"),
-      bank: t("account.menu.bank"),
-      address: t("account.menu.address"),
-      security: t("account.menu.security"),
-      preferences: t("account.menu.preferences"),
-    }),
-    [t],
-  );
-
-  const goTab = (key: (typeof ACCOUNT_TABS)[number]) => router.push(withLocale(ACCOUNT_TAB_PATH[key] ?? "/account", locale));
-
-  return (
-    <div className="hidden w-full md:flex flex-wrap gap-1 overflow-x-auto no-scrollbar">
-      {ACCOUNT_TABS.map((key) => (
-        <button
-          key={key}
-          onClick={() => goTab(key)}
-          className={[
-            "shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200",
-            key === active
-              ? "bg-white text-[#0F1415] shadow-sm"
-              : "text-gray-400 hover:text-white",
-          ].join(" ")}
-        >
-          {labels[key]}
-        </button>
-      ))}
-    </div>
-  );
+/**
+ * The desktop account tabs are now rendered once by the account route-segment
+ * layout (`account/layout.tsx`) with an animated indicator. This component is a
+ * no-op kept only so legacy pages that still render it don't show a duplicate tab
+ * bar during the incremental migration. The `ACCOUNT_TABS` / `ACCOUNT_TAB_PATH`
+ * exports are still used by the mobile `AccountMenuClient`. Remove call sites as
+ * each page is migrated to content-only.
+ */
+export function AccountTabs(_props: { active: (typeof ACCOUNT_TABS)[number] }) {
+  void _props;
+  return null;
 }

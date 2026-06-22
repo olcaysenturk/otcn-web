@@ -1511,9 +1511,16 @@
       "address": "Address Management",
       "security": "Security",
       "user": "User Management",
+      "reports": "Financial Reports",
       "activity": "Activity",
       "notification": "Communication Permissions",
       "preferences": "Preferences"
+    },
+    "activity": {
+      "sessionTitle": "Session Management ({{count}} active sessions)",
+      "deviceTitle": "Device Management ({{count}} device)",
+      "active": "Currently active",
+      "logout": "Log Out"
     },
     "profile": {
       "photo": "Profile Photo",
@@ -1522,6 +1529,7 @@
       "phone": "Phone Number",
       "idNumber": "ID Number",
       "birthDate": "Date of Birth",
+      "customerNo": "Customer No",
       "closeTitle": "Close Account",
       "closeDesc": "If you close your account, you will need to be re-invited by your Corporate Account admin to regain access.",
       "closeCta": "Close Account"
@@ -1718,6 +1726,15 @@
       "viewSummaries": "Review reports and summaries"
     }
   },
+  "reportsPage": {
+    "title": "Reports",
+    "dailyTab": "Daily Transaction Report",
+    "monthlyTab": "Monthly Account Statement",
+    "year": "Report Year",
+    "selection": "Month & Day Selection",
+    "cancel": "Cancel",
+    "generate": "Generate Report"
+  },
   "notificationPage": {
     "title": "Notifications",
     "blockedTitle": "Notifications blocked",
@@ -1728,6 +1745,10 @@
     "preferenceDesc": "Choose your notification preferences.",
     "customizeTitle": "Customize",
     "customizeDesc": "Tailor your notification settings.",
+    "smsLabel": "SMS",
+    "smsDesc": "Notifications about important updates and transactions are sent via SMS.",
+    "emailLabel": "E-mail",
+    "emailDesc": "Notifications are sent to your email for logins, important transactions, and updates.",
     "edit": "Edit"
   },
   "preferencesPage": {

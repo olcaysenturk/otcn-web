@@ -1,27 +1,21 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ChevronDown, Plus, Search, Trash2 } from "lucide-react";
+import { ChevronDown, Plus, Search, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
-import { AccountHeader } from "@/components/account/AccountHeader";
-import { AccountTableSkeleton } from "@/components/account/AccountSkeleton";
-import { AccountTabs } from "@/components/account/AccountTabs";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
-import { PageCard } from "@/components/ui/page-card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Pagination } from "@/components/ui/pagination";
-import { ResponsivePageWrapper } from "@/components/ui/responsive-page-wrapper";
-import { SearchInput } from "@/components/ui/search-input";
+import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { withLocale } from "@/lib/i18n/href";
 import { getApiLocale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { getCoinIconPath } from "@/lib/coinIcons";
 import { useModalStore } from "@/stores/useModalStore";
 import { deleteCryptoAddress, fetchCryptoAssets, getCryptoAddresses } from "@/services/crypto";
 import type { CryptoAddress } from "@/types/crypto";
-import { toast } from "sonner";
 
 type AddressRow = {
   id?: number;
@@ -36,42 +30,10 @@ type AddressRow = {
 
 const DEFAULT_PAGE_SIZE = 8;
 const EMPTY_STATE_MOCK_ROWS: AddressRow[] = [
-  {
-    coin: "BNB",
-    name: "BNB",
-    label: "BEP20 Wallet",
-    address: "0x3fA9...8D12",
-    memo: "-",
-    network: "BNB Smart Chain (BEP20)",
-    icon: "/assets/coin-logo/BNB.svg",
-  },
-  {
-    coin: "ETH",
-    name: "ETH",
-    label: "Main Wallet",
-    address: "0xA21c...C53F",
-    memo: "-",
-    network: "Ethereum (ERC20)",
-    icon: "/assets/coin-logo/ETH.svg",
-  },
-  {
-    coin: "USDT",
-    name: "USDT",
-    label: "TRC20 Wallet",
-    address: "TV9e...p4Km",
-    memo: "-",
-    network: "Tron (TRC20)",
-    icon: "/assets/coin-logo/USDT.svg",
-  },
-  {
-    coin: "TRX",
-    name: "TRX",
-    label: "TRON Wallet",
-    address: "TAx8...mQp9",
-    memo: "-",
-    network: "Tron (TRC20)",
-    icon: "/assets/coin-logo/TRX.svg",
-  },
+  { coin: "BNB", name: "BNB", label: "BEP20 Wallet", address: "0x3fA9...8D12", memo: "-", network: "BNB Smart Chain (BEP20)", icon: "/assets/coin-logo/BNB.svg" },
+  { coin: "ETH", name: "ETH", label: "Main Wallet", address: "0xA21c...C53F", memo: "-", network: "Ethereum (ERC20)", icon: "/assets/coin-logo/ETH.svg" },
+  { coin: "USDT", name: "USDT", label: "TRC20 Wallet", address: "TV9e...p4Km", memo: "-", network: "Tron (TRC20)", icon: "/assets/coin-logo/USDT.svg" },
+  { coin: "TRX", name: "TRX", label: "TRON Wallet", address: "TAx8...mQp9", memo: "-", network: "Tron (TRC20)", icon: "/assets/coin-logo/TRX.svg" },
 ];
 
 function toAddressRows(items: CryptoAddress[]): AddressRow[] {
@@ -96,7 +58,6 @@ export default function AccountAddressPage() {
   const apiLocale = getApiLocale(locale);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [allAddresses, setAllAddresses] = useState<AddressRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,13 +77,8 @@ export default function AccountAddressPage() {
         ),
       );
 
-      const responses = await Promise.allSettled(
-        symbols.map((symbol) => getCryptoAddresses(symbol, apiLocale)),
-      );
-
-      const merged = responses.flatMap((response) =>
-        response.status === "fulfilled" ? response.value : [],
-      );
+      const responses = await Promise.allSettled(symbols.map((symbol) => getCryptoAddresses(symbol, apiLocale)));
+      const merged = responses.flatMap((response) => (response.status === "fulfilled" ? response.value : []));
 
       const uniqueRows = Array.from(
         new Map(
@@ -150,12 +106,12 @@ export default function AccountAddressPage() {
   const filteredAddresses = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return allAddresses;
-
-    return allAddresses.filter((addr) =>
-      addr.name.toLowerCase().includes(q) ||
-      addr.coin.toLowerCase().includes(q) ||
-      addr.network.toLowerCase().includes(q) ||
-      addr.address.toLowerCase().includes(q),
+    return allAddresses.filter(
+      (addr) =>
+        addr.name.toLowerCase().includes(q) ||
+        addr.coin.toLowerCase().includes(q) ||
+        addr.network.toLowerCase().includes(q) ||
+        addr.address.toLowerCase().includes(q),
     );
   }, [allAddresses, searchQuery]);
 
@@ -168,46 +124,32 @@ export default function AccountAddressPage() {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
+    if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
 
-  const searchResults = useMemo(
-    () =>
-      filteredAddresses.slice(0, 5).map((item) => ({
-        name: item.name,
-        symbol: item.coin,
-      })),
-    [filteredAddresses],
-  );
   const isAddressBookEmpty = hasLoaded && !isLoading && allAddresses.length === 0;
-  const hasNoSearchResult = hasLoaded && !isLoading && allAddresses.length > 0 && filteredAddresses.length === 0;
-  const desktopRows = isAddressBookEmpty ? EMPTY_STATE_MOCK_ROWS : pageItems;
+  const tableData = isAddressBookEmpty ? EMPTY_STATE_MOCK_ROWS : pageItems;
 
   const handleOpenAddAddress = () => openModal("add-crypto-address", { onSuccess: loadAddresses });
 
   const onConfirmDelete = async () => {
     if (!addressToDelete) return;
-
     setIsDeleting(true);
     try {
       let deleteId = addressToDelete.id;
-
       if (!deleteId) {
         const whitelistRows = await getCryptoAddresses(addressToDelete.coin, apiLocale);
-        const match = whitelistRows.find((row) =>
-          row.address?.trim().toLowerCase() === addressToDelete.address.trim().toLowerCase() &&
-          row.networkName?.trim().toLowerCase() === addressToDelete.network.trim().toLowerCase(),
+        const match = whitelistRows.find(
+          (row) =>
+            row.address?.trim().toLowerCase() === addressToDelete.address.trim().toLowerCase() &&
+            row.networkName?.trim().toLowerCase() === addressToDelete.network.trim().toLowerCase(),
         );
         deleteId = match?.id;
       }
-
       if (!deleteId) {
         toast.error(t("common.error"));
         return;
       }
-
       const result = await deleteCryptoAddress(deleteId);
       if (result.success) {
         toast.success(t("common.success"));
@@ -223,332 +165,155 @@ export default function AccountAddressPage() {
     }
   };
 
+  const columns: DataTableColumn<AddressRow>[] = [
+    {
+      id: "coin",
+      header: t("account.address.columns.coin"),
+      width: "24%",
+      skeleton: (
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-8 w-8 rounded-full bg-white/10" />
+          <Skeleton className="h-4 w-20 bg-white/10" />
+        </div>
+      ),
+      cell: (row) => (
+        <div className="flex items-center gap-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10">
+            <Image src={row.icon} alt={row.coin} width={32} height={32} className="h-full w-full object-cover" />
+          </span>
+          <span className="flex items-baseline gap-1">
+            <span className="font-medium text-[#F4F7F8]">{row.name}</span>
+            <span className="text-xs text-[#C5C9CC]">({row.coin})</span>
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: "label",
+      header: t("account.address.columns.label"),
+      width: "22%",
+      cellClassName: "text-[#F4F7F8]",
+      skeleton: <Skeleton className="h-4 w-32 bg-white/10" />,
+      cell: (row) => <span className="line-clamp-2">{row.label}</span>,
+    },
+    {
+      id: "address",
+      header: t("account.address.columns.address"),
+      width: "28%",
+      cellClassName: "text-[#F4F7F8]",
+      skeleton: <Skeleton className="h-4 w-40 bg-white/10" />,
+      cell: (row) => <span className="block truncate">{row.address}</span>,
+    },
+    {
+      id: "memo",
+      header: t("account.address.columns.tag"),
+      width: "16%",
+      cellClassName: "text-[#F4F7F8]",
+      skeleton: <Skeleton className="h-4 w-16 bg-white/10" />,
+      cell: (row) => row.memo,
+    },
+    {
+      id: "action",
+      header: "",
+      width: "10%",
+      align: "right",
+      hideOnMobile: true,
+      skeleton: (
+        <div className="flex justify-end">
+          <Skeleton className="h-9 w-9 rounded-full bg-white/10" />
+        </div>
+      ),
+      cell: (row) => (
+        <div className="flex justify-end">
+          <button
+            type="button"
+            aria-label={t("account.bank.actions.delete")}
+            onClick={() => setAddressToDelete(row)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#FF4D6D] text-[#FF4D6D] transition hover:bg-[#FF4D6D]/10"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
   return (
-    <PageCard>
-      <ResponsivePageWrapper>
-        <div className="mb-6 flex items-center gap-3 bg-[#0F1415] p-4 text-white lg:hidden">
-          <Link href={withLocale("/account", locale)} className="rounded p-1 hover:bg-white/10">
-            <ArrowLeft className="h-6 w-6" />
-          </Link>
-          <span className="text-lg font-semibold">{t("account.address.title")}</span>
-        </div>
+    <div className="rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
+      <div className="flex items-center justify-between gap-4">
+        <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.address.safeTitle")}</h2>
+        <button
+          type="button"
+          onClick={handleOpenAddAddress}
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#27E9A6] px-4 py-2 text-xs font-bold text-[#27E9A6] transition hover:bg-[#27E9A6]/10"
+        >
+          <Plus className="h-4 w-4" />
+          {t("account.address.add")}
+        </button>
+      </div>
 
-        <AccountHeader
-          title={t("accountHeader.title")}
-          description={t("accountHeader.description")}
+      <div className="relative mt-4 w-full max-w-[500px]">
+        <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#5E666A]" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={t("account.address.searchPlaceholder")}
+          className="h-10 w-full rounded-[24px] border border-[#3A4043] bg-[#0E0F10] pl-10 pr-3 text-sm text-[#F4F7F8] outline-none transition placeholder:text-[#5E666A] focus:border-[#5E666A]"
         />
+      </div>
 
-        <div className="hidden lg:block">
-          <AccountTabs active="address" />
+      <div className="relative mt-6">
+        <div className={isAddressBookEmpty ? "pointer-events-none select-none opacity-40 blur-[3px]" : undefined}>
+          <DataTable<AddressRow>
+            columns={columns}
+            data={tableData}
+            isLoading={isLoading}
+            skeletonRows={5}
+            tableLayout="fixed"
+            getRowId={(row, index) => (row.id ? `id-${row.id}` : `${row.coin}-${row.address}-${index}`)}
+            rowClassName={() => "hover:[&>td]:bg-[#121516]"}
+            empty={<EmptyState title={t("account.address.empty.title")} description={t("account.address.empty.description")} />}
+          />
         </div>
 
-        <div className="rounded-[32px] border border-white/10 bg-[#1C2425] p-6 lg:p-8">
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex w-full items-center gap-4 lg:w-auto">
-              {showMobileSearch ? (
-                <div className="flex w-full items-center gap-3 animate-in fade-in zoom-in-95 duration-200">
-                  <SearchInput
-                    placeholder={t("account.address.searchPlaceholder")}
-                    results={searchResults}
-                    className="w-full"
-                    onSearch={setSearchQuery}
-                  />
-                  <button
-                    onClick={() => {
-                      setShowMobileSearch(false);
-                      setSearchQuery("");
-                    }}
-                    className="whitespace-nowrap text-sm font-medium text-white"
-                  >
-                    {t("account.address.cancel")}
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <h2 className="text-lg font-semibold text-white">{t("account.address.safeTitle")}</h2>
-                  <span className="text-sm text-gray-500 lg:hidden">
-                    {t("account.address.resultCount", { count: String(filteredAddresses.length) })}
-                  </span>
-                </>
-              )}
-            </div>
+        {isAddressBookEmpty && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
+            <h3 className="text-2xl font-bold text-[#F4F7F8]">{t("account.address.empty.title")}</h3>
+            <p className="mx-auto mt-2 max-w-[431px] text-lg text-[#C5C9CC]">{t("account.address.empty.description")}</p>
             <button
+              type="button"
               onClick={handleOpenAddAddress}
-              className="hidden h-9 items-center gap-1.5 rounded-full border border-[#25B88A] px-4 text-sm font-semibold text-[#25B88A] transition-colors hover:bg-emerald-500/10 lg:flex"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-[14px] bg-[#C7F022] px-5 py-3 text-sm font-bold text-[#0E0F10] transition hover:opacity-90"
             >
               <Plus className="h-4 w-4" />
               {t("account.address.empty.action")}
             </button>
           </div>
+        )}
+      </div>
 
-          <div className="mb-6 hidden lg:block">
-            <SearchInput
-              placeholder={t("account.address.searchPlaceholder")}
-              results={searchResults}
-              className="w-[500px]"
-              onSearch={setSearchQuery}
-            />
+      {!isAddressBookEmpty && !isLoading && filteredAddresses.length > 0 && (
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-[#5E666A]">
+            <span>{t("account.address.perPage")}</span>
+            <span className="text-[#F4F7F8]">8</span>
+            <ChevronDown className="h-4 w-4" />
           </div>
-
-          {!showMobileSearch && !isAddressBookEmpty && (
-            <div className="mb-6 flex items-center gap-3 lg:hidden">
-              <button
-                onClick={() => setShowMobileSearch(true)}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-300"
-              >
-                <Search className="h-5 w-5" />
-              </button>
-              <button
-                onClick={handleOpenAddAddress}
-                className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-full border border-[#25B88A] bg-transparent px-4 text-sm font-semibold text-[#25B88A] transition-colors hover:bg-emerald-500/10"
-              >
-                <Plus className="h-4 w-4" />
-                {t("account.address.empty.action")}
-              </button>
-            </div>
-          )}
-
-          {isLoading ? (
-            <>
-              <div className="space-y-4 lg:hidden">
-                {Array.from({ length: 3 }).map((_, idx) => (
-                  <div key={idx} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                    <div className="mb-6 flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <Skeleton className="h-10 w-10 rounded-full bg-white/10" />
-                        <div className="space-y-2">
-                          <Skeleton className="h-4 w-28 bg-white/10" />
-                          <Skeleton className="h-3 w-16 bg-white/10" />
-                        </div>
-                      </div>
-                      <Skeleton className="h-8 w-8 rounded-full bg-white/10" />
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Skeleton className="h-3 w-12 bg-white/10" />
-                        <Skeleton className="h-4 w-32 bg-white/10" />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <Skeleton className="h-3 w-12 bg-white/10" />
-                        <Skeleton className="h-4 w-40 bg-white/10" />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <Skeleton className="h-3 w-16 bg-white/10" />
-                        <Skeleton className="h-4 w-20 bg-white/10" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="hidden lg:block">
-                <AccountTableSkeleton />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="space-y-4 lg:hidden">
-                {isAddressBookEmpty ? (
-                  <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4 min-h-[540px]">
-                    <div className="space-y-4 opacity-45 blur-[1.5px] pointer-events-none select-none">
-                      {EMPTY_STATE_MOCK_ROWS.map((addr, idx) => (
-                        <div key={`${addr.coin}-${idx}`} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                          <div className="mb-6 flex items-start justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-white/10">
-                                <Image src={addr.icon} alt={addr.coin} width={40} height={40} className="h-full w-full object-cover" />
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-base font-semibold text-white">{addr.name}</span>
-                                <span className="text-sm text-gray-500">({addr.coin})</span>
-                              </div>
-                            </div>
-                            <div className="h-8 w-8 rounded-full border border-red-500/30" />
-                          </div>
-
-                          <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">{t("account.address.columns.label")}</span>
-                              <span className="text-right text-sm font-medium text-white">{addr.label}</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">{t("account.address.columns.address")}</span>
-                              <span className="max-w-[200px] truncate text-right font-mono text-sm font-medium text-white">{addr.address}</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">{t("account.address.columns.tag")}</span>
-                              <span className="text-right text-sm font-medium text-white">{addr.memo}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#0F1415]/70 px-6 text-center backdrop-blur-[2px]">
-                      <Image
-                        src="/assets/images/auth-logo.png"
-                        alt="OTCN"
-                        width={64}
-                        height={64}
-                        className="mb-4 h-16 w-16"
-                      />
-                      <h3 className="text-xl font-bold text-white">{t("account.address.empty.title")}</h3>
-                      <p className="mx-auto mt-2 max-w-[300px] text-lg leading-[1.35] text-gray-400">
-                        {t("account.address.empty.description")}
-                      </p>
-                      <button
-                        type="button"
-                        onClick={handleOpenAddAddress}
-                        className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#C8FF00] px-6 text-sm font-semibold text-[#0F1415] transition-opacity hover:opacity-90"
-                      >
-                        {t("account.address.empty.action")}
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  pageItems.map((addr, idx) => (
-                    <div key={`${addr.id ?? addr.address}-${idx}`} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-6 flex items-start justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-white/10">
-                            <Image src={addr.icon} alt={addr.coin} width={40} height={40} className="h-full w-full object-cover" />
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-base font-semibold text-white">{addr.name}</span>
-                            <span className="text-sm text-gray-500">({addr.coin})</span>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setAddressToDelete(addr)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500">{t("account.address.columns.label")}</span>
-                          <span className="text-right text-sm font-medium text-white">{addr.label}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500">{t("account.address.columns.address")}</span>
-                          <span className="max-w-[200px] truncate text-right font-mono text-sm font-medium text-white">{addr.address}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500">{t("account.address.columns.tag")}</span>
-                          <span className="text-right text-sm font-medium text-white">{addr.memo}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <div className="relative hidden min-h-[400px] overflow-x-auto lg:block">
-                <table className="w-full min-w-[800px] border-separate border-spacing-y-2">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-400">{t("account.address.columns.coin")}</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-400">{t("account.address.columns.label")}</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-400">{t("account.address.columns.address")}</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-400">{t("account.address.columns.tag")}</th>
-                      <th className="px-6 py-4 text-right" />
-                    </tr>
-                  </thead>
-                  <tbody className={isAddressBookEmpty ? "space-y-2 opacity-40 blur-[1px]" : "space-y-2"}>
-                    {desktopRows.map((addr, idx) => (
-                      <tr key={`${addr.id ?? addr.address}-${idx}`} className="group rounded-3xl border border-white/10 bg-white/5">
-                        <td className="whitespace-nowrap px-6 py-4 first:rounded-l-2xl">
-                          <div className="flex items-center gap-4">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10">
-                              <Image src={addr.icon} alt={addr.coin} width={40} height={40} className="h-full w-full object-cover" />
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="text-sm font-bold text-white">{addr.name}</span>
-                              <span className="text-xs uppercase text-gray-500">{addr.coin}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-white">{addr.label}</td>
-                        <td className="whitespace-nowrap px-6 py-4 font-mono text-sm font-medium text-white">{addr.address}</td>
-                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-white">{addr.memo}</td>
-                        <td className="whitespace-nowrap px-6 py-4 text-right last:rounded-r-2xl">
-                          <button
-                            onClick={() => setAddressToDelete(addr)}
-                            disabled={isAddressBookEmpty}
-                            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-red-500/30 text-red-400 transition-colors hover:bg-red-500/10"
-                          >
-                            <Trash2 className="h-5 w-5" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {hasNoSearchResult && (
-                  <div className="py-16 text-center text-sm text-gray-400">{t("account.address.noRecords")}</div>
-                )}
-
-                {isAddressBookEmpty && (
-                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-[24px] bg-[#0F1415]/70 backdrop-blur-[2px]">
-                    <div className="pointer-events-auto flex max-w-[420px] flex-col items-center text-center">
-                      <Image
-                        src="/assets/images/auth-logo.png"
-                        alt="OTCN"
-                        width={84}
-                        height={84}
-                        className="mb-5 h-[84px] w-[84px]"
-                      />
-                      <h3 className="text-2xl font-bold text-white">{t("account.address.empty.title")}</h3>
-                      <p className="mt-3 text-lg text-gray-400">
-                        {t("account.address.empty.description")}
-                      </p>
-                      <button
-                        type="button"
-                        onClick={handleOpenAddAddress}
-                        className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#C8FF00] px-7 text-sm font-semibold text-[#0F1415] transition-opacity hover:opacity-90"
-                      >
-                        {t("account.address.empty.action")}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
-          {!isAddressBookEmpty && (
-            <div className="mt-8 flex flex-col items-center justify-between gap-4 px-2 md:flex-row">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <span>{t("account.address.perPage")}</span>
-              <div className="relative">
-                <select className="cursor-pointer appearance-none bg-transparent pr-6 font-medium text-white focus:outline-none">
-                  <option className="bg-[#1C2425]">{DEFAULT_PAGE_SIZE}</option>
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              </div>
-            </div>
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-            </div>
-          )}
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
-        <ConfirmationModal
-          isOpen={!!addressToDelete}
-          onClose={() => setAddressToDelete(null)}
-          onConfirm={onConfirmDelete}
-          title={t("account.address.deleteModal.title")}
-          description={t("account.address.deleteModal.description")}
-          confirmText={t("account.address.deleteModal.confirm")}
-          cancelText={t("account.address.deleteModal.cancel")}
-          isLoading={isDeleting}
-        />
-      </ResponsivePageWrapper>
-    </PageCard>
+      )}
+
+      <ConfirmationModal
+        isOpen={!!addressToDelete}
+        onClose={() => setAddressToDelete(null)}
+        onConfirm={onConfirmDelete}
+        title={t("account.address.deleteModal.title")}
+        description={t("account.address.deleteModal.description")}
+        confirmText={t("account.address.deleteModal.confirm")}
+        cancelText={t("account.address.deleteModal.cancel")}
+        isLoading={isDeleting}
+      />
+    </div>
   );
 }

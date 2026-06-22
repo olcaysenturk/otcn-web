@@ -1,61 +1,73 @@
 "use client";
 
+import { useState } from "react";
+import { BellOff, ChevronRight } from "lucide-react";
+
 import { useI18n } from "@/lib/i18n/I18nProvider";
-import { AccountTabs } from "@/components/account/AccountTabs";
+import { Switch } from "@/components/ui/switch";
 
 export default function AccountNotificationPage() {
   const { t } = useI18n();
+  const [sms, setSms] = useState(false);
+  const [email, setEmail] = useState(false);
+
+  const rows = [
+    {
+      key: "sms",
+      label: t("notificationPage.smsLabel"),
+      description: t("notificationPage.smsDesc"),
+      checked: sms,
+      onChange: setSms,
+    },
+    {
+      key: "email",
+      label: t("notificationPage.emailLabel"),
+      description: t("notificationPage.emailDesc"),
+      checked: email,
+      onChange: setEmail,
+    },
+  ];
 
   return (
-    <div className="">
-      {/* <AccountTabs active="notification" /> */}
+    <div className="rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
+      <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.menu.notification")}</h2>
 
-      <div className="mt-6 rounded-2xl border border-[#E8EDF3] bg-white p-4 shadow-sm  ">
-        <h2 className="text-lg font-semibold text-gray-900 ">{t("notificationPage.title")}</h2>
-
-        <div className="mt-4 rounded-2xl bg-gray-100/80 px-4 py-4 text-sm text-gray-800  ">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-sm ring-1 ring-gray-200   ">
-                🔕
-              </div>
-              <div>
-                <p className="text-base font-semibold">{t("notificationPage.blockedTitle")}</p>
-                <p className="text-sm text-gray-700 ">{t("notificationPage.blockedDesc")}</p>
-              </div>
-            </div>
-            <button className="rounded-xl bg-gradient-to-r from-slate-200 via-white to-slate-200 px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm transition hover:opacity-90    ">
-              {t("notificationPage.enable")}
-            </button>
-          </div>
+      {/* Browser notifications blocked warning */}
+      <div className="mt-4 flex flex-col gap-4 rounded-[20px] border border-[#FFD951]/20 bg-[#FFD951]/10 p-4 md:flex-row md:items-center">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FFD951]/10 text-[#FFD951]">
+          <BellOff className="h-5 w-5" />
+        </span>
+        <div className="flex-1">
+          <p className="text-sm font-medium text-[#F4F7F8]">{t("notificationPage.blockedTitle")}</p>
+          <p className="text-sm text-[#C5C9CC]">{t("notificationPage.blockedDesc")}</p>
         </div>
+        <button
+          type="button"
+          className="inline-flex shrink-0 items-center gap-1.5 self-start whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2.5 text-xs font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022] md:self-auto"
+        >
+          {t("notificationPage.enable")}
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
 
-        <div className="mt-6 space-y-4">
-          <div className="flex items-center justify-between rounded-2xl border border-gray-100 px-4 py-4 text-sm ">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 ">
-                {t("notificationPage.preferenceTitle")}
-              </p>
-              <p className="text-sm font-semibold text-gray-900 ">{t("notificationPage.preferenceValue")}</p>
-              <p className="text-sm text-gray-600 ">{t("notificationPage.preferenceDesc")}</p>
-            </div>
-            <button className="flex items-center gap-2 rounded-lg border border-[#E8EDF3] bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50    ">
-              {t("notificationPage.edit")}
-            </button>
+      {/* Channels */}
+      <div className="flex flex-col py-3">
+        {rows.map((row) => (
+          <div
+            key={row.key}
+            className="flex flex-col gap-3 border-b border-[#3A4043] py-5 last:border-b-0 md:flex-row md:items-center md:gap-[120px]"
+          >
+            <span className="w-[200px] shrink-0 text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+              {row.label}
+            </span>
+            <p className="flex-1 text-base text-[#C5C9CC]">{row.description}</p>
+            <Switch
+              checked={row.checked}
+              onCheckedChange={row.onChange}
+              className="shrink-0 border-0 data-[state=checked]:bg-[#27E9A6] data-[state=unchecked]:bg-white/15"
+            />
           </div>
-
-          <div className="flex items-center justify-between rounded-2xl border border-gray-100 px-4 py-4 text-sm ">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 ">
-                {t("notificationPage.customizeTitle")}
-              </p>
-              <p className="text-sm font-semibold text-gray-900 ">{t("notificationPage.customizeDesc")}</p>
-            </div>
-            <button className="flex items-center gap-2 rounded-lg border border-[#E8EDF3] bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50    ">
-              {t("notificationPage.edit")}
-            </button>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

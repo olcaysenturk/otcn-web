@@ -1,46 +1,30 @@
 "use client";
 
-import { AccountHeader } from "@/components/account/AccountHeader";
-import { AccountSecuritySkeleton } from "@/components/account/AccountSkeleton";
-import { AccountTabs } from "@/components/account/AccountTabs";
-import { TwoFactorVerificationProps } from "@/components/modals/tfa/Tfa";
-import { Button } from "@/components/ui/button";
-import { PageCard } from "@/components/ui/page-card";
-import { ResponsivePageWrapper } from "@/components/ui/responsive-page-wrapper";
-import { Switch } from "@/components/ui/switch";
-import { useI18n } from "@/lib/i18n/I18nProvider";
-import { withLocale } from "@/lib/i18n/href";
-import {
-  completeTfaSetting,
-  getAccountInfo,
-  getTfaOptions,
-  initiateTfaSetting
-} from "@/services/account";
-import { useModalStore } from "@/stores/useModalStore";
-import { AccountInfo } from "@/types/account";
-import { TfaInitiateResponse, TfaOptions } from "@/types/auth";
-import { TfaType } from "@/types/tfa";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { TwoFactorVerificationProps } from "@/components/modals/tfa/Tfa";
+import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useI18n } from "@/lib/i18n/I18nProvider";
+import { completeTfaSetting, getTfaOptions, initiateTfaSetting } from "@/services/account";
+import { useModalStore } from "@/stores/useModalStore";
+import { TfaInitiateResponse, TfaOptions } from "@/types/auth";
+import { TfaType } from "@/types/tfa";
+
+const CARD = "rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]";
+
 export default function AccountSecurityPage() {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const { openModal, closeModal } = useModalStore();
   const [isLoading, setIsLoading] = useState(true);
   const [tfaOptions, setTfaOptions] = useState<TfaOptions | null>(null);
-  const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
 
   const fetchData = async () => {
     try {
-      const [optionsRes, accountRes] = await Promise.all([
-        getTfaOptions(),
-        getAccountInfo()
-      ]);
+      const optionsRes = await getTfaOptions();
       setTfaOptions(optionsRes);
-      setAccountInfo(accountRes);
-    } catch (error) {
+    } catch {
       toast.error(t("common.error"));
     } finally {
       setIsLoading(false);
@@ -49,7 +33,20 @@ export default function AccountSecurityPage() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleVerificationSuccess = async (type: TfaType, flowId: string) => {
+    const res = await completeTfaSetting(type, flowId);
+    if (!res.success) {
+      toast.error(res.message || t("common.error"));
+      closeModal();
+      return;
+    }
+    toast.success(t("common.success"));
+    fetchData();
+    closeModal();
+  };
 
   const handleToggle = async (type: TfaType, newValue: boolean) => {
     if (!tfaOptions) return;
@@ -57,11 +54,7 @@ export default function AccountSecurityPage() {
     const isSmsOrEmail = type === "Sms" || type === "Email";
     const isDisableAction = !newValue;
     const isCurrentlyEnabled =
-      type === "Sms"
-        ? !!tfaOptions.phone
-        : type === "Email"
-          ? !!tfaOptions.email
-          : !!tfaOptions.authenticator;
+      type === "Sms" ? !!tfaOptions.phone : type === "Email" ? !!tfaOptions.email : !!tfaOptions.authenticator;
 
     if (isSmsOrEmail && isDisableAction && isCurrentlyEnabled) {
       const activeOtpCount = [tfaOptions.phone, tfaOptions.email, tfaOptions.authenticator].filter(Boolean).length;
@@ -71,7 +64,7 @@ export default function AccountSecurityPage() {
       }
     }
 
-    const initRes = await initiateTfaSetting(type, newValue)
+    const initRes = await initiateTfaSetting(type, newValue);
     if (!initRes.flowId) {
       toast.error(initRes.message || t("common.error"));
       return;
@@ -79,156 +72,94 @@ export default function AccountSecurityPage() {
     const flowData = initRes as TfaInitiateResponse;
     const flowId = flowData.flowId;
 
-    const prop = {
-      flowId: flowId,
+    openModal("tfa-verification", {
+      flowId,
       onVerificationSuccess: () => handleVerificationSuccess(type, flowId),
       tfaConfig: flowData,
       isMainModal: true,
       infoText: t("security.tfaModalInfo", { type: type.toUpperCase() }),
       title: t("security.tfaModalTitle", { type: type.toUpperCase() }),
       variant: "dark",
-    } as TwoFactorVerificationProps;
-
-    openModal("tfa-verification", prop);
+    } as TwoFactorVerificationProps);
   };
 
-  const handleVerificationSuccess = async (type: TfaType, flowId: string) => {
-    const res = await completeTfaSetting(type, flowId);
-    if (!res.success) {
-      toast.error(res.message || t("common.error"));
-      closeModal();
-      return;
-    } else {
-      toast.success(t("common.success"));
-    }
-    fetchData();
-    closeModal();
-  };
+  const otpRows: { type: TfaType; label: string; description: string; checked: boolean }[] = [
+    {
+      type: "Sms",
+      label: t("security.smsOtp_label"),
+      description: t("security.smsOtp_description"),
+      checked: tfaOptions?.phone ?? false,
+    },
+    {
+      type: "Email",
+      label: t("security.emailOtp_label"),
+      description: t("security.emailOtp_description"),
+      checked: tfaOptions?.email ?? false,
+    },
+    {
+      type: "Authenticator",
+      label: t("security.authenticator_label"),
+      description: t("security.authenticator_description"),
+      checked: tfaOptions?.authenticator ?? false,
+    },
+  ];
 
   return (
-    <PageCard>
-      <ResponsivePageWrapper>
-        {/* Mobile Header */}
-        <div className="flex items-center gap-3 bg-[#0F1415] p-4 text-white lg:hidden mb-6">
-          <Link href={withLocale("/account", locale)} className="rounded p-1 hover:bg-white/10">
-            <ArrowLeft className="h-6 w-6" />
-          </Link>
-          <span className="text-lg font-semibold">{t("account.security.title")}</span>
-        </div>
-
-        {/* Desktop Header */}
-        <AccountHeader
-          title={t("accountHeader.title")}
-          description={t("accountHeader.description")}
-        />
-
-        <div className="hidden lg:block">
-          <AccountTabs active="security" />
-        </div>
-
-        {/* Security Content Card */}
-        <div className="bg-[#1C2425] rounded-3xl p-6 lg:p-8 border border-white/10 min-h-[calc(100vh-94px)] space-y-6">
+    <div className="space-y-6">
+      {/* Login Management */}
+      <div className={CARD}>
+        <h2 className="text-lg font-medium text-[#F4F7F8]">{t("security.loginManagement")}</h2>
+        <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-center md:gap-[120px]">
+          <span className="w-[200px] shrink-0 text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+            {t("security.password_label")}
+          </span>
           {isLoading ? (
-            <AccountSecuritySkeleton />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-5 w-40 bg-white/10" />
+              <Skeleton className="h-4 w-80 bg-white/10" />
+            </div>
           ) : (
-            <>
-              {/* Login Management Section */}
-              <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-white">{t("security.loginManagement")}</h2>
-
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-12">
-                  <div className="min-w-[120px]">
-                    <span className="text-[#9B91FF] font-medium">{t("security.password_label")}</span>
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <p className="font-semibold text-white tracking-widest">****************</p>
-                    <p className="text-sm text-gray-400">
-                      {t("security.password_description")}
-                    </p>
-                  </div>
-                  <div>
-                    <Button
-                      variant="outline"
-                      className="rounded-full border-white/20 text-white hover:bg-white/5 h-11 px-6 font-semibold bg-transparent"
-                      onClick={() => openModal("change-password")}
-                    >
-                      {t("security.password_changeButton")}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Account Authorization Section */}
-              <div className="space-y-6 pt-6 border-t border-white/10">
-                <h2 className="text-lg font-semibold text-white">{t("security.accountAuthority")}</h2>
-
-                <div className="space-y-6">
-                  {/* SMS OTP */}
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-12">
-                    <div className="min-w-[200px] shrink-0">
-                      <span className="text-[#9B91FF] font-medium">{t("security.smsOtp_label")}</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-400">
-                        {t("security.smsOtp_description")}
-                      </p>
-                    </div>
-                    <div className="flex justify-end lg:justify-start">
-                      <Switch
-                        checked={tfaOptions?.phone ?? false}
-                        onCheckedChange={(checked) => handleToggle("Sms", checked)}
-                        className="data-[state=checked]:bg-[#12B76A] data-[state=unchecked]:bg-white/15 border-0"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="h-px bg-white/10 w-full" />
-
-                  {/* Email OTP */}
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-12">
-                    <div className="min-w-[200px] shrink-0">
-                      <span className="text-[#9B91FF] font-medium">{t("security.emailOtp_label")}</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-400">
-                        {t("security.emailOtp_description")}
-                      </p>
-                    </div>
-                    <div className="flex justify-end lg:justify-start">
-                      <Switch
-                        checked={tfaOptions?.email ?? false}
-                        onCheckedChange={(checked) => handleToggle("Email", checked)}
-                        className="data-[state=checked]:bg-[#12B76A] data-[state=unchecked]:bg-white/15 border-0"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="h-px bg-white/10 w-full" />
-
-                  {/* Authenticator */}
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-12">
-                    <div className="min-w-[200px] shrink-0">
-                      <span className="text-[#9B91FF] font-medium">{t("security.authenticator_label")}</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-400">
-                        {t("security.authenticator_description")}
-                      </p>
-                    </div>
-                    <div className="flex justify-end lg:justify-start">
-                      <Switch
-                        checked={tfaOptions?.authenticator ?? false}
-                        onCheckedChange={(checked) => handleToggle("Authenticator", checked)}
-                        className="data-[state=checked]:bg-[#12B76A] data-[state=unchecked]:bg-white/15 border-0"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
+            <div className="flex-1 space-y-1.5">
+              <p className="text-base font-medium tracking-widest text-[#F4F7F8]">****************</p>
+              <p className="text-base text-[#C5C9CC]">{t("security.password_description")}</p>
+            </div>
           )}
+          <button
+            type="button"
+            onClick={() => openModal("change-password")}
+            className="shrink-0 whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2.5 text-xs font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+          >
+            {t("security.password_changeButton")}
+          </button>
         </div>
-      </ResponsivePageWrapper>
-    </PageCard>
+      </div>
+
+      {/* Two-Factor Authentication */}
+      <div className={CARD}>
+        <h2 className="text-lg font-medium text-[#F4F7F8]">{t("security.twoFaTitle")}</h2>
+        <div className="flex flex-col py-3">
+          {otpRows.map((row) => (
+            <div
+              key={row.type}
+              className="flex flex-col gap-3 border-b border-[#3A4043] py-5 last:border-b-0 md:flex-row md:items-center md:gap-[120px]"
+            >
+              <span className="w-[200px] shrink-0 text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+                {row.label}
+              </span>
+              <p className="flex-1 text-base text-[#C5C9CC]">{row.description}</p>
+              {isLoading ? (
+                <Skeleton className="h-6 w-11 rounded-full bg-white/10" />
+              ) : (
+                <Switch
+                  checked={row.checked}
+                  onCheckedChange={(checked) => handleToggle(row.type, checked)}
+                  className="shrink-0 border-0 data-[state=checked]:bg-[#27E9A6] data-[state=unchecked]:bg-white/15"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

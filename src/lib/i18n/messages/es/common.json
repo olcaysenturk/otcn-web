@@ -1501,9 +1501,16 @@
       "address": "Gestión de direcciones",
       "security": "Seguridad",
       "user": "Gestión de usuarios",
+      "reports": "Informes financieros",
       "activity": "Actividad",
       "notification": "Permisos de comunicación",
       "preferences": "Preferencias"
+    },
+    "activity": {
+      "sessionTitle": "Gestión de sesiones ({{count}} sesiones activas)",
+      "deviceTitle": "Gestión de dispositivos ({{count}} dispositivo)",
+      "active": "Activo ahora",
+      "logout": "Cerrar sesión"
     },
     "profile": {
       "photo": "Foto de perfil",
@@ -1512,6 +1519,7 @@
       "phone": "Número de teléfono",
       "idNumber": "Número de identidad",
       "birthDate": "Fecha de nacimiento",
+      "customerNo": "N.º de cliente",
       "closeTitle": "Cerrar cuenta",
       "closeDesc": "Si cierras tu cuenta, deberás ser invitado nuevamente por el administrador de tu cuenta corporativa para recuperar el acceso.",
       "closeCta": "Cerrar cuenta"
@@ -1708,6 +1716,15 @@
       "viewSummaries": "Revisar reportes y resúmenes"
     }
   },
+  "reportsPage": {
+    "title": "Informes",
+    "dailyTab": "Informe de transacciones diarias",
+    "monthlyTab": "Extracto de cuenta mensual",
+    "year": "Año del informe",
+    "selection": "Selección de mes y día",
+    "cancel": "Cancelar",
+    "generate": "Generar informe"
+  },
   "notificationPage": {
     "title": "Notificaciones",
     "blockedTitle": "Notificaciones bloqueadas",
@@ -1718,6 +1735,10 @@
     "preferenceDesc": "Elige tus preferencias de notificación.",
     "customizeTitle": "Personalizar",
     "customizeDesc": "Ajusta tu configuración de notificaciones.",
+    "smsLabel": "SMS",
+    "smsDesc": "Las notificaciones sobre actualizaciones importantes y transacciones se envían por SMS.",
+    "emailLabel": "E-mail",
+    "emailDesc": "Se envían notificaciones a tu correo para inicios de sesión, transacciones importantes e información.",
     "edit": "Editar"
   },
   "preferencesPage": {

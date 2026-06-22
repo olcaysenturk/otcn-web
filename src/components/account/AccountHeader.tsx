@@ -1,17 +1,15 @@
-import React from "react";
-
 interface AccountHeaderProps {
     title: string;
     description: string;
 }
 
-export function AccountHeader({ title, description }: AccountHeaderProps) {
-    return (
-        <div className="hidden lg:block space-y-1">
-            <h1 className="text-2xl font-medium text-white">{title}</h1>
-            <p className="text-sm text-gray-400">
-                {description}
-            </p>
-        </div>
-    );
+/**
+ * The account section header is now rendered once by the account route-segment
+ * layout (`account/layout.tsx`). This component is a no-op kept only so the legacy
+ * pages that still import it don't render a duplicate header during the
+ * incremental migration. Drop the call sites as each page is migrated.
+ */
+export function AccountHeader(_props: AccountHeaderProps) {
+    void _props;
+    return null;
 }

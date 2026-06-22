@@ -1501,9 +1501,16 @@
       "address": "Gerenciamento de Endereços",
       "security": "Segurança",
       "user": "Gerenciamento de Usuários",
+      "reports": "Relatórios Financeiros",
       "activity": "Atividade",
       "notification": "Permissões de Comunicação",
       "preferences": "Preferências"
+    },
+    "activity": {
+      "sessionTitle": "Gerenciamento de Sessões ({{count}} sessões ativas)",
+      "deviceTitle": "Gerenciamento de Dispositivos ({{count}} dispositivo)",
+      "active": "Ativo agora",
+      "logout": "Sair"
     },
     "profile": {
       "photo": "Foto de Perfil",
@@ -1512,6 +1519,7 @@
       "phone": "Número de Telefone",
       "idNumber": "Número de Identidade",
       "birthDate": "Data de Nascimento",
+      "customerNo": "Nº do Cliente",
       "closeTitle": "Encerrar Conta",
       "closeDesc": "Se você encerrar sua conta, precisará ser convidado novamente pelo administrador da sua Conta Corporativa para recuperar o acesso.",
       "closeCta": "Encerrar Conta"
@@ -1708,6 +1716,15 @@
       "viewSummaries": "Revisar relatórios e resumos"
     }
   },
+  "reportsPage": {
+    "title": "Relatórios",
+    "dailyTab": "Relatório de Transações Diárias",
+    "monthlyTab": "Extrato Mensal da Conta",
+    "year": "Ano do Relatório",
+    "selection": "Seleção de Mês e Dia",
+    "cancel": "Cancelar",
+    "generate": "Gerar Relatório"
+  },
   "notificationPage": {
     "title": "Notificações",
     "blockedTitle": "Notificações bloqueadas",
@@ -1718,6 +1735,10 @@
     "preferenceDesc": "Escolha suas preferências de notificação.",
     "customizeTitle": "Personalizar",
     "customizeDesc": "Ajuste suas configurações de notificação.",
+    "smsLabel": "SMS",
+    "smsDesc": "Notificações sobre atualizações importantes e transações são enviadas por SMS.",
+    "emailLabel": "E-mail",
+    "emailDesc": "Notificações são enviadas para o seu e-mail para logins, transações importantes e avisos.",
     "edit": "Editar"
   },
   "preferencesPage": {
