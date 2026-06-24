@@ -259,7 +259,7 @@ export function TradeLandingHero() {
       <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
         <div className="relative h-[260px] overflow-hidden rounded-[20px] lg:h-[460px]">
           <Image
-            src="/assets/bitanova/hero-liquid.jpg"
+            src="/assets/otcn/hero-liquid.jpg"
             alt=""
             fill
             priority

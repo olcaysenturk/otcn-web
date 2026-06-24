@@ -55,7 +55,7 @@ export function ResponsiveFilter({
                         <SelectItem
                             key={option.value}
                             value={option.value}
-                            className="cursor-pointer rounded-[8px] px-3 py-2 text-[14px] font-medium tracking-[-0.21px] text-[#C5C9CC] focus:bg-white/5 focus:text-[#F4F7F8] data-[state=checked]:bg-[#C7F022]/10 data-[state=checked]:text-[#C7F022] [&>span:first-child]:hidden"
+                            className="cursor-pointer rounded-[12px] px-3 py-2.5 text-[13px] font-medium tracking-[-0.195px] text-[#F4F7F8] focus:bg-white/5 data-[state=checked]:bg-[#3A4043]/50 data-[state=checked]:font-semibold data-[state=checked]:text-[#F54A14] [&>span:first-child]:hidden"
                         >
                             {option.label}
                         </SelectItem>
@@ -91,11 +91,11 @@ export function ResponsiveFilter({
                                 }}
                                 className={cn(
                                     "flex w-full items-center justify-between py-4 text-left text-base font-medium transition-colors",
-                                    active ? "text-[#C7F022]" : "text-[#F4F7F8] hover:text-[#C7F022]",
+                                    active ? "text-[#F54A14]" : "text-[#F4F7F8] hover:text-[#F54A14]",
                                 )}
                             >
                                 {option.label}
-                                {active && <Check className="h-5 w-5 text-[#C7F022]" />}
+                                {active && <Check className="h-5 w-5 text-[#F54A14]" />}
                             </button>
                         );
                     })}

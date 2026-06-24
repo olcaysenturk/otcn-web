@@ -18,7 +18,7 @@ export interface FilterPillProps extends Omit<React.ButtonHTMLAttributes<HTMLBut
  * Reusable filter trigger pill — the closed state shared by every transaction
  * filter type (select, input, date, boolean, toggle). The dropdown/content that
  * opens on click is provided by the consumer; this component only renders the
- * pill. Pixel-matched to the Bitanova "Filters" design.
+ * pill. Pixel-matched to the otcn "Filters" design.
  */
 export const FilterPill = React.forwardRef<HTMLButtonElement, FilterPillProps>(
   ({ label, value, showChevron = true, className, ...props }, ref) => {

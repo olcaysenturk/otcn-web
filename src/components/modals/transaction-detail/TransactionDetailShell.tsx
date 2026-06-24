@@ -9,7 +9,7 @@ import { useModalStore } from "@/stores/useModalStore";
 
 /**
  * Shared dark slide-in panel for transaction detail popups (crypto + fiat).
- * Keeps both detail modals visually consistent with the Bitanova design system.
+ * Keeps both detail modals visually consistent with the otcn design system.
  */
 export function TransactionDetailShell({
   title,

@@ -64,28 +64,28 @@ export function ApplicationStepper({ tabs }: Props) {
                     "--step-count": stepCount
                 } as React.CSSProperties}
             >
-                {/* Background line - starts at center of first step, ends at center of last step */}
+                {/* Background line — Figma "Steppers": System/Border #3A4043 */}
                 <div
-                    className="absolute top-[11px] h-[3px] bg-gray-200 z-0"
+                    className="absolute top-[11px] h-[3px] bg-[#3A4043] z-0"
                     style={{
                         left: `${halfStepPercentage}%`,
                         right: `${halfStepPercentage}%`
                     }}
                 />
 
-                {/* Completed Steps Line (Green) */}
+                {/* Completed Steps Line — cyan #84E9E8 (Secondary), animated */}
                 <div
-                    className="absolute top-[11px] h-[3px] bg-[#10b981] transition-all duration-500 z-0"
+                    className="absolute top-[11px] h-[3px] bg-[#84E9E8] transition-all duration-500 z-0"
                     style={{
                         left: `${halfStepPercentage}%`,
                         width: `${safeActiveIndex * stepPercentage}%`
                     }}
                 />
 
-                {/* Current Step Half-Line (Dark) - only if not the last step */}
+                {/* Current Step Half-Line — gradient white→border (Figma transition) */}
                 {safeActiveIndex < stepCount - 1 && (
                     <div
-                        className="absolute top-[11px] h-[3px] bg-[#0F121A] transition-all duration-500 z-0"
+                        className="absolute top-[11px] h-[3px] bg-[linear-gradient(90deg,#F4F7F8_50%,#3A4043_50%)] transition-all duration-500 z-0"
                         style={{
                             left: `calc(${halfStepPercentage}% + ${safeActiveIndex * stepPercentage}%)`,
                             width: `${halfStepPercentage}%`
@@ -110,31 +110,31 @@ export function ApplicationStepper({ tabs }: Props) {
                                 {/* Step Circle */}
                                 <div
                                     className={cn(
-                                        "relative z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-200 mb-3 shadow-[0px_0px_3px_1.5px_rgba(0,0,0,0.05)] bg-white",
+                                        "relative z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-200 mb-3 shadow-[0px_0px_3px_1.5px_rgba(0,0,0,0.2)] bg-[#0E0F10]",
                                         status === "completed"
-                                            ? ""
+                                            ? "border border-[#84E9E8]"
                                             : status === "current"
-                                                ? "border border-[#582FD9]"
-                                                : ""
+                                                ? "border border-[#84E9E8]"
+                                                : "border border-[#3A4043]"
                                     )}
                                     aria-current={status === "current" ? "step" : undefined}
                                 >
                                     {status === "completed" ? (
-                                        <span className="h-2 w-2 rounded-full bg-[#10b981]" />
+                                        <Check className="h-3.5 w-3.5 text-[#84E9E8]" />
                                     ) : status === "current" ? (
-                                        <span className="h-2 w-2 rounded-full bg-[#582FD9]" />
+                                        <span className="h-2 w-2 rounded-full bg-[#84E9E8]" />
                                     ) : (
-                                        <span className="h-2 w-2 rounded-full bg-gray-400" />
+                                        <span className="h-2 w-2 rounded-full bg-[#5E666A]" />
                                     )}
                                 </div>
                                 <div className="flex flex-row gap-2 items-center">
                                     {/* Icon */}
                                     <div className={cn(
                                         status === "completed"
-                                            ? "text-[#10b981]"
+                                            ? "text-[#84E9E8]"
                                             : status === "current"
-                                                ? "text-[#582FD9]"
-                                                : "text-gray-400"
+                                                ? "text-[#84E9E8]"
+                                                : "text-[#5E666A]"
                                     )}>
                                         {tab.icon}
                                     </div>
@@ -144,10 +144,10 @@ export function ApplicationStepper({ tabs }: Props) {
                                         className={cn(
                                             "text-[12px] lg:leading-6 font-medium text-center",
                                             status === "completed"
-                                                ? "text-gray-900"
+                                                ? "text-[#84E9E8]"
                                                 : status === "current"
-                                                    ? "text-[#582FD9]"
-                                                    : "text-gray-500"
+                                                    ? "text-[#F4F7F8]"
+                                                    : "text-[#5E666A]"
                                         )}
                                     >
                                         {tab.label}

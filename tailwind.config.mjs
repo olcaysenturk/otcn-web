@@ -34,118 +34,194 @@ const config = {
         full: "9999px",
       },
       colors: {
-        border: "#e8ecf1",
-        input: "#e2e8f0",
-        ring: "#9b5bf5",
-        background: "#ffffff",
-        foreground: "#010816",
+        // ── Bitanova dark design tokens (Figma: Colors page 52609-3435) ──
+        border: "#3A4043", // System/Border
+        input: "#3A4043",
+        ring: "#C7F022", // Lime focus ring
+        background: "#1F2628", // System/Background
+        foreground: "#F4F7F8", // System/Text (White)
 
+        // Primary — Orange (#F54A14)
         primary: {
-          DEFAULT: "#9b5bf5",
-          foreground: "#f7f9fb",
+          DEFAULT: "#F54A14",
+          foreground: "#F4F7F8",
+          50: "#FFF4ED",
+          100: "#FEE6D6",
+          200: "#FDC9AB",
+          300: "#FBA376",
+          400: "#F8733F",
+          500: "#F54A14",
+          600: "#E63510",
+          700: "#BF240F",
+          800: "#981F14",
+          900: "#7A1D14",
         },
+        // Secondary — Teal (#84E9E8)
         secondary: {
-          DEFAULT: "#f4f2ff",
-          foreground: "#9b5bf5",
+          DEFAULT: "#84E9E8",
+          foreground: "#0E0F10",
+          50: "#EEFDFC",
+          100: "#D5F8F7",
+          200: "#D3F7F7",
+          300: "#BBF3F2",
+          400: "#A2EEEE",
+          500: "#84E9E8",
+          600: "#1D949D",
+          700: "#1E7780",
+          800: "#216169",
+          900: "#1F515A",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#FF4D6D",
+          foreground: "#F4F7F8",
         },
         muted: {
-          DEFAULT: "#f1f5f9",
-          foreground: "#64748b",
+          DEFAULT: "#1F2628",
+          foreground: "#C5C9CC", // System/Body Text + Icon
         },
         accent: {
-          DEFAULT: "#8abcf9",
-          foreground: "#0f172a",
+          DEFAULT: "#C7F022", // Lime/300*
+          foreground: "#0E0F10",
         },
         popover: {
-          DEFAULT: "#ffffff",
-          foreground: "#010816",
+          DEFAULT: "#0E0F10",
+          foreground: "#F4F7F8",
         },
         card: {
-          DEFAULT: "#ffffff",
-          foreground: "#010816",
+          DEFAULT: "#0E0F10", // System/Base (Black)
+          foreground: "#F4F7F8",
         },
-        warning: "#ffb951",
 
-        // New Brand Scales
+        // ── Brand scales ──
+        // Orange == Primary
+        orange: {
+          50: "#FFF4ED",
+          100: "#FEE6D6",
+          200: "#FDC9AB",
+          300: "#FBA376",
+          400: "#F8733F",
+          500: "#F54A14",
+          600: "#E63510",
+          700: "#BF240F",
+          800: "#981F14",
+          900: "#7A1D14",
+        },
+        // Teal == Secondary
+        teal: {
+          50: "#EEFDFC",
+          100: "#D5F8F7",
+          200: "#D3F7F7",
+          300: "#BBF3F2",
+          400: "#A2EEEE",
+          500: "#84E9E8",
+          600: "#1D949D",
+          700: "#1E7780",
+          800: "#216169",
+          900: "#1F515A",
+        },
+        lime: {
+          50: "#F6FCDD",
+          100: "#EDF9B8",
+          200: "#E0F57E",
+          300: "#C7F022", // main accent
+          400: "#B6DA2F",
+          500: "#8FAF2A",
+          600: "#5F7F32",
+          700: "#3F5F3A",
+          800: "#2B4A3F",
+          900: "#193133",
+        },
+        green: {
+          50: "#EAFFF6",
+          100: "#CFFFEA",
+          200: "#A8FBE0",
+          300: "#7CF5D6",
+          400: "#4DEFC0",
+          500: "#2FE3AF",
+          600: "#27E9A6", // main success
+          700: "#1FBF8C",
+          800: "#148066",
+          900: "#0B3D35",
+        },
+        // Purple — transitional ("DEĞİŞECEK"), kept for legacy refs
         purple: {
-          50: "#f3efff",
-          100: "#e4dbff",
-          200: "#cdbcff",
-          300: "#b49cfb",
-          400: "#9b5bf5",
-          500: "#8f47f4",
-          600: "#893ef3",
-          700: "#7217f1",
-          800: "#4e0aad",
-          900: "#2d0565",
+          50: "#F0F1FF",
+          100: "#DADBFF",
+          200: "#B8BBFF",
+          300: "#9FA3FE",
+          400: "#8F93FE",
+          500: "#6E72F5",
+          600: "#5F63EE",
+          700: "#565BEF",
+          800: "#4549D6",
+          900: "#2F319E",
         },
         blue: {
-          50: "#f0f6fe",
-          100: "#e1eefd",
-          200: "#d3e5fc",
-          300: "#bad8fb",
-          400: "#8abcf9",
-          500: "#457af6",
-          600: "#2362f4",
-          700: "#0a48db",
-          800: "#083aaf",
-          900: "#052a7e",
+          50: "#F2F7FE",
+          100: "#E3EEFD",
+          200: "#D4E6FC",
+          300: "#C0DAFB",
+          400: "#8ABCF9",
+          500: "#487AF6",
+          600: "#3F67D8",
+          700: "#3456B3",
+          800: "#2B458C",
+          900: "#213563",
         },
-        orange: {
-          50: "#fff8ef",
-          100: "#ffecd1",
-          200: "#fee2b7",
-          300: "#ffd89e",
-          400: "#ffb951",
-          500: "#feab2d",
-          600: "#ffa114",
-          700: "#ef8f00",
-          800: "#d68000",
-          900: "#b76e00",
-        },
-        "gray-steel": "#6F7B91",
+        "gray-steel": "#5E666A",
 
-        // New Semantic/Functional Colors
+        // ── System (dark) ──
+        system: {
+          bg: "#1F2628", // Background
+          base: "#0E0F10", // Base / Black
+          border: "#3A4043", // Border
+          text: "#F4F7F8", // Text (White)
+          body: "#C5C9CC", // Body Text + Icon
+          secondary: "#5E666A", // Secondary Text
+        },
+
+        // ── State / Functional ──
         success: {
-          base: "#e6f8f2",
-          border: "#25bb89",
+          DEFAULT: "#27E9A6",
+          base: "rgba(39, 233, 166, 0.1)",
+          border: "#27E9A6",
         },
         error: {
-          base: "#ffeaed",
-          border: "#fe4c6a",
+          DEFAULT: "#FF4D6D",
+          base: "rgba(255, 77, 109, 0.05)",
+          border: "#FF4D6D",
         },
         warning: {
-          DEFAULT: "#ffb951",
-          base: "#fff6ea",
-          border: "#ffb951",
+          DEFAULT: "#FFD951",
+          base: "rgba(255, 217, 81, 0.1)",
+          border: "#FFD951",
+          icon: "#E2B308",
+          title: "#0F121A",
         },
         info: {
-          base: "#f0f6fe",
-          border: "#4595f6",
+          DEFAULT: "#487AF6",
+          base: "rgba(72, 122, 246, 0.1)",
+          border: "#487AF6",
         },
 
-        // Special Colors
+        // ── Special ──
         para: {
-          cek: "#38febc",
-          yatir: "#fe4c6a",
+          cek: "#27E9A6", // Para Çek
+          yatir: "#FF4D6D", // Para Yatır
         },
 
-        // Theme Variables
+        // ── Theme Variables (dark) ──
         theme: {
-          bg: "#f4f2ff",
-          base: "#ffffff",
+          bg: "#1F2628",
+          base: "#0E0F10",
           border: {
-            light: "#f0f0ef",
-            DEFAULT: "#ebebe9",
+            light: "#3A4043",
+            DEFAULT: "#3A4043",
           },
           text: {
-            primary: "#010816",
-            body: "#4d5b74",
-            secondary: "#6b7a93",
+            primary: "#F4F7F8",
+            body: "#C5C9CC",
+            secondary: "#5E666A",
           },
         },
       },
@@ -153,6 +229,7 @@ const config = {
       fontFamily: {
         inter: ["var(--font-inter)", "system-ui", "sans-serif"],
         satoshi: ["var(--font-satoshi)", "system-ui", "sans-serif"],
+        sora: ["Sora", "var(--font-satoshi)", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -186,11 +263,11 @@ const config = {
         shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) both",
       },
       backgroundImage: {
-        'gradient-button': 'linear-gradient(to left, #3E1C82, #9564F4)',
-        'gradient-card': 'linear-gradient(133deg, rgba(21,21,20,1) 70%, rgba(149,100,244,1) 100%)',
+        'gradient-button': 'linear-gradient(to left, #BF240F, #F54A14)',
+        'gradient-card': 'linear-gradient(133deg, rgba(14,15,16,1) 70%, rgba(245,74,20,1) 100%)',
         'gradient-modal': {
-          DEFAULT: 'linear-gradient(110deg, rgba(149,100,244,1) 0%, rgba(62,28,130,1) 100%)',
-          "1": 'linear-gradient(136.7deg, rgba(149,100,244,1) -42.42%, rgba(62,28,130,1) 74.26%)',
+          DEFAULT: 'linear-gradient(110deg, rgba(245,74,20,1) 0%, rgba(191,36,15,1) 100%)',
+          "1": 'linear-gradient(136.7deg, rgba(245,74,20,1) -42.42%, rgba(191,36,15,1) 74.26%)',
         },
       },
     },

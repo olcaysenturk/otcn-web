@@ -19,7 +19,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-[642px] overflow-hidden rounded-[24px] border border-white/10 bg-black px-5 py-7 text-white lg:min-h-[640px] lg:rounded-[36px] lg:px-[60px] lg:py-[74px] xl:min-h-[760px]">
       <Image
-        src="/assets/bitanova/hero-background.png"
+        src="/assets/otcn/hero-background.png"
         alt=""
         fill
         priority

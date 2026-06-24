@@ -1,28 +1,33 @@
 @config "../../tailwind.config.mjs";
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./fonts.css";
 
 @layer base {
   :root {
-    /* Base Colors */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base Colors — otcn dark design (Figma 52609-3435) */
+    --background: 193.3 12.7% 13.9%; /* System/Background #1F2628 */
+    --foreground: 195 22.2% 96.5%; /* System/Text #F4F7F8 */
 
-    /* Primary - Purple from design (#9B64F4 approx) */
-    --primary: 265 89% 66%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary — Orange (#F54A14) */
+    --primary: 14.4 91.8% 52%;
+    --primary-foreground: 195 22.2% 96.5%;
 
-    /* Secondary - Light Lavender (#EDEAF8) */
-    --secondary: 249 100% 97%;
-    --secondary-foreground: 265 89% 66%;
+    /* Secondary — Teal (#84E9E8) */
+    --secondary: 179.4 69.7% 71.6%;
+    --secondary-foreground: 210 6.7% 5.9%;
 
-    /* Accent - Blue (#8CBDF9 approx) */
-    --accent: 213 91% 76%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent — Lime (#C7F022) */
+    --accent: 71.9 87.3% 53.7%;
+    --accent-foreground: 210 6.7% 5.9%;
 
-    /* Warning/Orange (#FFB552 approx) */
-    --warning: 36 100% 66%;
+    /* Destructive — Error red (#FF4D6D) */
+    --destructive: 349.2 100% 65.1%;
+    --destructive-foreground: 195 22.2% 96.5%;
+
+    /* Warning (#FFD951) */
+    --warning: 46.9 100% 65.9%;
 
     /* Color Scales - Purple */
     --purple-50: 255 100% 97%;
@@ -48,55 +53,54 @@
     --blue-800: 222 91% 36%;
     --blue-900: 222 91% 26%;
 
-    /* Color Scales - Orange */
-    --orange-50: 36 100% 97%;
-    --orange-100: 36 100% 91%;
-    --orange-200: 36 100% 86%;
-    --orange-300: 36 100% 81%;
-    --orange-400: 36 100% 66%;
-    --orange-500: 36 100% 59%;
-    --orange-600: 36 100% 54%;
-    --orange-700: 36 100% 47%;
-    --orange-800: 36 100% 42%;
-    --orange-900: 36 100% 36%;
+    /* Color Scales - Orange (== Primary) */
+    --orange-50: 27 100% 96.5%;
+    --orange-100: 26.7 90% 92.4%;
+    --orange-200: 24.5 92.5% 83.5%;
+    --orange-300: 22.5 92.7% 72.4%;
+    --orange-400: 18.9 91.5% 61.4%;
+    --orange-500: 14.4 91.8% 52%;
+    --orange-600: 11.7 87.2% 48%;
+    --orange-700: 7.7 84.5% 40.4%;
+    --orange-800: 4.4 78.6% 33.5%;
+    --orange-900: 4.4 71.5% 27.6%;
 
-    /* State Colors */
-    --success-base: 160 60% 94%;
-    --success-border: 160 67% 44%;
-    --error-base: 350 100% 96%;
-    --error-border: 350 100% 65%;
-    --warning-base: 36 100% 96%;
-    --warning-border: 36 100% 66%;
-    --info-base: 213 91% 97%;
-    --info-border: 213 91% 62%;
+    /* State Colors (border/icon hues) */
+    --success-base: 159.3 81.5% 53.3%;
+    --success-border: 159.3 81.5% 53.3%;
+    --error-base: 349.2 100% 65.1%;
+    --error-border: 349.2 100% 65.1%;
+    --warning-base: 46.9 100% 65.9%;
+    --warning-border: 46.9 100% 65.9%;
+    --info-base: 222.8 90.6% 62.4%;
+    --info-border: 222.8 90.6% 62.4%;
 
     /* Special Colors */
-    --para-cek: 160 100% 61%;
-    --para-yatir: 350 100% 65%;
-    /* Swatch was red in design */
+    --para-cek: 159.3 81.5% 53.3%; /* #27E9A6 */
+    --para-yatir: 349.2 100% 65.1%; /* #FF4D6D */
 
-    /* Theme Variations - Light */
-    --theme-bg: 249 100% 97%;
-    --theme-base: 0 0% 100%;
-    --theme-border-light: 60 2% 94%;
-    --theme-border: 60 5% 92%;
-    --theme-text-primary: 222.2 84% 4.9%;
-    --theme-text-body: 218 20% 38%;
-    --theme-text-secondary: 218 16% 50%;
+    /* Theme Variations - Dark (otcn) */
+    --theme-bg: 193.3 12.7% 13.9%;
+    --theme-base: 210 6.7% 5.9%;
+    --theme-border-light: 200 7.2% 24.5%;
+    --theme-border: 200 7.2% 24.5%;
+    --theme-text-primary: 195 22.2% 96.5%;
+    --theme-text-body: 205.7 6.4% 78.6%;
+    --theme-text-secondary: 200 6% 39.2%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 193.3 12.7% 13.9%;
+    --muted-foreground: 205.7 6.4% 78.6%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 6.7% 5.9%;
+    --popover-foreground: 195 22.2% 96.5%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 210 6.7% 5.9%;
+    --card-foreground: 195 22.2% 96.5%;
 
-    /* Border - Light Cool Gray (#E8EDF3) */
-    --border: 213 27% 93%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 265 89% 66%;
+    /* Border — System/Border #3A4043 */
+    --border: 200 7.2% 24.5%;
+    --input: 200 7.2% 24.5%;
+    --ring: 71.9 87.3% 53.7%;
 
     --radius: 9999px;
     /* Pill shape */
@@ -108,36 +112,39 @@
   }
 
   .dark {
-    --background: 256 66% 21%;
-    /* #241257 */
-    --foreground: 210 40% 98%;
+    --background: 193.3 12.7% 13.9%;
+    /* System/Background #1F2628 */
+    --foreground: 195 22.2% 96.5%;
 
-    --primary: 265 89% 66%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 14.4 91.8% 52%;
+    --primary-foreground: 195 22.2% 96.5%;
 
-    --secondary: 256 66% 11%;
-    /* #12092C - Base from design */
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 179.4 69.7% 71.6%;
+    /* Teal #84E9E8 */
+    --secondary-foreground: 210 6.7% 5.9%;
 
-    --accent: 213 91% 76%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 71.9 87.3% 53.7%;
+    /* Lime #C7F022 */
+    --accent-foreground: 210 6.7% 5.9%;
 
-    --muted: 221 27% 25%;
-    /* #2F3A52 - Light Border from design */
-    --muted-foreground: 215 20.2% 65.1%;
+    --destructive: 349.2 100% 65.1%;
+    --destructive-foreground: 195 22.2% 96.5%;
 
-    --popover: 256 66% 21%;
-    /* Match background */
-    --popover-foreground: 210 40% 98%;
+    --muted: 193.3 12.7% 13.9%;
+    --muted-foreground: 205.7 6.4% 78.6%;
+    /* Body Text + Icon #C5C9CC */
 
-    --card: 256 66% 21%;
-    /* Match background for now, or Base */
-    --card-foreground: 210 40% 98%;
+    --popover: 210 6.7% 5.9%;
+    /* System/Base #0E0F10 */
+    --popover-foreground: 195 22.2% 96.5%;
 
-    --border: 223 27% 20%;
-    /* #262E42 - Border from design */
-    --input: 223 27% 20%;
-    --ring: 265 89% 66%;
+    --card: 210 6.7% 5.9%;
+    --card-foreground: 195 22.2% 96.5%;
+
+    --border: 200 7.2% 24.5%;
+    /* System/Border #3A4043 */
+    --input: 200 7.2% 24.5%;
+    --ring: 71.9 87.3% 53.7%;
     --scrollbar-thumb: #6b7280;
     --scrollbar-thumb-hover: #8b95a7;
     --scrollbar-track: transparent;

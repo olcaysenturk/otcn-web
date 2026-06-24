@@ -52,18 +52,21 @@ const dayPickerClassNames = {
   today: "",
   outside: "[&_button]:text-[#5E666A] [&_button]:opacity-50 [&_button]:hover:bg-transparent",
   disabled: "[&_button]:pointer-events-none [&_button]:text-[#5E666A] [&_button]:opacity-40",
+  // Figma "Dateicker" (52609-10518): range endpoints = solid primary (#F54A14)
+  // with white (#F4F7F8) text; range middle = border/50 (#3A4043 @ 50%) with
+  // primary text. Tokens: primary, foreground, border.
   selected:
-    "[&_button]:!rounded-[8px] [&_button]:!bg-[#C7F022] [&_button]:!text-[#193133] [&_button]:hover:!bg-[#C7F022]",
+    "[&_button]:!rounded-[8px] [&_button]:!bg-primary [&_button]:!text-foreground [&_button]:hover:!bg-primary",
   range_start:
-    "rounded-l-[8px] bg-[#C7F022] [&_button]:!rounded-none [&_button]:!bg-transparent [&_button]:!text-[#193133] [&_button]:hover:!bg-transparent",
+    "rounded-l-[8px] bg-primary [&_button]:!rounded-none [&_button]:!bg-transparent [&_button]:!text-foreground [&_button]:hover:!bg-transparent",
   range_end:
-    "rounded-r-[8px] bg-[#C7F022] [&_button]:!rounded-none [&_button]:!bg-transparent [&_button]:!text-[#193133] [&_button]:hover:!bg-transparent",
+    "rounded-r-[8px] bg-primary [&_button]:!rounded-none [&_button]:!bg-transparent [&_button]:!text-foreground [&_button]:hover:!bg-transparent",
   range_middle:
-    "bg-[rgba(25,49,51,0.5)] [&_button]:!rounded-none [&_button]:!bg-transparent [&_button]:!text-[#C7F022] [&_button]:hover:!bg-transparent",
+    "bg-border/50 [&_button]:!rounded-none [&_button]:!bg-transparent [&_button]:!text-primary [&_button]:hover:!bg-transparent",
 };
 
 /**
- * Reusable two-month range date picker matched to the Bitanova design
+ * Reusable two-month range date picker matched to the otcn design
  * (dark surface, lime selection). Usable standalone or embedded inside a
  * filter dropdown. Pass `showFooter` to render the İptal / Uygula actions.
  */

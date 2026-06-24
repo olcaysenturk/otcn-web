@@ -105,7 +105,8 @@ export function SearchInput<T = SearchResult>({
         <Search
           className={cn(
             "h-5 w-5 shrink-0 transition-colors",
-            isFocused || query ? "text-[#C7F022]" : "text-[#5E666A]",
+            // Figma "Search products input" (52609-11387): nötr ikon, turuncu caret.
+            isFocused || query ? "text-[#C5C9CC]" : "text-[#5E666A]",
           )}
         />
         <input
@@ -117,7 +118,7 @@ export function SearchInput<T = SearchResult>({
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           placeholder={placeholder ?? t("common.searchInput.placeholder")}
-          className="h-full min-w-0 flex-1 border-none bg-transparent text-sm text-[#F4F7F8] outline-none placeholder:text-[#5E666A]"
+          className="h-full min-w-0 flex-1 border-none bg-transparent text-sm text-[#F4F7F8] caret-primary outline-none placeholder:text-[#5E666A]"
         />
         {clearable && query && !disabled && (
           <button
@@ -160,7 +161,7 @@ export function SearchInput<T = SearchResult>({
                     className={cn(
                       "flex items-center gap-2 rounded-[12px] px-[10px] py-[10px] text-left text-[13px] transition-colors",
                       active
-                        ? "bg-[rgba(25,49,51,0.5)] font-medium text-[#C7F022]"
+                        ? "bg-[rgba(58,64,67,0.5)] font-medium text-[#F54A14]"
                         : "text-[#F4F7F8] hover:bg-white/5",
                     )}
                   >

@@ -59,6 +59,9 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
   const variant = ctx?.variant ?? "default";
   const listRef = React.useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = React.useState<{ left: number; width: number } | null>(null);
+  // Gate the sliding-pill transition until after the first measurement + web
+  // fonts settle, so it snaps to the right size instead of "growing" on load.
+  const [transitionReady, setTransitionReady] = React.useState(false);
 
   const updateIndicator = React.useCallback(() => {
     const list = listRef.current;
@@ -86,6 +89,24 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
     return () => observer.disconnect();
   }, [animated, updateIndicator]);
 
+  // Re-measure once web fonts are ready (avoids a pre-font measurement), then
+  // enable transitions on the next frame so the initial sizing never animates.
+  React.useEffect(() => {
+    if (!animated) return;
+    let raf = 0;
+    const finish = () => {
+      updateIndicator();
+      raf = requestAnimationFrame(() => setTransitionReady(true));
+    };
+    const fonts = typeof document !== "undefined" ? document.fonts : undefined;
+    if (fonts && fonts.status !== "loaded") {
+      fonts.ready.then(finish).catch(finish);
+    } else {
+      finish();
+    }
+    return () => cancelAnimationFrame(raf);
+  }, [animated, updateIndicator]);
+
   return (
     <TabsContext.Provider value={ctx ? { ...ctx, animated, indicatorReady: indicator !== null } : ctx}>
       <div
@@ -107,7 +128,10 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
           <span
             aria-hidden
             className={cn(
-              "pointer-events-none absolute top-1 bottom-1 left-0 transition-[transform,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+              "pointer-events-none absolute top-1 bottom-1 left-0",
+              transitionReady
+                ? "transition-[transform,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                : "transition-none",
               variant === "subtle" && "rounded-xl bg-[#0F1415] shadow-sm",
               variant === "compact" && "rounded-[7px] bg-[#0E0F10] shadow-sm",
               variant === "default" && "rounded-[12px] bg-[#F4F7F8] shadow-[0px_1px_2px_1px_rgba(21,21,20,0.05)]",

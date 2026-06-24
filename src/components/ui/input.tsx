@@ -3,15 +3,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// Matched to Figma "Inputs" (52609-2849): rounded-12, dark fill, border #3A4043/50;
+// focus = white border + soft shadow; error #FF4D6D; success #27E9A6;
+// disabled = #5E666A/60 fill, #1F2628 text. Tokens used where available (primary caret).
 const inputVariants = cva(
-  "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-input h-10 w-full min-w-0 rounded-full border bg-transparent px-4 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+  "placeholder:text-[#5E666A] selection:bg-primary selection:text-primary-foreground h-11 w-full min-w-0 rounded-[12px] border border-[#3A4043]/50 bg-[#0E0F10] px-4 py-2.5 text-sm font-medium text-[#F4F7F8] caret-primary shadow-xs transition-[color,box-shadow,border-color] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground disabled:cursor-not-allowed disabled:border-[#3A4043] disabled:bg-[rgba(94,102,106,0.6)] disabled:text-[#1F2628] disabled:placeholder:text-[#1F2628] focus-visible:border-[#F4F7F8] focus-visible:shadow-[0px_0px_2px_0px_rgba(62,28,130,0.25)]",
   {
     variants: {
       variant: {
         default: "",
-        error: "border-[#FF4D4D] text-[#FF4D4D] focus-visible:border-[#FF4D4D] focus-visible:ring-[#FF4D4D]/20 aria-invalid:ring-[#FF4D4D]/20",
-        success: "border-[#00FF9D] text-[#00FF9D] focus-visible:border-[#00FF9D] focus-visible:ring-[#00FF9D]/20",
-        auth: "h-14 rounded-[18px] border-[#2B3032] bg-[#0D0F10] px-5 py-3 text-[15px] leading-5 text-[#F4F7F8] shadow-none placeholder:text-[#4F565A] aria-invalid:border-[#FF416C] aria-invalid:ring-0 focus-visible:border-[#596165] focus-visible:ring-0 md:h-[58px] md:text-base",
+        error: "border-[#FF4D6D] focus-visible:border-[#FF4D6D] focus-visible:shadow-none",
+        success: "border-[#27E9A6] focus-visible:border-[#27E9A6] focus-visible:shadow-none",
+        auth: "h-14 rounded-[18px] border-[#2B3032] bg-[#0D0F10] px-5 py-3 text-[15px] leading-5 text-[#F4F7F8] shadow-none placeholder:text-[#4F565A] aria-invalid:border-[#FF416C] aria-invalid:ring-0 focus-visible:border-[#596165] focus-visible:shadow-none focus-visible:ring-0 md:h-[58px] md:text-base",
       },
     },
     defaultVariants: {
