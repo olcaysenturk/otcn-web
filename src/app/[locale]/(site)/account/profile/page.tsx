@@ -52,7 +52,7 @@ export default function AccountProfilePage() {
 
   return (
     <div className="rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
-      <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.menu.profile")}</h2>
+      <h2 className="hidden text-lg font-medium text-[#F4F7F8] md:block">{t("account.menu.profile")}</h2>
 
       <div className="mt-3 flex flex-col">
         {isLoading
@@ -70,10 +70,10 @@ export default function AccountProfilePage() {
                 key={row.label}
                 className="flex flex-col gap-2 border-b border-[#3A4043] py-5 last:border-b-0 md:flex-row md:items-center md:gap-[120px]"
               >
-                <span className="w-[200px] shrink-0 text-[18px] font-medium tracking-[-0.27px] text-[#8F93FE]">
+                <span className="w-[200px] shrink-0 text-base font-medium tracking-[-0.27px] text-[#8F93FE] md:text-[18px]">
                   {row.label}
                 </span>
-                <span className="break-all text-base text-[#C5C9CC]">{row.value}</span>
+                <span className="break-all text-sm text-[#C5C9CC] md:text-base">{row.value}</span>
               </div>
             ))}
       </div>

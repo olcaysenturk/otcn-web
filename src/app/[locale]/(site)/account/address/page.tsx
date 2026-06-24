@@ -8,8 +8,10 @@ import { toast } from "sonner";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Pagination } from "@/components/ui/pagination";
+import { SearchInput } from "@/components/ui/search-input";
 import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { getApiLocale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { getCoinIconPath } from "@/lib/coinIcons";
@@ -59,6 +61,7 @@ export default function AccountAddressPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [allAddresses, setAllAddresses] = useState<AddressRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -239,29 +242,48 @@ export default function AccountAddressPage() {
   ];
 
   return (
-    <div className="rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
+    <div className="md:rounded-[22px] md:bg-[#0E0F10] md:p-6 md:shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.address.safeTitle")}</h2>
+        <h2 className="flex items-center gap-2 text-lg font-medium text-[#F4F7F8]">
+          {t("account.address.safeTitle")}
+          <span className="text-sm font-normal text-[#5E666A] md:hidden">{filteredAddresses.length}</span>
+        </h2>
         <button
           type="button"
           onClick={handleOpenAddAddress}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#27E9A6] px-4 py-2 text-xs font-bold text-[#27E9A6] transition hover:bg-[#27E9A6]/10"
+          className="hidden shrink-0 items-center gap-1.5 rounded-full border border-[#27E9A6] px-4 py-2 text-xs font-bold text-[#27E9A6] transition hover:bg-[#27E9A6]/10 md:inline-flex"
         >
           <Plus className="h-4 w-4" />
           {t("account.address.add")}
         </button>
       </div>
 
-      <div className="relative mt-4 w-full max-w-[500px]">
-        <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#5E666A]" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t("account.address.searchPlaceholder")}
-          className="h-10 w-full rounded-[24px] border border-[#3A4043] bg-[#0E0F10] pl-10 pr-3 text-sm text-[#F4F7F8] outline-none transition placeholder:text-[#5E666A] focus:border-[#5E666A]"
-        />
+      {/* Mobile controls: search toggle + add */}
+      <div className="mt-4 flex items-center gap-3 md:hidden">
+        <button
+          type="button"
+          aria-label="search"
+          onClick={() => setShowMobileSearch((v) => !v)}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#3A4043] text-[#C5C9CC]"
+        >
+          <Search className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
+          onClick={handleOpenAddAddress}
+          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-[#27E9A6] px-4 py-2.5 text-xs font-bold text-[#27E9A6] transition hover:bg-[#27E9A6]/10"
+        >
+          <Plus className="h-4 w-4" />
+          {t("account.address.add")}
+        </button>
       </div>
+
+      <SearchInput
+        value={searchQuery}
+        onValueChange={setSearchQuery}
+        placeholder={t("account.address.searchPlaceholder")}
+        className={cn("mt-4 max-w-[500px]", !showMobileSearch && "hidden md:block")}
+      />
 
       <div className="relative mt-6">
         <div className={isAddressBookEmpty ? "pointer-events-none select-none opacity-40 blur-[3px]" : undefined}>
@@ -274,6 +296,41 @@ export default function AccountAddressPage() {
             getRowId={(row, index) => (row.id ? `id-${row.id}` : `${row.coin}-${row.address}-${index}`)}
             rowClassName={() => "hover:[&>td]:bg-[#121516]"}
             empty={<EmptyState title={t("account.address.empty.title")} description={t("account.address.empty.description")} />}
+            renderMobileCard={(row) => (
+              <div className="rounded-[20px] border border-[#3A4043] bg-[#0E0F10] p-4">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10">
+                      <Image src={row.icon} alt={row.coin} width={32} height={32} className="h-full w-full object-cover" />
+                    </span>
+                    <span className="flex items-baseline gap-1">
+                      <span className="font-medium text-[#F4F7F8]">{row.name}</span>
+                      <span className="text-xs text-[#C5C9CC]">({row.coin})</span>
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={t("account.bank.actions.delete")}
+                    onClick={() => setAddressToDelete(row)}
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#FF4D6D] text-[#FF4D6D] transition hover:bg-[#FF4D6D]/10"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {[
+                    { l: t("account.address.columns.label"), v: row.label },
+                    { l: t("account.address.columns.address"), v: row.address },
+                    { l: t("account.address.columns.tag"), v: row.memo },
+                  ].map((r) => (
+                    <div key={r.l} className="flex items-center justify-between gap-3">
+                      <span className="shrink-0 text-[13px] text-[#788084]">{r.l}</span>
+                      <span className="truncate text-right text-[13px] text-[#F4F7F8]">{r.v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           />
         </div>
 

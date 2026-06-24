@@ -1809,6 +1809,7 @@
       "description": "You don't have any transactions matching your criteria."
     },
     "loading": "Loading...",
+    "retry": "Try Again",
     "success": "Operation completed successfully",
     "error": "An error occurred. Please try again."
   },

@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Search, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { Pagination } from "@/components/ui/pagination";
+import { SearchInput } from "@/components/ui/search-input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
@@ -178,16 +179,12 @@ export default function AccountUserPage() {
           </button>
         </div>
 
-        <div className="relative mt-4 w-full max-w-[500px]">
-          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#5E666A]" />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("userPage.filters.search")}
-            className="h-10 w-full rounded-[24px] border border-[#3A4043] bg-[#0E0F10] pl-10 pr-3 text-sm text-[#F4F7F8] outline-none transition placeholder:text-[#5E666A] focus:border-[#5E666A]"
-          />
-        </div>
+        <SearchInput
+          value={query}
+          onValueChange={setQuery}
+          placeholder={t("userPage.filters.search")}
+          className="mt-4 max-w-[500px]"
+        />
 
         <div className="mt-6">
           <DataTable<UserRow>

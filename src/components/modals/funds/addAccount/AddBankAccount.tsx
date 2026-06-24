@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { cleanIBAN, extractBankIdFromIBAN, formatIBAN, validateIBAN } from "@/lib/utils/bank";
 import { addBank } from "@/services/bank";
@@ -15,10 +14,12 @@ type AddBankAccountProps = {
   t: (key: string, params?: Record<string, string>) => string;
 };
 
+const FIELD_CLASS =
+  "h-12 w-full rounded-[14px] border border-[#3A4043] bg-transparent px-4 text-sm text-[#F4F7F8] placeholder:text-[#5E666A] focus:border-[#5E666A]";
+
 export function AddBankAccount({ banks, onSuccess, t }: AddBankAccountProps) {
   const [iban, setIban] = useState("");
   const [accountName, setAccountName] = useState("");
-  const [isConfirmed, setIsConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
   const ibanInputRef = useRef<HTMLInputElement>(null);
 
@@ -71,10 +72,6 @@ export function AddBankAccount({ banks, onSuccess, t }: AddBankAccountProps) {
       toast.error(t("validation.accountNameRequired"));
       return;
     }
-    if (!isConfirmed) {
-      toast.error(t("validation.ibanConfirmationRequired"));
-      return;
-    }
 
     setLoading(true);
     try {
@@ -93,7 +90,7 @@ export function AddBankAccount({ banks, onSuccess, t }: AddBankAccountProps) {
         toast.error(resJson.message || t("bank.errorAdd"));
       }
     }
-    catch (error) {
+    catch {
       toast.error(t("bank.errorAdd"));
     }
     finally {
@@ -102,70 +99,41 @@ export function AddBankAccount({ banks, onSuccess, t }: AddBankAccountProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col justify-between w-full h-full">
-      <div className="flex flex-col items-start gap-6 w-full">
-        {/* Hesap Adı Input */}
-        <div className="flex flex-col items-start gap-2 w-full">
-          <label className="text-[14px] leading-[14px] font-medium text-gray-400">
-            {t("modals.funds.accountNameTitle")}
-          </label>
+    <form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between gap-6">
+      <div className="flex w-full flex-col gap-5">
+        <div className="flex w-full flex-col gap-2">
+          <label className="text-sm font-medium text-[#F4F7F8]">{t("modals.funds.accountNameTitle")}</label>
           <Input
             type="text"
             value={accountName}
-            onChange={(e) => {
-              setAccountName(e.target.value);
-            }}
+            onChange={(e) => setAccountName(e.target.value)}
             placeholder={t("bank.accountNamePlaceholder")}
-            className="w-full h-[45px] px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-[14px] leading-[150%] tracking-[-0.015em] font-medium text-white placeholder:text-gray-500"
+            className={FIELD_CLASS}
             disabled={loading}
           />
         </div>
 
-        {/* IBAN Input */}
-        <div className="flex flex-col items-start gap-2 w-full">
-          <label className="text-[14px] leading-[14px] font-medium text-gray-400">
-            {t("modals.funds.ibanTitle")}
-          </label>
+        <div className="flex w-full flex-col gap-2">
+          <label className="text-sm font-medium text-[#F4F7F8]">{t("modals.funds.ibanTitle")}</label>
           <Input
             ref={ibanInputRef}
             type="text"
             value={iban}
             onChange={handleIbanChange}
             placeholder={t("bank.ibanPlaceholder")}
-            className="w-full h-[45px] px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-[14px] leading-[150%] tracking-[-0.015em] font-medium text-white placeholder:text-gray-500"
+            className={FIELD_CLASS}
             maxLength={32}
             disabled={loading}
           />
         </div>
-
-        {/* Checkbox */}
-        <div className="flex flex-row items-start gap-3 w-full">
-          <Checkbox
-            id="iban-confirmation"
-            onCheckedChange={(e) => setIsConfirmed(!!e)}
-            defaultChecked={isConfirmed}
-            disabled={loading}
-            className="h-4 w-4 rounded border-white/20 mt-1 text-primary bg-white/5"
-          />
-          <label htmlFor="iban-confirmation" className="text-[14px] leading-[150%] tracking-[-0.015em] font-normal text-gray-400 flex-1 cursor-pointer">
-            {t("bank.ibanDeclaration")}
-          </label>
-        </div>
       </div>
 
-      {/* Submit Button */}
       <Button
         type="submit"
-        className="w-full bg-white px-4 py-3 text-sm font-semibold rounded-full text-[#0F1415] shadow-md transition hover:bg-white/90"
-        disabled={loading || !isConfirmed}
+        className="w-full rounded-full bg-white px-4 py-3 text-sm font-semibold text-[#0F1415] shadow-md transition hover:bg-white/90"
+        disabled={loading}
       >
-        {loading ? (
-          <span>{t("bank.adding")}</span>
-        ) : (
-          <>
-            {t("bank.addBankAccountButton")}
-          </>
-        )}
+        {loading ? t("bank.adding") : t("account.address.form.save")}
       </Button>
     </form>
   );

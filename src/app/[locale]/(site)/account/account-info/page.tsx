@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Building2, ChevronRight, Download, FileText, Plus, Search, Trash2, User } from "lucide-react";
+import { Building2, ChevronRight, Download, FileText, Plus, Trash2, User } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -10,6 +10,7 @@ import { getDateFnsLocale } from "@/lib/i18n/dateFnsLocale";
 import { useModalStore } from "@/stores/useModalStore";
 import { getApplicationDetail } from "@/services/account";
 import { ApplicationDetail } from "@/types/application";
+import { SearchInput } from "@/components/ui/search-input";
 import { DataTable, type DataTableColumn } from "@/components/ui/table";
 import { Pagination } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -28,10 +29,11 @@ const CARD = "rounded-[22px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,
 export default function AccountInfoPage() {
   const { t, locale } = useI18n();
   const { openModal } = useModalStore();
-  const [section, setSection] = useState<"info" | "docs">("docs");
+  const [section, setSection] = useState<"info" | "docs">("info");
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [docPage, setDocPage] = useState(1);
+  const [docQuery, setDocQuery] = useState("");
 
   const fetchApplicationData = useCallback(async () => {
     setIsLoading(true);
@@ -89,6 +91,19 @@ export default function AccountInfoPage() {
     ],
     [],
   );
+
+  const docName = useCallback((key: string) => t(`account.corporateTable.documents.${key}`), [t]);
+
+  const filteredDocs = useMemo(() => {
+    const q = docQuery.trim().toLowerCase();
+    if (!q) return docs;
+    return docs.filter((d) => docName(d.key).toLowerCase().includes(q));
+  }, [docs, docQuery, docName]);
+
+  const docResults = useMemo(() => {
+    if (!docQuery.trim()) return [];
+    return filteredDocs.map((d) => ({ key: d.key, name: docName(d.key) }));
+  }, [filteredDocs, docQuery, docName]);
 
   const StatusBadge = ({ status }: { status: CorpDoc["status"] }) => {
     const approved = status === "approved";
@@ -168,14 +183,16 @@ export default function AccountInfoPage() {
     },
   ];
 
+  const SUB_TABS = [
+    { key: "info", icon: Building2, label: t("account.corporateMenu.info") },
+    { key: "docs", icon: FileText, label: t("account.corporateMenu.docs") },
+  ] as const;
+
   return (
     <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[241px_1fr] lg:items-start">
-      {/* Left sub-navigation (Şirket Bilgileri / Şirket Evrakları) */}
-      <div className="flex shrink-0 gap-2 overflow-x-auto rounded-[26px] bg-[#0E0F10] p-4 no-scrollbar lg:flex-col lg:gap-3 lg:p-6">
-        {([
-          { key: "info", icon: Building2, label: t("account.corporateMenu.info") },
-          { key: "docs", icon: FileText, label: t("account.corporateMenu.docs") },
-        ] as const).map(({ key, icon: Icon, label }) => {
+      {/* Sub-navigation — mobile: segmented control */}
+      <div className="flex gap-1 rounded-[12px] bg-[#1F2628] p-1 lg:hidden">
+        {SUB_TABS.map(({ key, icon: Icon, label }) => {
           const active = section === key;
           return (
             <button
@@ -183,7 +200,28 @@ export default function AccountInfoPage() {
               type="button"
               onClick={() => setSection(key)}
               className={cn(
-                "flex items-center justify-between gap-1 whitespace-nowrap rounded-[12px] px-2 py-[10px] text-left transition-colors lg:w-full",
+                "flex flex-1 items-center justify-center gap-2 rounded-[8px] px-3 py-2 text-[13px] font-medium transition-colors",
+                active ? "bg-[#0E0F10] text-[#C7F022]" : "text-[#C5C9CC]",
+              )}
+            >
+              <Icon className="h-4 w-4 shrink-0" />
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Sub-navigation — desktop: vertical sidebar */}
+      <div className="hidden shrink-0 flex-col gap-3 rounded-[26px] bg-[#0E0F10] p-6 lg:flex">
+        {SUB_TABS.map(({ key, icon: Icon, label }) => {
+          const active = section === key;
+          return (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setSection(key)}
+              className={cn(
+                "flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-[12px] px-2 py-[10px] text-left transition-colors",
                 active ? "bg-[rgba(25,49,51,0.5)]" : "hover:bg-white/5",
               )}
             >
@@ -287,26 +325,70 @@ export default function AccountInfoPage() {
             </div>
           </div>
         ) : (
-          <div className="space-y-6 rounded-[26px] bg-[#0E0F10] p-6 shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
-            <h2 className="text-lg font-medium text-[#F4F7F8]">{t("account.corporateTable.title")}</h2>
+          <div className="space-y-6 lg:rounded-[26px] lg:bg-[#0E0F10] lg:p-6 lg:shadow-[0px_2px_8px_0.3px_rgba(58,64,67,0.2)]">
+            <h2 className="flex items-center gap-2 text-lg font-medium text-[#F4F7F8]">
+              {t("account.corporateTable.title")}
+              <span className="text-sm font-normal text-[#5E666A] lg:hidden">
+                {t("account.corporateTable.resultCount", { count: String(filteredDocs.length) })}
+              </span>
+            </h2>
 
-            <div className="relative w-full max-w-[500px]">
-              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#5E666A]" />
-              <input
-                type="text"
-                placeholder={t("account.corporateTable.searchPlaceholder")}
-                className="h-10 w-full rounded-[24px] border border-[#3A4043] bg-[#0E0F10] pl-10 pr-3 text-sm text-[#F4F7F8] outline-none transition placeholder:text-[#5E666A] focus:border-[#5E666A]"
-              />
-            </div>
+            <SearchInput<{ key: string; name: string }>
+              value={docQuery}
+              onValueChange={setDocQuery}
+              placeholder={t("account.corporateTable.searchPlaceholder")}
+              className="max-w-[500px]"
+              results={docResults}
+              getResultKey={(r) => r.key}
+              onResultSelect={(r) => setDocQuery(r.name)}
+            />
 
             <DataTable<CorpDoc>
               columns={columns}
-              data={docs}
+              data={filteredDocs}
               isLoading={isLoading}
               skeletonRows={5}
               tableLayout="fixed"
               getRowId={(doc) => doc.key}
               rowClassName={() => "hover:[&>td]:bg-[#121516]"}
+              renderMobileCard={(doc) => (
+                <div className="rounded-[20px] border border-[#3A4043] bg-[#0E0F10] p-4">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <span className="font-medium text-[#F4F7F8]">{docName(doc.key)}</span>
+                    {doc.status === "expired" ? (
+                      <button
+                        type="button"
+                        className="shrink-0 whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-3 py-1.5 text-xs font-bold text-[#F4F7F8]"
+                      >
+                        {t("account.corporateTable.upload")}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#3A4043] text-[#788084]"
+                      >
+                        <Download className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[13px] text-[#788084]">{t("account.corporateTable.headers.approveDate")}</span>
+                      <span className="text-[13px] text-[#F4F7F8]">{doc.approve}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[13px] text-[#788084]">{t("account.corporateTable.headers.validDate")}</span>
+                      <span className={cn("text-[13px]", doc.status === "expired" ? "text-[#FF4D6D]" : "text-[#F4F7F8]")}>
+                        {doc.valid}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[13px] text-[#788084]">{t("account.corporateTable.headers.status")}</span>
+                      <StatusBadge status={doc.status} />
+                    </div>
+                  </div>
+                </div>
+              )}
             />
 
             {!isLoading && (

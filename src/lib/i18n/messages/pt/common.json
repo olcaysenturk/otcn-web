@@ -1799,6 +1799,7 @@
       "description": "Você não tem nenhuma transação correspondente aos seus critérios."
     },
     "loading": "Carregando...",
+    "retry": "Tentar novamente",
     "success": "Operação concluída com sucesso",
     "error": "Ocorreu um erro. Tente novamente."
   },
