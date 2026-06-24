@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   BarChart3,
   Bell,
-  ChevronDown,
   Globe2,
   TrendingUp,
   User,
@@ -22,12 +21,11 @@ import { clearAuthSession } from "@/lib/auth/clientSession";
 import { invalidateSession } from "@/lib/api/session";
 import { HamburgerIcon } from "./HamburgerIcon";
 import { MobileMenu } from "./MobileMenu";
-import { NavLink } from "./topbar/NavLink";
-import { TransactionsNav } from "./topbar/TransactionsNav";
+import { NavItem, type NavDropdownEntry } from "./topbar/NavItem";
 import { cn } from "@/lib/utils";
 import { getInternalPath } from "@/lib/i18n/navigation";
 
-type NavItem = {
+type NavEntry = {
   label: string;
   href: string;
   activeInternalPrefix?: string;
@@ -139,7 +137,6 @@ function SiteTopbar({
   openModal: (name: Exclude<ModalName, null>, data?: unknown) => void;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTradeMenuOpen, setIsTradeMenuOpen] = useState(false);
 
   const tradeMenuItems = buildTradeMenuItems(t);
 
@@ -156,82 +153,53 @@ function SiteTopbar({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#182121]">
+    <header className="sticky top-0 z-50 w-full bg-background">
       <div className="mx-auto flex h-[84px] max-w-[1392px] items-center justify-between gap-6 px-6 sm:px-8 lg:px-14">
-        <Link href={withLocale("/", locale)} className="flex shrink-0 items-center text-white">
-          <span className="font-satoshi text-[28px] font-black leading-none tracking-[0.01em] sm:text-[37px]">
-            OTCN
-          </span>
-          <span className="ml-1.5 mt-[-18px] h-1.5 w-1.5 rounded-full bg-white sm:mt-[-24px] sm:h-2 sm:w-2" />
+        <Link
+          href={withLocale("/", locale)}
+          className="flex shrink-0 items-center"
+          aria-label="otcn"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/otcn/logo.svg"
+            alt="otcn"
+            width={136}
+            height={48}
+            className="h-9 w-auto xl:h-12"
+          />
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-11 pl-6 text-[16px] font-medium text-white/90 lg:flex xl:pl-9">
-          {siteNavItems.map((item) =>
-            item.hasDropdown ? (
-              <div
+        <nav className="hidden flex-1 items-center gap-11 pl-6 lg:flex xl:pl-9">
+          {siteNavItems.map((item) => {
+            const active =
+              getInternalPath(pathname).startsWith(item.href) && item.href !== "/";
+            return item.hasDropdown ? (
+              <NavItem
                 key={item.labelKey}
-                className="relative"
-                onMouseEnter={() => setIsTradeMenuOpen(true)}
-                onMouseLeave={() => setIsTradeMenuOpen(false)}
-              >
-                <button
-                  type="button"
-                  className={cn(
-                    "flex items-center gap-2 whitespace-nowrap transition-colors hover:text-white",
-                    getInternalPath(pathname).startsWith(item.href) && "text-[#8F93FE]",
-                  )}
-                >
-                  {t(item.labelKey)}
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 stroke-[1.75] transition-transform",
-                      isTradeMenuOpen && "rotate-180",
-                    )}
-                  />
-                </button>
-
-                {isTradeMenuOpen && (
-                  <div className="absolute left-0 top-full z-50 w-80 pt-3 text-left">
-                    <div className="space-y-1 rounded-2xl border border-[#E8EDF3] bg-white p-3 shadow-xl">
-                      {tradeMenuItems.map((menuItem) => (
-                        <Link
-                          key={menuItem.title}
-                          href={withLocale(menuItem.href, locale)}
-                          onClick={() => setIsTradeMenuOpen(false)}
-                          className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition hover:bg-gray-200"
-                        >
-                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F4F2FF] text-[#5932D1]">
-                            <menuItem.icon className="h-5 w-5" />
-                          </span>
-                          <span>
-                            <span className="block text-sm font-semibold text-gray-900">
-                              {menuItem.title}
-                            </span>
-                            <span className="mt-0.5 block text-xs font-normal text-gray-500">
-                              {menuItem.desc}
-                            </span>
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+                variant="dropdown"
+                label={t(item.labelKey)}
+                active={active}
+                items={tradeMenuItems.map((m): NavDropdownEntry => {
+                  const current = getInternalPath(pathname);
+                  return {
+                    href: withLocale(m.href, locale),
+                    title: m.title,
+                    description: m.desc,
+                    icon: <m.icon className="h-5 w-5" />,
+                    active: current === m.href || current.startsWith(`${m.href}/`),
+                  };
+                })}
+              />
             ) : (
-              <Link
+              <NavItem
                 key={item.labelKey}
+                label={t(item.labelKey)}
                 href={withLocale(item.href, locale)}
-                className={cn(
-                  "flex items-center gap-2 whitespace-nowrap transition-colors hover:text-white",
-                  getInternalPath(pathname).startsWith(item.href) &&
-                    item.href !== "/" &&
-                    "text-[#8F93FE]",
-                )}
-              >
-                {t(item.labelKey)}
-              </Link>
-            ),
-          )}
+                active={active}
+              />
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
@@ -246,7 +214,7 @@ function SiteTopbar({
 
           <Button
             size="default"
-            className="h-11 min-w-[92px] border-0 bg-[#C8FF00] px-5 text-[14px] font-bold text-black shadow-none hover:bg-[#B7EA00]"
+            className="h-11 min-w-[92px] border-0 bg-primary px-5 text-[14px] font-bold text-primary-foreground shadow-none hover:bg-primary-600"
             onClick={() => {
               const isHomePage = pathname === "/" || pathname === `/${locale}`;
               if (isHomePage) {
@@ -309,7 +277,6 @@ function DashboardTopbar({
   onLogout: () => void;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTradeOpen, setIsTradeOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -328,7 +295,7 @@ function DashboardTopbar({
 
   const internalPath = getInternalPath(pathname);
 
-  const navItems: NavItem[] = [
+  const navItems: NavEntry[] = [
     { label: t("header.dashboard"), href: withLocale("/dashboard", locale), activeInternalPrefix: "/dashboard" },
     { label: t("header.wallet"), href: withLocale("/wallet", locale), activeInternalPrefix: "/wallet" },
     { label: t("header.trade"), href: withLocale("/trade/easy", locale), activeInternalPrefix: "/trade" },
@@ -363,81 +330,71 @@ function DashboardTopbar({
   return (
     <header
       className={[
-        "sticky top-0 z-50 w-full bg-[#1C2425]",
+        "sticky top-0 z-50 w-full bg-background",
         isAccountPage ? "hidden lg:block" : "",
       ].join(" ")}
     >
       <div className="relative mx-auto flex h-[84px] max-w-[1392px] items-center justify-between gap-3 px-6 lg:px-8 xl:gap-5">
         <div className="flex min-w-0 items-center gap-6 xl:gap-12">
-          <Link href={withLocale("/", locale)} className="flex shrink-0 items-center text-white">
-            <span className="font-satoshi text-[28px] font-black leading-none tracking-[0.01em] sm:text-[37px]">
-              OTCN
-            </span>
-            <span className="ml-1.5 mt-[-18px] h-1.5 w-1.5 rounded-full bg-white sm:mt-[-24px] sm:h-2 sm:w-2" />
+          <Link
+            href={withLocale("/", locale)}
+            className="flex shrink-0 items-center"
+            aria-label="otcn"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/otcn/logo.svg"
+              alt="otcn"
+              width={136}
+              height={48}
+              className="h-9 w-auto xl:h-12"
+            />
           </Link>
 
           <div className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-9">
             {navWithActive.map((item) =>
               item.activeInternalPrefix === "/transaction" ? (
-                <TransactionsNav
+                <NavItem
                   key={item.label}
+                  variant="dropdown"
                   label={item.label}
                   active={item.active}
-                  links={transactionLinks.map((link) => ({
-                    href: link.href,
-                    title: link.title,
-                    description: link.desc,
-                  }))}
+                  items={transactionLinks.map((link): NavDropdownEntry => {
+                    const itemInternal = getInternalPath(link.href);
+                    return {
+                      href: link.href,
+                      title: link.title,
+                      description: link.desc,
+                      active:
+                        internalPath === itemInternal ||
+                        internalPath.startsWith(`${itemInternal}/`),
+                    };
+                  })}
                   onNavigate={() => setIsMenuOpen(false)}
                 />
               ) : item.label === t("header.trade") ? (
-                <div key={item.label} className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsTradeOpen((prev) => !prev)}
-                    className={cn(
-                      "relative flex h-[42px] items-center gap-1.5 whitespace-nowrap text-[16px] font-medium text-white/90 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#8F84FF] xl:gap-2",
-                      item.active ? "text-[#9B91FF] after:w-full" : "hover:text-white after:w-0",
-                    )}
-                  >
-                    {item.label}
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-                  {isTradeOpen && (
-                    <div className="absolute left-0 top-full z-50 mt-2 w-80 text-left">
-                      <div className="space-y-1 rounded-2xl border border-[#E8EDF3] bg-white p-3 shadow-xl dark:border-gray-700 dark:bg-gray-900">
-                        {tradeMenuItems.map((menuItem) => (
-                          <Link
-                            key={menuItem.title}
-                            href={withLocale(menuItem.href, locale)}
-                            onClick={() => {
-                              setIsTradeOpen(false);
-                              setIsMenuOpen(false);
-                            }}
-                            className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition hover:bg-gray-50 dark:hover:bg-gray-800"
-                          >
-                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F4F2FF] text-[#5932D1]">
-                              <menuItem.icon className="h-5 w-5" />
-                            </span>
-                            <span>
-                              <span className="block text-sm font-semibold text-gray-900 dark:text-gray-100">
-                                {menuItem.title}
-                              </span>
-                              <span className="mt-0.5 block text-xs font-normal text-gray-500 dark:text-gray-300">
-                                {menuItem.desc}
-                              </span>
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <NavLink
+                <NavItem
                   key={item.label}
-                  href={item.href}
+                  variant="dropdown"
                   label={item.label}
+                  active={item.active}
+                  items={tradeMenuItems.map(
+                    (m): NavDropdownEntry => ({
+                      href: withLocale(m.href, locale),
+                      title: m.title,
+                      description: m.desc,
+                      icon: <m.icon className="h-5 w-5" />,
+                      active:
+                        internalPath === m.href || internalPath.startsWith(`${m.href}/`),
+                    }),
+                  )}
+                  onNavigate={() => setIsMenuOpen(false)}
+                />
+              ) : (
+                <NavItem
+                  key={item.label}
+                  label={item.label}
+                  href={item.href}
                   active={item.active}
                   onClick={() => setIsMenuOpen(false)}
                 />
@@ -450,7 +407,7 @@ function DashboardTopbar({
           <div className="hidden items-center sm:flex">
             <Button
               variant="default"
-              className="h-10 rounded-[11px] border-0 bg-[#C8FF00] px-4 text-[12px] font-bold text-black shadow-none hover:bg-[#B7EA00] xl:h-11 xl:rounded-[12px] xl:px-6 xl:text-[14px]"
+              className="h-10 rounded-[16px] border-0 bg-primary px-5 text-[14px] font-bold text-primary-foreground shadow-none hover:bg-primary-600 xl:h-11"
               onClick={() => openModal("funds", { mode: "deposit" })}
             >
               {t("header.deposit")}
@@ -469,9 +426,9 @@ function DashboardTopbar({
           <button
             type="button"
             aria-label={t("header.notifications")}
-            className="relative hidden h-10 w-10 items-center justify-center text-white/90 transition hover:text-white sm:flex"
+            className="relative hidden h-10 w-10 items-center justify-center text-foreground transition hover:text-white sm:flex"
           >
-            <Bell className="h-[18px] w-[18px] stroke-[1.6]" />
+            <Bell className="h-5 w-5 stroke-[1.6]" />
           </button>
           <div ref={profileMenuRef} className="relative flex">
             <Link
@@ -517,7 +474,7 @@ function DashboardTopbar({
                       className={cn(
                         "flex w-full items-center rounded-2xl px-4 py-3 text-left transition",
                         isActive
-                          ? "bg-[#F4F2FF] text-[#5932D1]"
+                          ? "bg-primary/10 text-primary"
                           : "hover:bg-gray-50 dark:hover:bg-gray-800"
                       )}
                       onClick={() => setIsProfileOpen(false)}
