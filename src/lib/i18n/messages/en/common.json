@@ -1409,6 +1409,11 @@
             "description": "Depending on the payment options available in your country, you can buy crypto instantly using a debit or credit card, Apple Pay, Google Pay, or make a bank transfer / ACH to benefit from lower fees and higher limits."
           }
         ]
+      },
+      "whatIsCrypto": {
+        "title": "What is cryptocurrency?",
+        "firstParagraph": "Cryptocurrency is a form of digital money that exists only online and is protected by cryptographic technology, unlike physical currencies such as the U.S. Dollar or other traditional fiat money. These digital assets operate on blockchain technology, a decentralized system that functions as a shared and transparent digital record.",
+        "secondParagraph": "All cryptocurrency transactions are permanently logged on the blockchain. Once verified, they cannot be altered, reversed, or manipulated, ensuring a high level of security and trust."
       }
     },
     "future": {

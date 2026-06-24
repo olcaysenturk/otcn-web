@@ -1399,6 +1399,11 @@
             "description": "Dependendo das opções de pagamento disponíveis no seu país, pode comprar criptomoedas instantaneamente com cartão de débito ou crédito, Apple Pay, Google Pay, ou através de transferência bancária / ACH para beneficiar de taxas mais baixas e limites mais altos."
           }
         ]
+      },
+      "whatIsCrypto": {
+        "title": "O que é criptomoeda?",
+        "firstParagraph": "Criptomoeda é uma forma de dinheiro digital que existe apenas online e é protegida por tecnologia criptográfica, ao contrário de moedas físicas como o dólar americano ou outras moedas fiduciárias tradicionais. Esses ativos digitais operam em blockchain, um sistema descentralizado que funciona como um registro digital compartilhado e transparente.",
+        "secondParagraph": "Todas as transações de criptomoedas são registradas permanentemente na blockchain. Depois de verificadas, não podem ser alteradas, revertidas ou manipuladas, garantindo um alto nível de segurança e confiança."
       }
     },
     "future": {
