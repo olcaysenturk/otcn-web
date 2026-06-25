@@ -10,16 +10,28 @@ export function MarketCoinCard({ coin, href }: MarketCoinCardProps) {
   return (
     <Link
       href={href}
-      className="flex h-[58px] w-[152px] shrink-0 items-center gap-2.5 rounded-[10px] bg-white px-3 py-2.5 text-[#1b2020] shadow-[0_8px_22px_rgba(0,0,0,0.16)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] lg:h-[66px] lg:w-[160px] lg:gap-3 lg:rounded-[12px] lg:py-3"
+      className="flex shrink-0 items-center gap-3 rounded-[14px] border border-border/50 bg-card p-3 shadow-card-dark transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
     >
       <CoinIcon symbol={coin.symbol} size={32} />
-      <div className="min-w-0 flex-1">
-        <div className="truncate text-[12px] font-black leading-tight">
-          {coin.name} ({coin.symbol})
+      <div className="flex flex-col gap-1 pr-2">
+        <div className="flex items-center gap-1 whitespace-nowrap">
+          <span className="font-sora text-[12px] font-semibold leading-[1.35] tracking-[-0.01em] text-foreground">
+            {coin.name}
+          </span>
+          <span className="font-sora text-[12px] font-normal leading-[1.35] tracking-[-0.01em] text-gray-steel">
+            ({coin.symbol})
+          </span>
         </div>
-        <div className="mt-1 flex items-center gap-1.5 text-[10px] font-semibold leading-none">
-          <span>{coin.price}</span>
-          <span className={cn(isNegative ? "text-[#FF6175]" : "text-[#16B56F]")}>
+        <div className="flex items-center gap-1 whitespace-nowrap">
+          <span className="font-sora text-[12px] font-semibold leading-[1.35] tracking-[-0.01em] text-foreground">
+            {coin.price}
+          </span>
+          <span
+            className={cn(
+              "font-sora text-[12px] font-semibold leading-[1.35] tracking-[-0.01em]",
+              isNegative ? "text-destructive" : "text-success",
+            )}
+          >
             {coin.change}
           </span>
         </div>

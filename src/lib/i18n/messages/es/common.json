@@ -189,9 +189,6 @@
       "sell": "Venta"
     },
     "notifications": {
-      "title": "Notificaciones",
-      "description": "Una vez aprobada tu cuenta, podrás ver todos los saldos cripto y fiat desde aquí.",
-      "cta": "Declarar detalles",
       "0": {
         "title": "Tienes un depósito cripto pendiente",
         "description": "El depósito no se ha completado. Para asignar el monto a tu cuenta, declara los detalles de la transacción."
@@ -215,7 +212,10 @@
       "5": {
         "title": "Bienvenido a Minka",
         "description": "Gracias por crear tu cuenta corporativa."
-      }
+      },
+      "title": "Notificaciones",
+      "description": "Una vez aprobada tu cuenta, podrás ver todos los saldos cripto y fiat desde aquí.",
+      "cta": "Declarar detalles"
     }
   },
   "wallet": {
@@ -652,7 +652,6 @@
       "description": "Aquí se mostrarán todas las órdenes de compra-venta OTC y movimientos de transferencia que realices."
     },
     "notifications": {
-      "title": "Notificaciones",
       "0": {
         "title": "Lorem ipsum",
         "description": "Lorem ipsum dolar set amet"
@@ -668,7 +667,8 @@
       "3": {
         "title": "Bienvenido a Minka",
         "description": "Gracias por crear tu cuenta corporativa."
-      }
+      },
+      "title": "Notificaciones"
     }
   },
   "back": "Volver",
@@ -796,16 +796,6 @@
         "new": "Nuevos"
       }
     },
-    "trade": {
-      "title": "OPERA A TU MANERA",
-      "subtitle": "Solo proporcionamos las herramientas",
-      "points": {
-        "trusted": "Confiado por traders en todo el mundo",
-        "secure": "Seguro. Rápido. Transparente",
-        "regulated": "Seguridad de nivel regulado",
-        "support": "Soporte 24/7"
-      }
-    },
     "portfolio": {
       "title": "Construye tu cartera",
       "description": "Toma el control de tu futuro financiero. Ya sea que seas un trader experimentado o estés empezando, opera fácilmente con más de 300 criptomonedas a tu manera, con comisiones bajas.",
@@ -825,11 +815,22 @@
         "marketStatus": "Estado del mercado",
         "mockData": "Datos de prueba"
       }
+    },
+    "tradeBanner": {
+      "title": "OPERA A TU MANERA",
+      "subtitle": "Solo proporcionamos las herramientas",
+      "features": {
+        "f1": "Confiado por traders en todo el mundo",
+        "f2": "Seguro. Rápido. Transparente",
+        "f3": "Seguridad de nivel regulado",
+        "f4": "Soporte 24/7"
+      }
     }
   },
   "footer": {
     "contactUs": "Contáctanos",
     "contact": "Contacto",
+    "socialMedia": "Redes sociales",
     "email": "Correo electrónico",
     "callCenter": "Centro de atención",
     "location": "Ubicación",

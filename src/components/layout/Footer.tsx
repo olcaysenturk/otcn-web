@@ -3,15 +3,12 @@
 import { ArrowRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const footerColumns = [
-  {
-    title: "About OTCN",
-    links: ["About", "Careers", "Announcements", "Legal"],
-  },
-  {
-    title: "Products",
-    links: ["Exchange", "Buy Crypto", "OTC"],
-  },
+import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/I18nProvider";
+
+const COLUMNS: { title: string; links: string[] }[] = [
+  { title: "About OTCN", links: ["About", "Careers", "Announcements", "Legal"] },
+  { title: "Products", links: ["Exchange", "Buy Crypto"] },
   {
     title: "Buy Crypto",
     links: ["Buy USDT", "Buy Bitcoin", "Buy Ethereum", "Buy XRP", "Buy ADA"],
@@ -20,98 +17,152 @@ const footerColumns = [
     title: "Price",
     links: ["Dogecoin Price", "Shiba Price", "Floki Price", "Bitcoin Price", "Ethereum Price"],
   },
-  {
-    title: "Support",
-    links: ["Support Center", "Live", "Contact Us"],
-  },
-] as const;
+  { title: "Support", links: ["Support Center", "Live", "Contact Us"] },
+];
 
-const socialLinks = ["f", "x", "ig", "in", "yt"] as const;
+const SOCIALS: { src: string; alt: string }[] = [
+  { src: "/assets/otcn/footer/social-facebook.svg", alt: "Facebook" },
+  { src: "/assets/otcn/footer/social-twitter.svg", alt: "Twitter" },
+  { src: "/assets/otcn/footer/social-instagram.svg", alt: "Instagram" },
+  { src: "/assets/otcn/footer/social-linkedin.svg", alt: "LinkedIn" },
+  { src: "/assets/otcn/footer/social-youtube.svg", alt: "YouTube" },
+];
+
+const CONTACT_APPS: { src: string; alt: string }[] = [
+  { src: "/assets/otcn/footer/social-whatsapp.svg", alt: "WhatsApp" },
+  { src: "/assets/otcn/footer/social-telegram.svg", alt: "Telegram" },
+];
+
+// Mock contact values (language-independent placeholder data).
+const PHONE = "444 44 44";
+const EMAIL = "info@otcn.com";
+
+const LABEL = "font-sora text-[10px] font-semibold uppercase leading-3 tracking-[0.1em] text-foreground/50";
+const VALUE = "font-sora text-[12px] font-semibold leading-[1.35] tracking-[-0.01em] text-foreground";
 
 export function Footer() {
+  const { t } = useI18n();
   const pathname = usePathname() || "/";
   const isAccountPage = pathname.includes("/account");
+
+  const legalLinks = [
+    t("footer.privacyPolicy"),
+    t("footer.terms"),
+    t("footer.userEngagement"),
+    t("footer.cookiePolicy"),
+  ];
 
   return (
     <footer
       className={[
-        "relative w-full overflow-hidden bg-[#182121] px-6 pb-8 pt-14 text-white md:px-12 md:pb-10 md:pt-20",
+        "relative w-full overflow-hidden bg-surface pb-5 pt-10",
         isAccountPage ? "hidden lg:block" : "",
       ].join(" ")}
     >
-      <div className="pointer-events-none absolute -bottom-8 left-[-24px] select-none text-[120px] font-black leading-none text-black/35 md:text-[190px] lg:text-[250px]">
-        OTCN
-      </div>
+      {/* Brand watermark — Figma "Bitanova_Logo_Prime" (52610-37703), 50% */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/assets/otcn/footer/footer-logo.svg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-0 z-0 w-228.25 max-w-full opacity-50"
+      />
 
-      <div className="relative z-10 mx-auto grid max-w-[1392px] gap-12 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_520px]">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-          {footerColumns.map((column) => (
-            <div key={column.title}>
-              <h3 className="text-lg font-medium text-white">{column.title}</h3>
-              <ul className="mt-8 space-y-5 text-sm text-white/55">
-                {column.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="transition hover:text-white">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-[28px] bg-[#101414] p-7 md:p-9">
-          <button
-            type="button"
-            className="inline-flex h-11 items-center gap-3 rounded-[12px] bg-white px-5 text-sm font-bold text-[#101414] transition hover:bg-[#C8FF00]"
-          >
-            <ArrowRight className="h-4 w-4" />
-            Contact Us
-          </button>
-
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/35">Contact</div>
-              <div className="mt-4 flex gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#25D366] text-xs font-bold">w</span>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2AABEE] text-xs font-bold">t</span>
+      <div className="relative z-10 mx-auto flex w-full max-w-348 flex-col gap-12 px-3">
+        <div className="flex flex-col gap-20 xl:flex-row">
+          {/* Link columns */}
+          <div className="grid flex-1 grid-cols-2 gap-8 pt-6 sm:grid-cols-3 lg:grid-cols-5">
+            {COLUMNS.map((col) => (
+              <div key={col.title} className="flex flex-col gap-3">
+                <h3 className="font-sora text-[18px] font-semibold leading-7 tracking-[-0.015em] text-foreground">
+                  {col.title}
+                </h3>
+                <ul className="flex flex-col">
+                  {col.links.map((link) => (
+                    <li key={link} className="py-1">
+                      <a
+                        href="#"
+                        className="font-sora text-[13px] font-normal leading-[1.4] tracking-[-0.015em] text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
+            ))}
+          </div>
 
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/35">Social Media</div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {socialLinks.map((item) => (
-                  <span key={item} className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-[11px] font-bold text-white/80">
-                    {item}
-                  </span>
-                ))}
+          {/* Contact card */}
+          <div className="flex flex-col gap-8 rounded-[22px] bg-card/40 px-6.25 py-6 xl:w-90">
+            <Button variant="secondary" size="sm" className="self-start rounded-[12px]">
+              <ArrowRight />
+              {t("footer.contactUs")}
+            </Button>
+
+            <div className="flex flex-col gap-5">
+              <div className="flex gap-8">
+                <div className="flex w-32.5 flex-col gap-2">
+                  <span className={LABEL}>{t("footer.contact")}</span>
+                  <div className="flex">
+                    {CONTACT_APPS.map((app) => (
+                      <span key={app.alt} className="flex size-8 items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={app.src} alt={app.alt} width={24} height={24} className="size-6" />
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className={LABEL}>{t("footer.socialMedia")}</span>
+                  <div className="flex items-center">
+                    {SOCIALS.map((s) => (
+                      <span key={s.alt} className="flex size-8 items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={s.src} alt={s.alt} width={24} height={24} className="size-6 rounded-full" />
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/35">Call Center</div>
-              <div className="mt-4 text-sm text-white">444 44 44</div>
-            </div>
+              <div className="flex gap-8">
+                <div className="flex w-32.5 flex-col gap-2">
+                  <span className={LABEL}>{t("footer.callCenter")}</span>
+                  <span className={VALUE}>{PHONE}</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className={LABEL}>{t("footer.email")}</span>
+                  <span className={VALUE}>{EMAIL}</span>
+                </div>
+              </div>
 
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/35">E-mail</div>
-              <div className="mt-4 text-sm text-white">otcn@mail.com</div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/35">Location</div>
-              <p className="mt-4 max-w-md text-sm leading-5 text-white">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-              </p>
+              <div className="flex flex-col gap-2">
+                <span className={LABEL}>{t("footer.location")}</span>
+                <span className={VALUE}>{t("footer.locationText")}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="relative z-10 mx-auto mt-20 flex max-w-[1392px] justify-end text-xs text-white/65">
-        Designed by Switas 2025. All rights reserved
+        {/* Bottom bar */}
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <nav className="flex flex-wrap gap-x-5 gap-y-2">
+            {legalLinks.map((link) => (
+              <a
+                key={link}
+                href="#"
+                className="font-sora text-[12px] font-normal tracking-[-0.01em] text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link}
+              </a>
+            ))}
+          </nav>
+          <span className="font-sora text-[12px] font-normal tracking-[-0.01em] text-foreground">
+            {t("footer.rights")}
+          </span>
+        </div>
       </div>
     </footer>
   );

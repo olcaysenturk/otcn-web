@@ -330,7 +330,7 @@ function DateFilter() {
         <Popover.Content
           align="start"
           sideOffset={8}
-          className="z-[10050] outline-none data-[state=open]:animate-fade-scale"
+          className="z-10050 outline-none data-[state=open]:animate-fade-scale"
         >
           {showCustom ? (
             <DateRangePicker
@@ -350,7 +350,7 @@ function DateFilter() {
               }}
             />
           ) : (
-            <div className="min-w-[220px] rounded-[16px] border border-border bg-[#0E0F10] p-3 shadow-[0px_10px_24px_rgba(0,0,0,0.4)]">
+            <div className="min-w-55 rounded-[16px] border border-border bg-[#0E0F10] p-3 shadow-[0px_10px_24px_rgba(0,0,0,0.4)]">
               {DATE_PRESETS.map((p) => {
                 const active = preset === p.id;
                 return (
@@ -441,16 +441,16 @@ function Stepper({
     <div className="relative px-1">
       {/* Track / completed (animated) / current half-gradient — Figma "Steppers" */}
       <div
-        className="absolute top-[11px] h-[3px] bg-[#3A4043]"
+        className="absolute top-2.75 h-0.75 bg-[#3A4043]"
         style={{ left: `${half}%`, right: `${half}%` }}
       />
       <div
-        className="absolute top-[11px] h-[3px] bg-[#84E9E8] transition-all duration-500"
+        className="absolute top-2.75 h-0.75 bg-[#84E9E8] transition-all duration-500"
         style={{ left: `${half}%`, width: `${current * stepPct}%` }}
       />
       {current < count - 1 && (
         <div
-          className="absolute top-[11px] h-[3px] bg-[linear-gradient(90deg,#F4F7F8_50%,#3A4043_50%)] transition-all duration-500"
+          className="absolute top-2.75 h-0.75 bg-[linear-gradient(90deg,#F4F7F8_50%,#3A4043_50%)] transition-all duration-500"
           style={{ left: `calc(${half}% + ${current * stepPct}%)`, width: `${half}%` }}
         />
       )}
@@ -588,7 +588,7 @@ export default function DesignPage() {
   return (
     <I18nProvider locale={DEFAULT_LOCALE} messages={{}}>
     <div className="dark min-h-screen bg-[#0E0F10] px-5 py-10 font-satoshi text-[#F4F7F8] md:px-10">
-      <div className="mx-auto max-w-[1280px] space-y-8">
+      <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <header className="space-y-2">
           <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#C7F022]">
@@ -714,7 +714,7 @@ export default function DesignPage() {
             {/* Typeface specimen — Figma "Typeface" */}
             <Section title="Typeface" description="Tasarım sistemi yazı tipi: Sora.">
               <div className={cn(CARD, "flex flex-col overflow-hidden md:flex-row")}>
-                <div className="flex flex-col items-start justify-center gap-2 bg-[#F4F7F8] p-8 md:w-[360px]">
+                <div className="flex flex-col items-start justify-center gap-2 bg-[#F4F7F8] p-8 md:w-90">
                   <span className="font-sora text-[88px] font-semibold leading-none tracking-[-0.02em] text-[#0E0F10]">
                     Aa
                   </span>
@@ -754,7 +754,7 @@ export default function DesignPage() {
                           key={r.name}
                           className="flex flex-col gap-3 py-5 md:flex-row md:items-center md:justify-between"
                         >
-                          <div className="min-w-[220px] space-y-0.5">
+                          <div className="min-w-55 space-y-0.5">
                             <p className="text-[14px] font-semibold text-[#F4F7F8]">{r.name}</p>
                             <p className="text-[12px] text-[#788084]">{r.meta}</p>
                           </div>
@@ -923,7 +923,7 @@ export default function DesignPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="i-sm" className="text-[12px] text-[#C5C9CC]">Small (m/s)</Label>
-                  <Input id="i-sm" placeholder="Input" className="h-[38px] py-2.5 text-[13px]" />
+                  <Input id="i-sm" placeholder="Input" className="h-9.5 py-2.5 text-[13px]" />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="i-auth" className="text-[#C5C9CC]">Auth (login)</Label>
@@ -1114,6 +1114,22 @@ export default function DesignPage() {
                     </TabsList>
                   </Tabs>
                 </div>
+
+                {/* segment: Figma "Tab" — koyu card pill, 16px, içerik bölümleri */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-body-xs-medium text-[#F4F7F8]">Segment</span>
+                    <CopyableCode className="text-[#C7F022]">variant=&quot;segment&quot;</CopyableCode>
+                    <span className="text-body-xs text-[#788084]">16px · içerik bölümü</span>
+                  </div>
+                  <Tabs defaultValue="a" variant="segment">
+                    <TabsList animated>
+                      <TabsTrigger value="a">Gainers</TabsTrigger>
+                      <TabsTrigger value="b">Most Visited</TabsTrigger>
+                      <TabsTrigger value="c">New</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
               </Panel>
             </Section>
 
@@ -1148,7 +1164,7 @@ export default function DesignPage() {
               title="Dropdown / List"
               description="Figma “List” (52609-10457): seçili öğe zemin border/50, metin primary (#F54A14)."
             >
-              <Panel className="max-w-[220px]">
+              <Panel className="max-w-55">
                 <div className="rounded-[16px] border border-border bg-[#0E0F10] p-3">
                   {["Tümü", "Para Yatırma", "Para Çekme", "Komisyon"].map((item, i) => (
                     <button

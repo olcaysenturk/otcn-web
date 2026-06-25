@@ -189,9 +189,6 @@
       "sell": "Venda"
     },
     "notifications": {
-      "title": "Notificações",
-      "description": "Depois que sua conta for aprovada, você poderá acompanhar todos os saldos cripto e fiduciários a partir daqui.",
-      "cta": "Declarar Detalhes",
       "0": {
         "title": "Você Tem um Depósito Cripto Pendente",
         "description": "O depósito não foi concluído. Para alocar o valor à sua conta, declare os detalhes da transação."
@@ -215,7 +212,10 @@
       "5": {
         "title": "Bem-vindo à Minka",
         "description": "Obrigado por criar sua conta corporativa."
-      }
+      },
+      "title": "Notificações",
+      "description": "Depois que sua conta for aprovada, você poderá acompanhar todos os saldos cripto e fiduciários a partir daqui.",
+      "cta": "Declarar Detalhes"
     }
   },
   "wallet": {
@@ -652,7 +652,6 @@
       "description": "Todas as ordens de compra-venda OTC e movimentos de transferência que você executar serão listados aqui."
     },
     "notifications": {
-      "title": "Notificações",
       "0": {
         "title": "Lorem ipsum",
         "description": "Lorem ipsum dolar set amet"
@@ -668,7 +667,8 @@
       "3": {
         "title": "Bem-vindo à Minka",
         "description": "Obrigado por criar sua conta corporativa."
-      }
+      },
+      "title": "Notificações"
     }
   },
   "back": "Voltar",
@@ -796,16 +796,6 @@
         "new": "Novos"
       }
     },
-    "trade": {
-      "title": "NEGOCIE DO SEU JEITO",
-      "subtitle": "Nós apenas fornecemos as ferramentas",
-      "points": {
-        "trusted": "Confiável para traders em todo o mundo",
-        "secure": "Seguro. Rápido. Transparente",
-        "regulated": "Segurança de nível regulado",
-        "support": "Suporte 24/7"
-      }
-    },
     "portfolio": {
       "title": "Construa seu portfólio",
       "description": "Assuma o controle do seu futuro financeiro. Seja você um trader experiente ou esteja apenas começando, negocie facilmente mais de 300 criptomoedas do seu jeito, com taxas baixas.",
@@ -825,11 +815,22 @@
         "marketStatus": "Status do Mercado",
         "mockData": "Dados de Teste"
       }
+    },
+    "tradeBanner": {
+      "title": "NEGOCIE DO SEU JEITO",
+      "subtitle": "Nós apenas fornecemos as ferramentas",
+      "features": {
+        "f1": "Confiável para traders em todo o mundo",
+        "f2": "Seguro. Rápido. Transparente",
+        "f3": "Segurança de nível regulado",
+        "f4": "Suporte 24/7"
+      }
     }
   },
   "footer": {
     "contactUs": "Fale Conosco",
     "contact": "Contato",
+    "socialMedia": "Redes Sociais",
     "email": "E-mail",
     "callCenter": "Central de Atendimento",
     "location": "Localização",

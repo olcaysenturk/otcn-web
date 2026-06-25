@@ -10,22 +10,22 @@ export function FAQSection() {
     (get("faq.items") as { q: string; a: string }[] | undefined) ?? [];
 
   return (
-    <LightSection innerClassName="mx-auto min-h-[520px] max-w-4xl px-5 py-8  md:py-16">
-      <h2 className="text-center text-[20px] font-semibold text-white/25 md:text-[42px]">
+    <LightSection innerClassName="mx-auto max-w-237 px-6 py-16 lg:p-20">
+      <h2 className="text-center font-sora text-[28px] font-bold tracking-tighter text-foreground sm:text-[36px] md:text-[44px]">
         {t("home.faq.basicsTitle")}
       </h2>
 
-      <Accordion type="single" collapsible defaultValue="item-0" className="mt-9 md:mt-12">
+      <Accordion type="single" collapsible defaultValue="item-0" className="mt-14">
         {items.slice(0, 5).map((item, index) => (
           <AccordionItem
             key={`${item.q}-${index}`}
             value={`item-${index}`}
-            className="border-b border-white/10"
+            className="border-b border-border last:border-b-0"
           >
-            <AccordionTrigger className="group py-5 text-left text-[12px] font-semibold leading-snug text-white/55 no-underline hover:no-underline data-[state=open]:text-[#8F84FF] md:py-6 md:text-sm [&>svg]:rounded-full [&>svg]:border [&>svg]:border-white/30 [&>svg]:p-1 [&>svg]:text-white/60 data-[state=open]:[&>svg]:border-[#C8FF00]/60 data-[state=open]:[&>svg]:text-[#C8FF00]">
+            <AccordionTrigger className="py-5 text-left font-sora text-[16px] font-semibold leading-snug tracking-[-0.015em] text-muted-foreground no-underline hover:text-foreground hover:no-underline data-[state=open]:text-primary md:py-6 [&>svg]:size-7 [&>svg]:rounded-full [&>svg]:border [&>svg]:border-muted-foreground [&>svg]:p-1.5 [&>svg]:text-muted-foreground data-[state=open]:[&>svg]:border-primary data-[state=open]:[&>svg]:bg-background data-[state=open]:[&>svg]:text-primary">
               {item.q}
             </AccordionTrigger>
-            <AccordionContent className="max-w-3xl pb-6 text-[11px] leading-5 text-white/70 md:text-sm md:leading-7 md:text-white/55">
+            <AccordionContent className="pb-6 font-sora text-[14px] font-normal leading-normal tracking-[-0.015em] text-foreground">
               {index === 0 ? t("home.faq.firstAnswer") : item.a}
             </AccordionContent>
           </AccordionItem>

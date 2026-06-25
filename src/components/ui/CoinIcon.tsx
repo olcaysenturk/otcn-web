@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 
 import { getCoinIconPath } from "@/lib/coinIcons";
@@ -65,7 +64,7 @@ function ResolvedCoinIcon({
     return (
       <span
         className={cn(
-          "inline-flex shrink-0 items-center justify-center rounded-full bg-[#111515] text-[10px] font-black text-white",
+          "inline-flex shrink-0 items-center justify-center rounded-full bg-card text-[10px] font-black text-foreground",
           className,
         )}
         style={{ width: size, height: size }}
@@ -77,7 +76,7 @@ function ResolvedCoinIcon({
   }
 
   return (
-    <Image
+    <img
       src={src}
       alt={`${normalizedSymbol} logo`}
       width={size}

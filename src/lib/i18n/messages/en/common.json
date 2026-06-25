@@ -189,9 +189,6 @@
       "sell": "Sell"
     },
     "notifications": {
-      "title": "Notifications",
-      "description": "Once your account is approved, you can track all crypto and fiat balances from here.",
-      "cta": "Declare Details",
       "0": {
         "title": "You Have a Pending Crypto Deposit",
         "description": "The deposit is not completed. To allocate the amount to your account, please declare the transaction details."
@@ -215,7 +212,10 @@
       "5": {
         "title": "Welcome to Minka",
         "description": "Thanks for creating your corporate account."
-      }
+      },
+      "title": "Notifications",
+      "description": "Once your account is approved, you can track all crypto and fiat balances from here.",
+      "cta": "Declare Details"
     }
   },
   "wallet": {
@@ -652,7 +652,6 @@
       "description": "All OTC buy-sell orders and transfer movements you execute will be listed here."
     },
     "notifications": {
-      "title": "Notifications",
       "0": {
         "title": "Lorem ipsum",
         "description": "Lorem ipsum dolar set amet"
@@ -668,7 +667,8 @@
       "3": {
         "title": "Welcome to Minka",
         "description": "Thanks for creating your corporate account."
-      }
+      },
+      "title": "Notifications"
     }
   },
   "back": "Back",
@@ -796,16 +796,6 @@
         "new": "New"
       }
     },
-    "trade": {
-      "title": "TRADE YOUR WAY",
-      "subtitle": "We just provide the tools",
-      "points": {
-        "trusted": "Trusted by traders worldwide",
-        "secure": "Secure. Fast. Transparent",
-        "regulated": "Regulated-grade security",
-        "support": "24/7 support"
-      }
-    },
     "portfolio": {
       "title": "Build your portfolio",
       "description": "Take control of your financial future. Whether you’re a seasoned trader or just starting out, easily trade over 300 cryptocurrencies on your terms, with low fees.",
@@ -825,17 +815,31 @@
         "marketStatus": "Market Status",
         "mockData": "Mock Data"
       }
+    },
+    "tradeBanner": {
+      "title": "TRADE YOUR WAY",
+      "subtitle": "We just provide the tools",
+      "features": {
+        "f1": "Trusted by traders worldwide",
+        "f2": "Secure. Fast. Transparent",
+        "f3": "Regulated - grade security",
+        "f4": "24/7 support"
+      }
     }
   },
   "footer": {
-    "description": "A reliable, fast, and transparent OTC experience for large trades.",
-    "rights": "All rights reserved.",
-    "language": "Language",
-    "links": {
-      "experience": "Experience",
-      "faq": "FAQ",
-      "contact": "Apply"
-    }
+    "contactUs": "Contact Us",
+    "contact": "Contact",
+    "socialMedia": "Social Media",
+    "email": "E-mail",
+    "callCenter": "Call Center",
+    "location": "Location",
+    "locationText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "rights": "OTCN 2026. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "userEngagement": "User Agreement",
+    "cookiePolicy": "Cookie Policy"
   },
   "application": {
     "header": {
@@ -1271,19 +1275,6 @@
       "futureTrade": "Futures Trade",
       "futureTradeDesc": "Trade with leverage on crypto futures"
     }
-  },
-  "footer": {
-    "contactUs": "Contact Us",
-    "contact": "Contact",
-    "email": "Email",
-    "callCenter": "Call Center",
-    "location": "Location",
-    "locationText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    "rights": "OTCN 2026. All rights reserved.",
-    "privacyPolicy": "Privacy Policy",
-    "terms": "Terms of Use",
-    "userEngagement": "User Agreement",
-    "cookiePolicy": "Cookie Policy"
   },
   "transactions": {
     "title": "Deposit / Withdraw",

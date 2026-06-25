@@ -7,8 +7,10 @@ import { cn } from "@/lib/utils";
  * translucent `white/5` rail, full-width triggers).
  * `compact` — small toggle used in dense toolbars (dark active pill on a
  * `#1F2628` rail, auto-width triggers).
+ * `segment` — Figma "Tab" segmented control (16px): dark `card` active pill on a
+ * `background` rail, radius 14/12, used in content sections.
  */
-type TabsVariant = "default" | "subtle" | "compact";
+type TabsVariant = "default" | "subtle" | "compact" | "segment";
 
 type TabsContextValue = {
   value: string | undefined;
@@ -117,6 +119,8 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
             "relative flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1 text-sm font-semibold text-white shadow-sm",
           variant === "compact" &&
             "relative flex w-max rounded-[10px] bg-[#1F2628] p-1",
+          variant === "segment" &&
+            "relative inline-flex w-max items-center rounded-[14px] bg-background p-1",
           variant === "default" &&
             "relative inline-flex h-12 items-center justify-center rounded-full border border-[#3A4043] bg-[#0E0F10] p-1 text-[#788084]",
           animated && variant === "default" && "border-transparent",
@@ -130,10 +134,11 @@ export function TabsList({ className, animated = false, children, ...props }: Ta
             className={cn(
               "pointer-events-none absolute top-1 bottom-1 left-0",
               transitionReady
-                ? "transition-[transform,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                ? "transition-[transform,width] duration-300 ease-in-out"
                 : "transition-none",
               variant === "subtle" && "rounded-xl bg-[#0F1415] shadow-sm",
               variant === "compact" && "rounded-[7px] bg-[#0E0F10] shadow-sm",
+              variant === "segment" && "rounded-[12px] bg-card shadow-[0px_1px_2px_1px_rgba(21,21,20,0.05)]",
               variant === "default" && "rounded-[12px] bg-[#F4F7F8] shadow-[0px_1px_2px_1px_rgba(21,21,20,0.05)]",
             )}
             style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
@@ -194,6 +199,20 @@ export function TabsTrigger({ className, value, children, asChild, onClick, ...p
           : isActive
             ? "bg-[#0E0F10] text-[#F4F7F8]"
             : "text-[#C5C9CC]",
+        className,
+      )
+    : variant === "segment"
+    ? cn(
+        "relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-[12px] px-3.5 py-1.5 text-[16px] font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+        animated
+          ? isActive
+            ? indicatorReady
+              ? "text-foreground"
+              : "bg-card text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+          : isActive
+            ? "bg-card text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground",
         className,
       )
     : cn(

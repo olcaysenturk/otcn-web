@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { withLocale } from "@/lib/i18n/href";
 import { HeroSection } from "@/components/home/Hero";
-import { ThreeStepExperience } from "@/components/home/ThreeStepExperience";
+import { TradeBannerSection } from "@/components/home/TradeBanner";
+import { MarketTabsShowcase } from "@/components/home/MarketTabsShowcase";
 import { TestimonialsSection } from "@/components/home/Testimonials";
 import { FAQSection } from "@/components/home/FAQSection";
 import { HomeSkeleton } from "@/components/home/HomeSkeleton";
@@ -47,7 +48,10 @@ async function HomeContent({ locale }: { locale: ReturnType<typeof resolveLocale
                 <HeroSection />
             </AnimatedSection>
             <AnimatedSection id="experience-steps">
-                <ThreeStepExperience />
+                <MarketTabsShowcase />
+            </AnimatedSection>
+            <AnimatedSection id="trade-banner">
+                <TradeBannerSection />
             </AnimatedSection>
             <AnimatedSection id="testimonials">
                 <TestimonialsSection />

@@ -169,6 +169,7 @@ const config = {
           900: "#213563",
         },
         "gray-steel": "#5E666A",
+        surface: "#191D1E", // Elevated dark surface (footer, tab rail)
 
         // ── System (dark) ──
         system: {
@@ -261,6 +262,9 @@ const config = {
         "wave-drift": "wave-drift 16s ease-in-out infinite",
         "wave-reveal": "wave-reveal 2.4s ease-in-out forwards",
         shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) both",
+      },
+      boxShadow: {
+        'card-dark': '0px 2px 8px 0.3px hsl(var(--border) / 0.2)',
       },
       backgroundImage: {
         'gradient-button': 'linear-gradient(to left, #BF240F, #F54A14)',

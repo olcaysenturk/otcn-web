@@ -24,7 +24,7 @@ export default async function SiteLayout({
   const messages = await getMessages(locale, ["common", "auth"]);
 
   return (
-    <div className="min-h-screen bg-[#1C2425]">
+    <div className="min-h-screen bg-surface">
       <AppShell locale={locale} messages={messages}>
         {children}
       </AppShell>

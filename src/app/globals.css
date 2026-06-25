@@ -1,5 +1,5 @@
 @config "../../tailwind.config.mjs";
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./fonts.css";
@@ -254,7 +254,7 @@ body {
 
 html {
   scroll-behavior: smooth;
-  background-color: #0E0F10;
+  background-color: #191D1E; /* surface — matches the landing page + footer */
 }
 
 @keyframes fade-in {

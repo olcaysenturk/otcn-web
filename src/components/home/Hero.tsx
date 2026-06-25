@@ -1,91 +1,227 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
-import { HeroMetricCard } from "@/components/home/HeroMetricCard";
-import { HeroPopularCard } from "@/components/home/HeroPopularCard";
-import { heroCoins, heroMetrics, mobileHeroCoins } from "@/data/home";
+import { PopularSkeletonRows } from "@/components/home/PopularSkeleton";
+import { Button } from "@/components/ui/button";
+import { CoinIcon } from "@/components/ui/CoinIcon";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { withLocale } from "@/lib/i18n/href";
+import { useHomeMarketCoins } from "@/hooks/use-home-market-coins";
+import { cn } from "@/lib/utils";
+import type { MarketCoin } from "@/types/home";
+
+function StatCard({
+  title,
+  caption,
+  value,
+  change,
+  up,
+  graph,
+}: {
+  title: string;
+  caption: string;
+  value: string;
+  change: string;
+  up: boolean;
+  graph: string;
+}) {
+  return (
+    <div className="relative flex flex-1 flex-col justify-between gap-8 overflow-hidden rounded-[14px] border border-foreground/10 bg-card/40 p-6 backdrop-blur-sm">
+      <p className="whitespace-pre-line font-sora text-[16px] font-bold leading-normal tracking-[-0.01em] text-foreground">
+        {title}
+      </p>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={graph}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute right-5 top-4 h-23.25 w-21.5"
+      />
+      <div className="flex flex-col gap-3">
+        <p className="font-sora text-[32px] font-semibold leading-tight tracking-[-0.005em] text-foreground">
+          {value}
+        </p>
+        <div className="flex items-center gap-2.5">
+          <span
+            className={cn(
+              "inline-flex items-center justify-center rounded-lg border bg-card px-2 py-1.5 text-[14px] font-medium",
+              up ? "border-success/50 text-success" : "border-destructive/50 text-destructive",
+            )}
+          >
+            {change}
+          </span>
+          <span className="font-sora text-[12px] font-semibold leading-none text-gray-steel">
+            {caption}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProvideText({ text }: { text: string }) {
+  // Layered decorative text — primary, primary/24, primary outline.
+  return (
+    <div className="pointer-events-none relative hidden select-none font-sora font-extrabold leading-normal tracking-tighter lg:block">
+      <span className="block text-[46px] text-primary">{text}</span>
+      <span className="-mt-3 block text-[52px] text-primary/25">{text}</span>
+      <span className="-mt-4 block text-[59px] text-transparent [-webkit-text-stroke:2.48px_rgba(245,74,20,0.19)]">
+        {text}
+      </span>
+    </div>
+  );
+}
 
 export function HeroSection() {
   const { t } = useI18n();
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || "en";
+  // Real "Popular" coins. The volume sort keeps reshuffling while data streams in
+  // (e.g. BTC starts on top, then drops to 4th), so lock the order once it has been
+  // identical for a couple of ticks; show a skeleton until then and keep prices live
+  // afterwards so icons never jump on refresh.
+  const market = useHomeMarketCoins();
+  const [order, setOrder] = useState<MarketCoin[]>([]);
+  const sigRef = useRef("");
+  const stableRef = useRef(0);
+  useEffect(() => {
+    if (order.length) return;
+    const top = market.mostVisited.slice(0, 7);
+    if (top.length < 7) return;
+    const sig = top.map((coin) => coin.symbol).join(",");
+    if (sig === sigRef.current) {
+      stableRef.current += 1;
+      if (stableRef.current >= 2) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setOrder(top);
+      }
+    } else {
+      sigRef.current = sig;
+      stableRef.current = 0;
+    }
+  }, [market.mostVisited, order.length]);
+
+  // Live price lookup (refreshes every tick), keyed by symbol.
+  const liveBySymbol = useMemo(() => {
+    const map = new Map<string, MarketCoin>();
+    (Object.values(market) as MarketCoin[][]).forEach((list) =>
+      list.forEach((coin) => map.set(coin.symbol, coin)),
+    );
+    return map;
+  }, [market]);
+
+  const popular = order.map((coin) => liveBySymbol.get(coin.symbol) ?? coin);
 
   return (
-    <section className="relative min-h-[642px] overflow-hidden rounded-[24px] border border-white/10 bg-black px-5 py-7 text-white lg:min-h-[640px] lg:rounded-[36px] lg:px-[60px] lg:py-[74px] xl:min-h-[760px]">
+    <section className="relative overflow-hidden rounded-[28px] border border-card bg-card px-6 py-16 lg:px-20 lg:py-30">
+      {/* Background photo */}
       <Image
-        src="/assets/otcn/hero-background.png"
+        src="/assets/otcn/hero-content-bg.png"
         alt=""
+        aria-hidden
         fill
         priority
-        sizes="(min-width: 1024px) 1400px, 100vw"
-        className="object-cover object-[61%_50%] lg:object-[65%_50%]"
-        aria-hidden="true"
+        sizes="100vw"
+        className="pointer-events-none object-cover object-[70%_50%]"
       />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.95)_0%,rgba(0,0,0,0.82)_42%,rgba(0,0,0,0.24)_68%,rgba(0,0,0,0.04)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-black/[0.04]" />
+      <div className="pointer-events-none absolute inset-0 bg-card/40" />
 
-      <div className="relative z-10 grid min-h-[586px] min-w-0 gap-0 lg:min-h-[560px] lg:grid-cols-[1.06fr_0.94fr] lg:gap-10 xl:min-h-[612px]">
-        <div className="flex min-w-0 flex-col justify-center lg:justify-start lg:pt-[58px]">
-          <h1 className="max-w-[660px] text-[20px] font-semibold leading-[1.32] tracking-normal text-white lg:text-[40px] lg:leading-[1.3] xl:text-[48px] xl:leading-[1.36]">
-            {t("home.hero.title.line1")}
-            <br />
-            {t("home.hero.title.line2")}
-            <br />
-            {t("home.hero.title.line3")}
-          </h1>
+      <div className="relative z-10 flex flex-col gap-20 xl:flex-row xl:items-stretch xl:gap-20">
+        {/* Left */}
+        <div className="flex flex-1 flex-col justify-between gap-14">
+          <div className="flex flex-col gap-6">
+            <h1 className="max-w-160 font-sora text-[32px] font-semibold leading-[1.3] tracking-tighter text-foreground lg:text-[48px] lg:leading-normal">
+              {t("home.hero.title.line1")}{" "}
+              <br className="hidden lg:block" />
+              {t("home.hero.title.line2")} {t("home.hero.title.line3")}
+            </h1>
 
-          <div className="relative mt-7 flex h-11 w-full max-w-[430px] items-center rounded-[13px] border border-white/15 bg-[#121717] p-1 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] lg:mt-[44px] lg:h-16 lg:p-1.5">
-            <input
-              aria-label={t("home.hero.inputAriaLabel")}
-              placeholder={t("home.hero.inputPlaceholder")}
-              className="min-w-0 flex-1 bg-transparent px-2.5 pr-[98px] text-[11px] font-medium text-white outline-none placeholder:text-white/30 lg:px-4 lg:pr-[132px] lg:text-[17px]"
-            />
-            <button
-              type="button"
-              onClick={() => router.push(withLocale("/auth/register", locale))}
-              className="absolute right-1 top-1 inline-flex h-8 w-[98px] shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-[11px] bg-[#C8FF00] px-2 text-[10px] font-bold text-black transition hover:bg-[#B7EA00] lg:right-1.5 lg:top-1.5 lg:h-[52px] lg:w-auto lg:gap-2 lg:rounded-[12px] lg:px-6 lg:text-[15px]"
-            >
-              {t("home.hero.startNow")}
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-
-          <div className="mt-[98px] hidden text-[34px] font-black leading-[0.95] text-[#C8FF00] md:text-[42px] lg:block lg:text-[50px]">
-            {t("home.hero.provideText")}
-            <div className="mt-4 text-[#C8FF00]/20">{t("home.hero.provideText")}</div>
-            <div className="mt-3 text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.28)]">
-              {t("home.hero.provideText")}
+            <div className="flex w-full max-w-120 items-center gap-2.5 rounded-2xl border border-border bg-card py-2 pl-5 pr-2">
+              <input
+                type="text"
+                placeholder={t("home.hero.inputPlaceholder")}
+                aria-label={t("home.hero.inputAriaLabel")}
+                className="min-w-0 flex-1 bg-transparent font-sora text-[18px] font-semibold tracking-[-0.015em] text-foreground caret-primary outline-none placeholder:text-gray-steel"
+              />
+              <Button
+                onClick={() => router.push(withLocale("/auth/register", locale))}
+                className="h-auto shrink-0 rounded-[14px] px-5.5 py-3.75 text-[16px]"
+              >
+                {t("home.hero.startNow")}
+                <ChevronRight className="size-5" />
+              </Button>
             </div>
           </div>
+
+          <ProvideText text={t("home.hero.provideText")} />
         </div>
 
-        <div className="mt-5 grid h-[290px] grid-cols-[112px_minmax(0,250px)] justify-between gap-2.5 lg:hidden">
-          <div className="flex flex-col gap-2.5">
-            {heroMetrics.map((metric) => (
-              <HeroMetricCard key={metric.titleKey} {...metric} variant="mobile" />
-            ))}
+        {/* Right */}
+        <div className="flex flex-col gap-6 sm:flex-row xl:gap-6">
+          <div className="flex w-full flex-col gap-6 sm:w-50">
+            <StatCard
+              title={t("home.hero.metrics.marketCap.title")}
+              caption={t("home.hero.metrics.helper")}
+              value="187.546"
+              change="+0.75%"
+              up
+              graph="/assets/otcn/hero-graph-up.svg"
+            />
+            <StatCard
+              title={t("home.hero.metrics.bitcoinDominance.title")}
+              caption={t("home.hero.metrics.helper")}
+              value="0.062129"
+              change="-0.75%"
+              up={false}
+              graph="/assets/otcn/hero-graph-down.svg"
+            />
           </div>
-          <HeroPopularCard coins={mobileHeroCoins} variant="mobile" />
-        </div>
 
-        <div className="relative mt-[30px] hidden h-[440px] w-[440px] justify-self-end lg:block xl:mt-[26px] xl:h-[528px] xl:w-[528px]">
-          {heroMetrics.map((metric) => (
-            <HeroMetricCard key={metric.titleKey} {...metric} variant="desktop" />
-          ))}
-          <HeroPopularCard coins={heroCoins} variant="desktop" />
-        </div>
-
-        <div className="mt-5 text-[25px] font-black leading-[0.95] text-[#C8FF00] lg:hidden">
-          {t("home.hero.provideText")}
-          <div className="mt-3 text-[#C8FF00]/20">{t("home.hero.provideText")}</div>
-          <div className="mt-2 text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.28)]">
-            {t("home.hero.provideText")}
+          {/* Popular */}
+          <div className="flex w-full flex-col gap-8 rounded-[14px] border border-foreground/10 bg-card/40 p-6 backdrop-blur-sm sm:w-75.75">
+            <p className="font-sora text-[16px] font-bold leading-normal tracking-[-0.01em] text-foreground">
+              {t("home.hero.popular")}
+            </p>
+            {order.length === 0 ? (
+              <PopularSkeletonRows />
+            ) : (
+              <div className="flex flex-col gap-1">
+                {popular.map((row) => {
+                  const up = !row.change.startsWith("-");
+                  return (
+                    <div
+                      key={row.symbol}
+                      className="flex h-16 items-center justify-between gap-2 py-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <CoinIcon symbol={row.symbol} size={44} />
+                        <span className="font-sora text-[18px] font-semibold tracking-[-0.015em] text-foreground">
+                          {row.symbol}
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="font-sora text-[16px] font-semibold tracking-[-0.01em] text-foreground">
+                          {row.price}
+                        </span>
+                        <span
+                          className={cn(
+                            "font-sora text-[12px] font-bold tracking-[-0.01em]",
+                            up ? "text-success" : "text-destructive",
+                          )}
+                        >
+                          {row.change}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
