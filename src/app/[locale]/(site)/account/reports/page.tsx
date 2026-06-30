@@ -129,7 +129,7 @@ export default function AccountReportsPage() {
                 onClick={() => setActiveMonth(i)}
                 className={cn(
                   "relative flex items-center justify-center rounded-[12px] px-3 py-5 text-[13px] transition-colors",
-                  active ? "bg-[rgba(25,49,51,0.5)] font-medium text-[#C7F022]" : "bg-[#191D1E] text-[#F4F7F8] hover:bg-white/5",
+                  active ? "bg-[rgba(25,49,51,0.5)] font-medium text-[#f54a14]" : "bg-[#191D1E] text-[#F4F7F8] hover:bg-white/5",
                 )}
               >
                 {name}
@@ -167,7 +167,7 @@ export default function AccountReportsPage() {
                   onClick={() => toggleDay(cell.day)}
                   className={cn(
                     "flex h-8 items-center justify-center rounded-[8px] text-[13px] font-medium transition-colors",
-                    sel ? "bg-[#C7F022] text-[#193133]" : "text-[#F4F7F8] hover:bg-white/5",
+                    sel ? "bg-[#f54a14] text-[#193133]" : "text-[#F4F7F8] hover:bg-white/5",
                   )}
                 >
                   {cell.day}
@@ -205,14 +205,14 @@ export default function AccountReportsPage() {
           <button
             type="button"
             onClick={() => setSelected([])}
-            className="rounded-[14px] border border-[#F4F7F8] px-5 py-3 text-sm font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+            className="rounded-[14px] border border-[#F4F7F8] px-5 py-3 text-sm font-bold text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14]"
           >
             {t("reportsPage.cancel")}
           </button>
           <button
             type="button"
             onClick={() => toast.success(t("common.success"))}
-            className="rounded-[14px] bg-[#C7F022] px-5 py-3 text-sm font-bold text-[#0E0F10] transition hover:opacity-90"
+            className="rounded-[14px] bg-[#f54a14] px-5 py-3 text-sm font-bold text-[#0E0F10] transition hover:opacity-90"
           >
             {t("reportsPage.generate")}
           </button>

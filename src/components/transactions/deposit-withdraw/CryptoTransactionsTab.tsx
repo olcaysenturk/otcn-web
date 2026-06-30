@@ -127,7 +127,7 @@ export function CryptoTransactionsTab({
         <button
           type="button"
           onClick={() => onDetailClick(row)}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#f54a14] hover:text-[#f54a14]"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

@@ -47,7 +47,7 @@ export function MarketOverviewCard({ metric }: MarketOverviewCardProps) {
 
         {metric.kind === "gauge" && (
           <div className="relative mt-1 h-[76px] w-[128px] overflow-hidden">
-            <div className="absolute left-2 top-1 h-[96px] w-[112px] rounded-full border-[7px] border-b-transparent border-l-[#FF4D6D] border-r-[#1FBF8C] border-t-[#C7F022]" />
+            <div className="absolute left-2 top-1 h-[96px] w-[112px] rounded-full border-[7px] border-b-transparent border-l-[#FF4D6D] border-r-[#1FBF8C] border-t-[#f54a14]" />
             <div className="absolute inset-x-0 bottom-0 text-center">
               <div className="text-[20px] font-bold text-[#F4F7F8]">{metric.value}</div>
               <div className="text-[12px] text-[#C5C9CC]">{metric.detailKey ? t(metric.detailKey) : ""}</div>

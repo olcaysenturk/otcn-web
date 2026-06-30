@@ -80,7 +80,7 @@ export function OpenOrdersTab({ rows, loading, t, onCancelClick }: TradeOrdersTa
         <div className="flex items-center gap-2">
           <span className="text-[#F4F7F8]">%{row.filledPercent}</span>
           <div className="h-2 w-12 rounded-full bg-[#3A4043]">
-            <div className="h-2 rounded-full bg-[#C7F022]" style={{ width: `${row.filledPercent}%` }} />
+            <div className="h-2 rounded-full bg-[#f54a14]" style={{ width: `${row.filledPercent}%` }} />
           </div>
         </div>
       ),

@@ -120,7 +120,7 @@ export function ResponsiveTimeFilter({
                                             className={cn(
                                                 "flex w-full items-center rounded-[8px] px-3 py-2 text-left text-[14px] font-medium tracking-[-0.21px] transition-colors",
                                                 active
-                                                    ? "bg-[#C7F022]/10 text-[#C7F022]"
+                                                    ? "bg-[#f54a14]/10 text-[#f54a14]"
                                                     : "text-[#C5C9CC] hover:bg-white/5 hover:text-[#F4F7F8]",
                                             )}
                                         >
@@ -188,10 +188,10 @@ export function ResponsiveTimeFilter({
                 />
             </DrawerTrigger>
 
-            <DrawerContent className="border border-[#C7F022] bg-[#0E0F10] p-0">
+            <DrawerContent className="border border-[#f54a14] bg-[#0E0F10] p-0">
                 {customOpen ? (
                     <div className="flex flex-col">
-                        <DrawerHeader className="flex flex-row items-center justify-between bg-[#C7F022] px-4 py-4">
+                        <DrawerHeader className="flex flex-row items-center justify-between bg-[#f54a14] px-4 py-4">
                             <button
                                 onClick={() => setCustomOpen(false)}
                                 className="rounded-full p-1 text-[#0E0F10] transition hover:bg-black/10"
@@ -232,7 +232,7 @@ export function ResponsiveTimeFilter({
                     </div>
                 ) : (
                     <>
-                        <DrawerHeader className="flex flex-row items-center justify-between bg-[#C7F022] px-5 py-4">
+                        <DrawerHeader className="flex flex-row items-center justify-between bg-[#f54a14] px-5 py-4">
                             <DrawerTitle className="text-base font-semibold text-[#0E0F10]">{drawerTitle || label}</DrawerTitle>
                             <DrawerClose asChild>
                                 <button className="rounded-full p-1 text-[#0E0F10] transition hover:bg-black/10">
@@ -258,11 +258,11 @@ export function ResponsiveTimeFilter({
                                         }}
                                         className={cn(
                                             "flex w-full items-center justify-between py-4 text-left text-base font-medium transition-colors",
-                                            active ? "text-[#C7F022]" : "text-[#F4F7F8] hover:text-[#C7F022]",
+                                            active ? "text-[#f54a14]" : "text-[#F4F7F8] hover:text-[#f54a14]",
                                         )}
                                     >
                                         {option.label}
-                                        {active && <Check className="h-5 w-5 text-[#C7F022]" />}
+                                        {active && <Check className="h-5 w-5 text-[#f54a14]" />}
                                     </button>
                                 );
                             })}

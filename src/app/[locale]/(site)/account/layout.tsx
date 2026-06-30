@@ -39,7 +39,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
     <>
       {/* Mobile sub-page header (Figma lime bar) — sub-pages only */}
       {!isMenuRoot && (
-        <div className="-mx-3 -mt-3 mb-2 flex items-center gap-2 bg-[#C7F022] px-5 py-2 md:hidden">
+        <div className="-mx-3 -mt-3 mb-2 flex items-center gap-2 bg-[#f54a14] px-5 py-2 md:hidden">
           <button
             type="button"
             aria-label="back"

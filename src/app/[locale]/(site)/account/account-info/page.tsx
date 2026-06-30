@@ -168,14 +168,14 @@ export default function AccountInfoPage() {
         doc.status === "expired" ? (
           <button
             type="button"
-            className="whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2 text-xs font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+            className="whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2 text-xs font-bold text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14]"
           >
             {t("account.corporateTable.upload")}
           </button>
         ) : (
           <button
             type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#f54a14] hover:text-[#f54a14]"
           >
             <Download className="h-4 w-4" />
           </button>
@@ -201,7 +201,7 @@ export default function AccountInfoPage() {
               onClick={() => setSection(key)}
               className={cn(
                 "flex flex-1 items-center justify-center gap-2 rounded-[8px] px-3 py-2 text-[13px] font-medium transition-colors",
-                active ? "bg-[#0E0F10] text-[#C7F022]" : "text-[#C5C9CC]",
+                active ? "bg-[#0E0F10] text-[#f54a14]" : "text-[#C5C9CC]",
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
@@ -226,8 +226,8 @@ export default function AccountInfoPage() {
               )}
             >
               <span className="flex items-center gap-2">
-                <Icon className={cn("h-5 w-5 shrink-0", active ? "text-[#C7F022]" : "text-[#C5C9CC]")} />
-                <span className={cn("text-[13px] font-medium", active ? "text-[#C7F022]" : "text-[#F4F7F8]")}>
+                <Icon className={cn("h-5 w-5 shrink-0", active ? "text-[#f54a14]" : "text-[#C5C9CC]")} />
+                <span className={cn("text-[13px] font-medium", active ? "text-[#f54a14]" : "text-[#F4F7F8]")}>
                   {label}
                 </span>
               </span>

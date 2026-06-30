@@ -206,7 +206,7 @@ export function WalletOverview() {
                   </Button>
                   <Button
                     size="sm"
-                    className="border-0 bg-[#C8FF00] text-black shadow-none hover:bg-[#B7EA00]"
+                    className="border-0 bg-primary text-black shadow-none hover:bg-[#B7EA00]"
                     onClick={(e) => {
                       e.stopPropagation();
                       router.push(withLocale("/trade/easy", locale));
@@ -308,7 +308,7 @@ export function WalletOverview() {
                             </Button>
                             <Button
                               size="sm"
-                              className="border-0 bg-[#C8FF00] text-black shadow-none hover:bg-[#B7EA00]"
+                              className="border-0 bg-primary text-black shadow-none hover:bg-[#B7EA00]"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 router.push(withLocale("/trade/easy", locale));
@@ -370,7 +370,7 @@ export function WalletOverview() {
                           </Button>
                           <Button
                             size="sm"
-                            className="border-0 bg-[#C8FF00] text-black shadow-none hover:bg-[#B7EA00]"
+                            className="border-0 bg-primary text-black shadow-none hover:bg-[#B7EA00]"
                           >
                             {t("wallet.actions.trade")}
                           </Button>

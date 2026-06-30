@@ -19,7 +19,7 @@ export function TradeGettingStarted() {
       </h2>
 
       <div className="relative mt-7 h-0.5 w-full bg-white/10 md:mt-10">
-        <div className="absolute left-0 top-0 h-0.5 w-1/3 bg-[#C8FF00]" />
+        <div className="absolute left-0 top-0 h-0.5 w-1/3 bg-primary" />
       </div>
 
       <div className="mt-7 grid gap-8 md:grid-cols-3 md:gap-0 md:divide-x md:divide-white/10">

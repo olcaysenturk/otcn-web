@@ -277,7 +277,7 @@ export function MobileMenu({
                                 {t("auth.logout")}
                             </Button>
                             <Button
-                                className="w-full h-14 rounded-full bg-[#C8FF00] hover:bg-[#B7EA00] text-lg font-bold text-black shadow-none transition-all"
+                                className="w-full h-14 rounded-full bg-primary hover:bg-[#B7EA00] text-lg font-bold text-black shadow-none transition-all"
                                 onClick={() => {
                                     if (openModal) {
                                         openModal("funds", { mode: "deposit" });
@@ -298,7 +298,7 @@ export function MobileMenu({
                                 {t("auth.register")}
                             </Button>
                             <Button
-                                className="w-full h-14 rounded-full bg-[#C8FF00] hover:bg-[#B7EA00] text-lg font-bold text-black"
+                                className="w-full h-14 rounded-full bg-primary hover:bg-[#B7EA00] text-lg font-bold text-black"
                                 onClick={() => handleNav("/auth/login")}
                             >
                                 {t("auth.login")}

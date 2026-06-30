@@ -93,12 +93,12 @@ export function UpdateAccountAuthorityModal() {
                 )}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between bg-[#C8FF00] px-6 py-4 h-14 shrink-0">
-                    <h3 className="text-base font-semibold text-[#0F1415]">{t("modals.corporate.updateAuthority.title")}</h3>
+                <div className="flex items-center justify-between bg-primary px-6 py-4 h-14 shrink-0">
+                    <h3 className="text-base font-semibold text-white">{t("modals.corporate.updateAuthority.title")}</h3>
                     <button
                         type="button"
                         onClick={closeModal}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg text-[#0F1415] transition hover:bg-black/10"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg text-white transition hover:bg-white/10"
                         aria-label={t("common.close")}
                     >
                         <X className="h-4 w-4" />

@@ -43,7 +43,7 @@ export default function AccountNotificationPage() {
         </div>
         <button
           type="button"
-          className="inline-flex shrink-0 items-center gap-1.5 self-start whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2.5 text-xs font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022] md:self-auto"
+          className="inline-flex shrink-0 items-center gap-1.5 self-start whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2.5 text-xs font-bold text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14] md:self-auto"
         >
           {t("notificationPage.enable")}
           <ChevronRight className="h-4 w-4" />

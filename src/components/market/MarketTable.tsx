@@ -19,7 +19,7 @@ function ChangeValue({ value }: { value: string }) {
 
 function PerpBadge() {
   return (
-    <span className="inline-flex items-center rounded-[4px] border border-[#C7F022]/40 bg-[#C7F022]/10 px-1 py-[1px] text-[9px] font-bold tracking-wide text-[#C7F022]">
+    <span className="inline-flex items-center rounded-[4px] border border-[#f54a14]/40 bg-[#f54a14]/10 px-1 py-[1px] text-[9px] font-bold tracking-wide text-[#f54a14]">
       PERP
     </span>
   );
@@ -110,7 +110,7 @@ export function MarketTable({
             asset.isPerpetual ? "/trade/future" : `/trade/easy/${asset.symbol.toLowerCase()}-usdt`,
             locale,
           )}
-          className="inline-flex h-10 items-center justify-center rounded-[12px] border border-[#F4F7F8] px-4 text-[12px] font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+          className="inline-flex h-10 items-center justify-center rounded-[12px] border border-[#F4F7F8] px-4 text-[12px] font-bold text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14]"
         >
           {t("marketPage.trade")}
         </Link>
@@ -126,9 +126,9 @@ export function MarketTable({
           type="button"
           aria-label={`${asset.name} favorite`}
           onClick={() => onToggleFavorite(asset.id)}
-          className="inline-flex text-[#F4F7F8] transition hover:text-[#C7F022]"
+          className="inline-flex text-[#F4F7F8] transition hover:text-[#f54a14]"
         >
-          <Star className={cn("h-4 w-4", favorites.has(asset.id) && "fill-[#C7F022] text-[#C7F022]")} />
+          <Star className={cn("h-4 w-4", favorites.has(asset.id) && "fill-[#f54a14] text-[#f54a14]")} />
         </button>
       ),
     },
@@ -194,7 +194,7 @@ export function MarketTable({
                     <Star
                       className={cn(
                         "h-3.5 w-3.5",
-                        favorites.has(asset.id) && "fill-[#C7F022] text-[#C7F022]",
+                        favorites.has(asset.id) && "fill-[#f54a14] text-[#f54a14]",
                       )}
                     />
                   </button>

@@ -81,14 +81,14 @@ export function FiatTransactionsTab({ rows, loading, t, expanded, onExpand, onDe
             onClick={() => onExpand(isOpen ? null : row.id)}
             className={cn(
               "inline-flex items-center gap-2 rounded-md font-medium transition-colors",
-              isOpen ? "text-[#C7F022]" : "text-[#F4F7F8] hover:text-[#C7F022]",
+              isOpen ? "text-[#f54a14]" : "text-[#F4F7F8] hover:text-[#f54a14]",
             )}
           >
             {row.bank}
             <ChevronDown
               className={cn(
                 "h-4 w-4 transition-transform",
-                isOpen ? "rotate-180 text-[#C7F022]" : "text-[#788084]",
+                isOpen ? "rotate-180 text-[#f54a14]" : "text-[#788084]",
               )}
             />
           </button>
@@ -112,7 +112,7 @@ export function FiatTransactionsTab({ rows, loading, t, expanded, onExpand, onDe
           type="button"
           onClick={() => onDetailClick(row)}
           aria-label={t("transactions.crypto.detailTitle")}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#788084] transition hover:border-[#f54a14] hover:text-[#f54a14]"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

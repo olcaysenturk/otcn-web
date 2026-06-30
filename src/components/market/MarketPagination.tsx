@@ -42,7 +42,7 @@ export function MarketPagination({
             onClick={() => onPageChange(page)}
             className={cn(
               "h-8 min-w-8 rounded-full px-2 text-xs text-[#F4F7F8]",
-              currentPage === page && "bg-[#0B3D35] font-bold text-[#C7F022]",
+              currentPage === page && "bg-[#0B3D35] font-bold text-[#f54a14]",
             )}
           >
             {page}

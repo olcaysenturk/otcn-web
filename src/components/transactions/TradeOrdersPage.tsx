@@ -392,7 +392,7 @@ export function TradeOrdersPage() {
             <div className="ml-auto flex items-center gap-4 text-sm">
               <button
                 type="button"
-                className="inline-flex h-[38px] items-center rounded-[12px] border border-[#C7F022] px-4 text-sm font-semibold text-[#C7F022] transition-colors hover:bg-[#C7F022]/10"
+                className="inline-flex h-[38px] items-center rounded-[12px] border border-[#f54a14] px-4 text-sm font-semibold text-[#f54a14] transition-colors hover:bg-[#f54a14]/10"
                 onClick={resetFiltersToDefault}
               >
                 {t("tradeOrders.filters.actions.clearAll")}

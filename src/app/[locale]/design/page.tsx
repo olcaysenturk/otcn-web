@@ -246,7 +246,7 @@ function CopyableCode({
       title="Kopyala"
       className={cn(
         "inline-flex items-center gap-1 rounded-md bg-[#161A1B] px-2 py-1 font-mono text-[11px] text-[#C5C9CC] transition-colors hover:bg-[#1F2628] hover:text-[#F4F7F8]",
-        copied && "bg-[#193133] text-[#C7F022]",
+        copied && "bg-[#193133] text-[#f54a14]",
         className,
       )}
     >
@@ -383,7 +383,7 @@ function DateFilter() {
                 className={cn(
                   "flex w-full items-center justify-between gap-6 rounded-[10px] px-3 py-2 text-left text-[13px] font-medium transition-colors",
                   preset === "custom"
-                    ? "bg-[#C7F022]/10 text-[#C7F022]"
+                    ? "bg-[#f54a14]/10 text-[#f54a14]"
                     : "text-[#C5C9CC] hover:bg-white/5 hover:text-[#F4F7F8]",
                 )}
               >
@@ -591,7 +591,7 @@ export default function DesignPage() {
       <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <header className="space-y-2">
-          <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#C7F022]">
+          <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#f54a14]">
             otcn
           </p>
           <h1 className="text-h1 text-[#F4F7F8]">Design Guideline</h1>
@@ -621,7 +621,7 @@ export default function DesignPage() {
                     <div className="space-y-2 p-4">
                       <p className="text-title-sm text-[#F4F7F8]">{c.name}</p>
                       <CopyableCode>{c.hex}</CopyableCode>
-                      <CopyableCode className="block w-full text-[#C7F022]">
+                      <CopyableCode className="block w-full text-[#f54a14]">
                         {c.token}
                       </CopyableCode>
                     </div>
@@ -656,7 +656,7 @@ export default function DesignPage() {
                         <p className="text-title-sm text-[#F4F7F8]">{t.name}</p>
                         <div className="flex flex-wrap items-center gap-1.5">
                           <CopyableCode>{t.hex}</CopyableCode>
-                          <CopyableCode className="text-[#C7F022]">{t.token}</CopyableCode>
+                          <CopyableCode className="text-[#f54a14]">{t.token}</CopyableCode>
                         </div>
                       </div>
                     </div>
@@ -686,7 +686,7 @@ export default function DesignPage() {
                         style={{ backgroundColor: s.base, opacity: 0.18 }}
                       />
                       <div className="h-8 rounded-lg" style={{ backgroundColor: s.border }} />
-                      <CopyableCode className="text-[#C7F022]">{`border-${s.token}-border`}</CopyableCode>
+                      <CopyableCode className="text-[#f54a14]">{`border-${s.token}-border`}</CopyableCode>
                     </div>
                   </div>
                 ))}
@@ -701,7 +701,7 @@ export default function DesignPage() {
                     <p className="text-title-sm text-[#F4F7F8]">{s.name}</p>
                     <div className="flex flex-wrap gap-1.5">
                       <CopyableCode>{s.hex}</CopyableCode>
-                      <CopyableCode className="text-[#C7F022]">{s.token}</CopyableCode>
+                      <CopyableCode className="text-[#f54a14]">{s.token}</CopyableCode>
                     </div>
                   </div>
                 ))}
@@ -786,7 +786,7 @@ export default function DesignPage() {
                   <div key={row.label} className="space-y-2">
                     <div className="flex items-center gap-2">
                       <span className="text-body-xs-medium text-[#F4F7F8]">{row.label}</span>
-                      <CopyableCode className="text-[#C7F022]">{`variant="${row.variant}"`}</CopyableCode>
+                      <CopyableCode className="text-[#f54a14]">{`variant="${row.variant}"`}</CopyableCode>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">
                       <Button variant={row.variant} size="lg">
@@ -861,7 +861,7 @@ export default function DesignPage() {
                     <Badge direction="up" soft>12%</Badge>
                     <Badge direction="down" soft>12%</Badge>
                   </div>
-                  <CopyableCode className="text-[#C7F022]">{`<Badge direction="up" soft />`}</CopyableCode>
+                  <CopyableCode className="text-[#f54a14]">{`<Badge direction="up" soft />`}</CopyableCode>
                 </div>
 
                 {/* Toggle */}
@@ -872,7 +872,7 @@ export default function DesignPage() {
                     <Switch defaultChecked={false} />
                     <Switch disabled defaultChecked />
                   </div>
-                  <CopyableCode className="text-[#C7F022]">{`<Switch />`}</CopyableCode>
+                  <CopyableCode className="text-[#f54a14]">{`<Switch />`}</CopyableCode>
                 </div>
 
                 {/* Checkbox */}
@@ -883,7 +883,7 @@ export default function DesignPage() {
                     <Checkbox defaultChecked={false} />
                     <Checkbox disabled defaultChecked />
                   </div>
-                  <CopyableCode className="text-[#C7F022]">{`<Checkbox />`}</CopyableCode>
+                  <CopyableCode className="text-[#f54a14]">{`<Checkbox />`}</CopyableCode>
                 </div>
               </div>
             </Section>
@@ -1073,7 +1073,7 @@ export default function DesignPage() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-body-xs-medium text-[#F4F7F8]">Large</span>
-                    <CopyableCode className="text-[#C7F022]">variant=&quot;default&quot;</CopyableCode>
+                    <CopyableCode className="text-[#f54a14]">variant=&quot;default&quot;</CopyableCode>
                     <span className="text-body-xs text-[#788084]">16px · Sora SemiBold</span>
                   </div>
                   <Tabs defaultValue="a">
@@ -1089,7 +1089,7 @@ export default function DesignPage() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-body-xs-medium text-[#F4F7F8]">Small</span>
-                    <CopyableCode className="text-[#C7F022]">variant=&quot;compact&quot;</CopyableCode>
+                    <CopyableCode className="text-[#f54a14]">variant=&quot;compact&quot;</CopyableCode>
                     <span className="text-body-xs text-[#788084]">12px · Sora SemiBold</span>
                   </div>
                   <Tabs defaultValue="a" variant="compact">
@@ -1104,7 +1104,7 @@ export default function DesignPage() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-body-xs-medium text-[#F4F7F8]">Subtle</span>
-                    <CopyableCode className="text-[#C7F022]">variant=&quot;subtle&quot;</CopyableCode>
+                    <CopyableCode className="text-[#f54a14]">variant=&quot;subtle&quot;</CopyableCode>
                     <span className="text-body-xs text-[#788084]">kart/modal içi</span>
                   </div>
                   <Tabs defaultValue="a" variant="subtle" className="max-w-sm">
@@ -1119,7 +1119,7 @@ export default function DesignPage() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-body-xs-medium text-[#F4F7F8]">Segment</span>
-                    <CopyableCode className="text-[#C7F022]">variant=&quot;segment&quot;</CopyableCode>
+                    <CopyableCode className="text-[#f54a14]">variant=&quot;segment&quot;</CopyableCode>
                     <span className="text-body-xs text-[#788084]">16px · içerik bölümü</span>
                   </div>
                   <Tabs defaultValue="a" variant="segment">

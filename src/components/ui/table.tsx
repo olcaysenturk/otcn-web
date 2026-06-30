@@ -75,7 +75,7 @@ const TableRow = React.forwardRef<
       "[&>td:first-child]:rounded-l-[20px] [&>td:first-child]:border-l",
       "[&>td:last-child]:rounded-r-[20px] [&>td:last-child]:border-r",
       interactive && "cursor-pointer hover:[&>td]:bg-[#121516]",
-      selected && "[&>td]:border-[#C7F022] [&>td]:bg-[#121516]",
+      selected && "[&>td]:border-[#f54a14] [&>td]:bg-[#121516]",
       className,
     )}
     {...props}
@@ -191,8 +191,8 @@ export interface DataTableProps<T, K extends string = string> {
 }
 
 function SortIndicator({ active, direction }: { active: boolean; direction?: SortDirection }) {
-  if (active && direction === "asc") return <ArrowUp className="h-3 w-3 text-[#C7F022]" />;
-  if (active && direction === "desc") return <ArrowDown className="h-3 w-3 text-[#C7F022]" />;
+  if (active && direction === "asc") return <ArrowUp className="h-3 w-3 text-[#f54a14]" />;
+  if (active && direction === "desc") return <ArrowDown className="h-3 w-3 text-[#f54a14]" />;
   return <ArrowUpDown className="h-3 w-3" />;
 }
 
@@ -299,7 +299,7 @@ export function DataTable<T, K extends string = string>({
                     // When a detail row follows, open the bottom of this row so the
                     // two share a single continuous border (see detail row below).
                     hasDetail &&
-                      "[&>td]:border-[#C7F022] [&>td]:border-b-0 [&>td:first-child]:rounded-bl-none [&>td:last-child]:rounded-br-none",
+                      "[&>td]:border-[#f54a14] [&>td]:border-b-0 [&>td:first-child]:rounded-bl-none [&>td:last-child]:rounded-br-none",
                   )}
                 >
                   {columns.map((column) => (
@@ -316,7 +316,7 @@ export function DataTable<T, K extends string = string>({
                     <td colSpan={colCount} className="border-0 bg-transparent p-0">
                       {/* -mt-2 closes the border-spacing gap so this connects to the
                           row above, forming one card with a single lime border. */}
-                      <div className="-mt-2 rounded-b-[20px] border border-t-0 border-[#C7F022] bg-[#0E0F10] px-3 py-4">
+                      <div className="-mt-2 rounded-b-[20px] border border-t-0 border-[#f54a14] bg-[#0E0F10] px-3 py-4">
                         {renderExpanded(row)}
                       </div>
                     </td>
@@ -371,7 +371,7 @@ export function DataTable<T, K extends string = string>({
               onClick={onRowClick ? () => onRowClick(row, index) : undefined}
               className={cn(
                 "rounded-[20px] border bg-[#0E0F10] p-4 transition-colors",
-                isExpanded || selectedRowId === id ? "border-[#C7F022]" : "border-[#3A4043]",
+                isExpanded || selectedRowId === id ? "border-[#f54a14]" : "border-[#3A4043]",
                 onRowClick && "cursor-pointer",
               )}
             >

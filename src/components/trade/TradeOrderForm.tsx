@@ -360,7 +360,7 @@ export function TradeOrderForm({
           "mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full px-5 text-base font-bold transition disabled:cursor-not-allowed disabled:bg-[#E7EBE8] disabled:text-[#9BA5A1]",
           side === "sell"
             ? "bg-[#FF4D6D] text-white hover:bg-[#E94361]"
-            : "bg-[#C8FF00] text-[#101515] hover:bg-[#B8EB00]",
+            : "bg-primary text-[#101515] hover:bg-[#B8EB00]",
         ].join(" ")}
       >
         {side === "buy"

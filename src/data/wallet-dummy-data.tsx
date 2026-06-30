@@ -25,7 +25,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "0.2824",
         inOrder: "0.1000",
         withdraw: "0.0000",
-        icon: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=032"
+        icon: "/assets/coin-logo/BTC.svg"
     },
     {
         id: "3",
@@ -36,7 +36,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "4.250",
         inOrder: "0.000",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=032"
+        icon: "/assets/coin-logo/ETH.svg"
     },
     {
         id: "4",
@@ -47,7 +47,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "10.000",
         inOrder: "2.500",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/tether-usdt-logo.png?v=032"
+        icon: "/assets/coin-logo/USDT.svg"
     },
     {
         id: "5",
@@ -58,7 +58,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "85.40",
         inOrder: "0.000",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/solana-sol-logo.png?v=032"
+        icon: "/assets/coin-logo/SOL.svg"
     },
     {
         id: "6",
@@ -69,7 +69,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "15.00",
         inOrder: "0.000",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=032"
+        icon: "/assets/coin-logo/BNB.svg"
     },
     {
         id: "7",
@@ -80,7 +80,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "0.2824",
         inOrder: "0.1000",
         withdraw: "0.0000",
-        icon: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=032"
+        icon: "/assets/coin-logo/BTC.svg"
     },
     {
         id: "8",
@@ -91,7 +91,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "4.250",
         inOrder: "0.000",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=032"
+        icon: "/assets/coin-logo/ETH.svg"
     },
     {
         id: "9",
@@ -102,7 +102,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "10.000",
         inOrder: "2.500",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/tether-usdt-logo.png?v=032"
+        icon: "/assets/coin-logo/USDT.svg"
     },
     {
         id: "10",
@@ -113,7 +113,7 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "85.40",
         inOrder: "0.000",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/solana-sol-logo.png?v=032"
+        icon: "/assets/coin-logo/SOL.svg"
     },
     {
         id: "11",
@@ -124,6 +124,6 @@ export const walletDummyData: WalletSidebarAsset[] = [
         available: "15.00",
         inOrder: "0.000",
         withdraw: "0.000",
-        icon: "https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=032"
+        icon: "/assets/coin-logo/BNB.svg"
     },
 ];

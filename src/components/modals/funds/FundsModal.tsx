@@ -287,9 +287,9 @@ export function FundsModal() {
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between bg-[#C8FF00] px-6 py-4 h-14 shrink-0">
+        <div className="flex items-center justify-between bg-primary px-6 py-4 h-14 shrink-0">
           <div>
-            <h3 className="text-base font-semibold text-[#0F1415]">
+            <h3 className="text-base font-semibold text-white">
               {title}
             </h3>
           </div>
@@ -298,7 +298,7 @@ export function FundsModal() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-[#0F1415] transition hover:bg-black/10"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-white transition hover:bg-white/10"
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
@@ -306,7 +306,7 @@ export function FundsModal() {
             <button
               type="button"
               onClick={closeModal}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-[#0F1415] transition hover:bg-black/10"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-white transition hover:bg-white/10"
             >
               <X className="h-4 w-4" />
             </button>

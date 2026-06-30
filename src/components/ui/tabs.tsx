@@ -216,7 +216,7 @@ export function TabsTrigger({ className, value, children, asChild, onClick, ...p
         className,
       )
     : cn(
-        "relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C7F022]/40 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50",
+        "relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f54a14]/40 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50",
         animated
           ? isActive
             ? indicatorReady

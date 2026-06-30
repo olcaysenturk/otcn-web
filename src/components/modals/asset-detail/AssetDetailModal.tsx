@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 const initialAssetData = {
   name: "Bitcoin",
   symbol: "BTC",
-  icon: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=032",
+  icon: "/assets/coin-logo/BTC.svg",
   balance: "0.3824",
   fiatBalance: "≈ ₺523.40",
   available: "0.2824",

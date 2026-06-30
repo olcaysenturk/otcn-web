@@ -127,7 +127,7 @@ export default function AccountSecurityPage() {
           <button
             type="button"
             onClick={() => openModal("change-password")}
-            className="shrink-0 whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2.5 text-xs font-bold text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+            className="shrink-0 whitespace-nowrap rounded-[12px] border border-[#F4F7F8] px-4 py-2.5 text-xs font-bold text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14]"
           >
             {t("security.password_changeButton")}
           </button>

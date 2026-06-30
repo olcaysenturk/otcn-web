@@ -103,7 +103,7 @@ export function WalletTotalCard({
     <div
       className={cn(
         "relative flex min-h-95 flex-col justify-between overflow-hidden rounded-5xl p-8",
-        isLime ? "bg-[#C8FF00] text-[#0F1415]" : "bg-[#1a1b23] text-white",
+        isLime ? "bg-primary text-[#0F1415]" : "bg-[#1a1b23] text-white",
       )}
     >
       {/* Background Gradient Effect - Optional approximation of the dark gradient/glow in image */}

@@ -44,7 +44,7 @@ export function AddBankAccountModal() {
                     <button
                         type="button"
                         onClick={() => fetchAllBanks(true)}
-                        className="inline-flex items-center gap-2 rounded-full border border-[#3A4043] px-4 py-2 text-sm font-medium text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+                        className="inline-flex items-center gap-2 rounded-full border border-[#3A4043] px-4 py-2 text-sm font-medium text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14]"
                     >
                         <RefreshCw className="h-4 w-4" />
                         {t("common.retry")}

@@ -70,8 +70,8 @@ export function ResponsiveFilter({
             <DrawerTrigger asChild>
                 <FilterPill label={label} value={selectedOption?.label} className={className} />
             </DrawerTrigger>
-            <DrawerContent className="border border-[#C7F022]">
-                <DrawerHeader className="items-center justify-between bg-[#C7F022] px-5 py-4">
+            <DrawerContent className="border border-[#f54a14]">
+                <DrawerHeader className="items-center justify-between bg-[#f54a14] px-5 py-4">
                     <DrawerTitle className="text-base font-semibold text-[#0E0F10]">{drawerTitle || label}</DrawerTitle>
                     <DrawerClose asChild>
                         <button className="rounded-full p-1 text-[#0E0F10] transition hover:bg-black/10" aria-label="close">

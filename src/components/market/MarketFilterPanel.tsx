@@ -39,7 +39,7 @@ export function MarketFilterPanel({
             onClick={() => onCategoryChange(null)}
             className={cn(
               "shrink-0 rounded-[7px] border px-3 py-1.5 text-[11px] font-medium text-[#F4F7F8] transition-colors sm:text-[12px]",
-              activeCategory === null ? "border-[#C7F022]" : "border-[#3A4043]",
+              activeCategory === null ? "border-[#f54a14]" : "border-[#3A4043]",
             )}
           >
             {t("marketPage.categories.all")}
@@ -51,7 +51,7 @@ export function MarketFilterPanel({
               onClick={() => onCategoryChange(category)}
               className={cn(
                 "shrink-0 rounded-[7px] border px-3 py-1.5 text-[11px] font-medium text-[#F4F7F8] capitalize transition-colors sm:text-[12px]",
-                activeCategory === category ? "border-[#C7F022]" : "border-[#3A4043]",
+                activeCategory === category ? "border-[#f54a14]" : "border-[#3A4043]",
               )}
             >
               {category}

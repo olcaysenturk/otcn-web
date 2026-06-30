@@ -299,7 +299,7 @@ export function ApplicationForm({
                 className={cn(
                   "mt-0.5 size-5 rounded border-slate-300 bg-white data-[state=checked]:text-white",
                   isDark
-                    ? "border-[#3A4043] bg-[#0E0F10] data-[state=checked]:border-[#C7F022] data-[state=checked]:bg-[#C7F022] data-[state=checked]:text-[#0E0F10]"
+                    ? "border-[#3A4043] bg-[#0E0F10] data-[state=checked]:border-[#f54a14] data-[state=checked]:bg-[#f54a14] data-[state=checked]:text-[#0E0F10]"
                     : "data-[state=checked]:bg-[#373b45]",
                 )}
               />
@@ -317,7 +317,7 @@ export function ApplicationForm({
             className={cn(
               "h-12 w-full rounded-[14px] px-6 py-2 text-sm font-bold shadow-none disabled:opacity-70 md:text-base",
               isDark
-                ? "border-0 bg-[#C7F022] text-[#0E0F10] hover:bg-[#D2FA32]"
+                ? "border-0 bg-[#f54a14] text-[#0E0F10] hover:bg-[#D2FA32]"
                 : "bg-[#373b45] hover:bg-gray-800",
             )}
           >

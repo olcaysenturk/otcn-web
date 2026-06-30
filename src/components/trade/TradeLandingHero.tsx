@@ -393,7 +393,7 @@ export function TradeLandingHero() {
               "mt-5 flex h-14 w-full items-center justify-center rounded-full text-base font-bold transition",
               side === "sell"
                 ? "bg-[#FF4D6D] text-white hover:bg-[#E94361] disabled:bg-[#6B303B]"
-                : "bg-[#C8FF00] text-[#101515] hover:bg-[#B8EB00] disabled:bg-[#596729]",
+                : "bg-primary text-[#101515] hover:bg-[#B8EB00] disabled:bg-[#596729]",
               "disabled:cursor-not-allowed disabled:text-white/45",
             ].join(" ")}
           >

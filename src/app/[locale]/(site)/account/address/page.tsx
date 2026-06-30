@@ -341,7 +341,7 @@ export default function AccountAddressPage() {
             <button
               type="button"
               onClick={handleOpenAddAddress}
-              className="mt-4 inline-flex items-center gap-1.5 rounded-[14px] bg-[#C7F022] px-5 py-3 text-sm font-bold text-[#0E0F10] transition hover:opacity-90"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-[14px] bg-[#f54a14] px-5 py-3 text-sm font-bold text-[#0E0F10] transition hover:opacity-90"
             >
               <Plus className="h-4 w-4" />
               {t("account.address.empty.action")}

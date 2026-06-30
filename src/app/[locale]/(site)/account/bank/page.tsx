@@ -153,7 +153,7 @@ export default function AccountBankPage() {
             type="button"
             aria-label={t("account.corporateInfo.edit")}
             onClick={() => openModal("add-bank-account", { bank: row, onSuccess: fetchBanks })}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#F4F7F8] transition hover:border-[#C7F022] hover:text-[#C7F022]"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#3A4043] text-[#F4F7F8] transition hover:border-[#f54a14] hover:text-[#f54a14]"
           >
             <Pencil className="h-4 w-4" />
           </button>
