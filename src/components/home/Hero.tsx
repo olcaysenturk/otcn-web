@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { Line, LineChart, ResponsiveContainer, Tooltip, YAxis } from "recharts";
 
 import { PopularSkeletonRows } from "@/components/home/PopularSkeleton";
 import { Button } from "@/components/ui/button";
@@ -14,33 +15,106 @@ import { useHomeMarketCoins } from "@/hooks/use-home-market-coins";
 import { cn } from "@/lib/utils";
 import type { MarketCoin } from "@/types/home";
 
+const CHART_RECORD_COUNT = 30;
+
+function createWavyChartData(start: number, end: number, amplitude: number) {
+  return Array.from({ length: CHART_RECORD_COUNT }, (_, index) => {
+    const progress = index / (CHART_RECORD_COUNT - 1);
+    const trend = start + (end - start) * progress;
+    const wave =
+      index === CHART_RECORD_COUNT - 1
+        ? 0
+        : (Math.sin(index * 1.85) + Math.sin(index * 0.72) * 0.35) * amplitude;
+
+    return { price: Number((trend + wave).toFixed(6)) };
+  });
+}
+
+const risingChartData = createWavyChartData(186.15, 187.546, 0.55);
+const fallingChartData = createWavyChartData(0.062598, 0.062129, 0.00024);
+
 function StatCard({
   title,
   caption,
   value,
   change,
   up,
-  graph,
 }: {
   title: string;
   caption: string;
   value: string;
   change: string;
   up: boolean;
-  graph: string;
 }) {
+  const [isChartReady, setIsChartReady] = useState(false);
+  const chartData = (up ? risingChartData : fallingChartData).slice(-CHART_RECORD_COUNT);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsChartReady(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <div className="relative flex flex-1 flex-col justify-between gap-8 overflow-hidden rounded-[14px] border border-foreground/10 bg-card/40 p-6 backdrop-blur-sm">
-      <p className="whitespace-pre-line font-sora text-[16px] font-bold leading-normal tracking-[-0.01em] text-foreground">
+      <p className="relative z-20 whitespace-pre-line font-sora text-[16px] font-bold leading-normal tracking-[-0.01em] text-foreground">
         {title}
       </p>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={graph}
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute right-5 top-4 h-23.25 w-21.5"
-      />
+      <div
+        aria-hidden="true"
+        className={cn(
+          "absolute right-5 top-4 z-10 h-23.25 w-21.5",
+          up ? "text-success" : "text-destructive",
+        )}
+      >
+        {isChartReady && (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={chartData}
+              margin={{ top: 4, right: 3, bottom: 4, left: 3 }}
+              accessibilityLayer={false}
+            >
+              <YAxis hide domain={["dataMin", "dataMax"]} />
+              <Line
+                type="monotone"
+                dataKey="price"
+                stroke="currentColor"
+                strokeWidth={2.25}
+                dot={false}
+                activeDot={{
+                  r: 3,
+                  strokeWidth: 0,
+                  fill: up ? "#27E9A6" : "#FF4D6D",
+                }}
+                isAnimationActive
+                animationBegin={100}
+                animationDuration={1400}
+                animationEasing="ease-out"
+              />
+              <Tooltip
+                isAnimationActive={false}
+                cursor={{
+                  stroke: "currentColor",
+                  strokeOpacity: 0.25,
+                  strokeDasharray: "3 3",
+                }}
+                allowEscapeViewBox={{ x: true, y: true }}
+                content={({ active, payload }) => {
+                  const price = payload?.[0]?.value;
+                  if (!active || price === undefined) return null;
+
+                  return (
+                    <div className="rounded-md border border-border bg-card px-2 py-1 shadow-lg">
+                      <span className="whitespace-nowrap font-sora text-[10px] font-semibold text-foreground">
+                        {String(price)}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+      </div>
       <div className="flex flex-col gap-3">
         <p className="font-sora text-[32px] font-semibold leading-tight tracking-[-0.005em] text-foreground">
           {value}
@@ -170,7 +244,6 @@ export function HeroSection() {
               value="187.546"
               change="+0.75%"
               up
-              graph="/assets/otcn/hero-graph-up.svg"
             />
             <StatCard
               title={t("home.hero.metrics.bitcoinDominance.title")}
@@ -178,7 +251,6 @@ export function HeroSection() {
               value="0.062129"
               change="-0.75%"
               up={false}
-              graph="/assets/otcn/hero-graph-down.svg"
             />
           </div>
 
