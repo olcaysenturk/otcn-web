@@ -1,0 +1,1861 @@
+{
+  "error": {
+    "missingSession": "Session data not found. Please try again."
+  },
+  "transactionTypes": {
+    "withdraw": "Withdraw",
+    "deposit": "Deposit",
+    "buy": "Buy",
+    "sell": "Sell"
+  },
+  "menu": {
+    "experience": "Minka OTC Experience",
+    "aboutUs": "What Did They Say About Us?",
+    "askedQuestions": "Frequently Asked Qestions"
+  },
+  "bank": {
+    "title": "Bank Accounts",
+    "search": "Search Bank",
+    "add": "Add Account",
+    "columns": {
+      "bank": "Bank",
+      "accountName": "Account Name",
+      "iban": "IBAN"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "pagination": {
+      "showing": "Showing {{from}}-{{to}} of {{total}} entries",
+      "show": "Show {{count}}"
+    },
+    "deleteModal": {
+      "title": "Delete Bank Account",
+      "description": "Are you sure you want to delete this bank account? This action cannot be undone.",
+      "confirm": "Yes, Delete",
+      "cancel": "Cancel"
+    },
+    "successAdd": "Bank account successfully added",
+    "errorAdd": "Could not add bank account. Please try again.",
+    "accountNamePlaceholder": "Enter Account Name",
+    "ibanPlaceholder": "TR",
+    "ibanDeclaration": "I confirm that the IBAN number I declared in this form belongs to me and is correct.",
+    "addBankAccountButton": "Add Bank Account",
+    "adding": "Adding..."
+  },
+  "address": {
+    "title": "Address Management",
+    "add": "Add Address",
+    "columns": {
+      "label": "Label",
+      "network": "Network",
+      "address": "Address",
+      "tag": "Memo / Tag",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "form": {
+      "title": "Add New Address",
+      "type": "Address Type",
+      "corporate": "Corporate",
+      "individual": "Individual",
+      "label": "Address Name",
+      "network": "Select Network",
+      "address": "Address",
+      "tag": "Tag / Memo (optional)",
+      "whitelist": "Add to whitelist",
+      "save": "Save",
+      "successTitle": "Address added",
+      "successDesc": "New address has been added to the whitelist."
+    }
+  },
+  "security": {
+    "title": "Sign-in methods",
+    "loginMethod": "Sign-in method",
+    "password": "Password",
+    "autoLogout": "Auto logout",
+    "methodValue": "Email",
+    "methodDesc": "Email sign-in is selected. You can switch to phone anytime.",
+    "passwordDesc": "Protect your account with a unique, strong password; don’t reuse it elsewhere.",
+    "autoLogoutValue": "8 hours (default)",
+    "autoLogoutDesc": "Auto sign-out after inactivity.",
+    "twoFaTitle": "Two-Factor Authentication (2FA)",
+    "smsOtp": "SMS OTP",
+    "smsDesc": "One-time codes sent to your phone protect your account.",
+    "emailOtp": "Email OTP",
+    "emailDesc": "One-time codes are sent to your email for sign-in and sensitive actions.",
+    "authApp": "Authenticator app",
+    "authDesc": "Uses a one-time code from Google Authenticator, Authy, or similar.",
+    "edit": "Edit",
+    "loginManagement": "Login Management",
+    "accountAuthority": "Account Authority",
+    "password_label": "Password",
+    "password_description": "Protect your account with a unique and strong password; don't use it anywhere else.",
+    "password_changeButton": "Change Password",
+    "smsOtp_label": "SMS OTP",
+    "smsOtp_description": "Your account is protected with one-time verification codes sent to your phone.",
+    "emailOtp_label": "E-mail OTP",
+    "emailOtp_description": "A one-time security code is sent to your email address for login and sensitive transactions.",
+    "authenticator_label": "Authenticator app",
+    "authenticator_description": "Uses a one-time code from an app like Google Authenticator or Authy.",
+    "tfaModalInfo": "Complete the required verifications to change {{type}} settings.",
+    "tfaModalTitle": "{{type}} OTP",
+    "atLeastOneOtpRequired": "At least one OTP method must remain active."
+  },
+  "accountHeader": {
+    "title": "User Account Management",
+    "description": "Manage your personal and corporate information, bank accounts, security settings, and notification preferences from one place."
+  },
+  "dashboard": {
+    "incomplete": {
+      "assets": {
+        "title": "My Assets",
+        "description": "Once your account is approved, you will be able to track all your crypto and fiat asset balances from this area."
+      },
+      "transactions": {
+        "title": "My Transactions",
+        "description": "All OTC buy-sell orders and transfer movements you perform will be listed here."
+      },
+      "cta": "Complete Application"
+    },
+    "assets": {
+      "title": "My Assets",
+      "tabs": {
+        "unit": "Crypto Asset Unit",
+        "category": "Crypto Asset Category"
+      },
+      "legend": {
+        "bitcoin": "Bitcoin",
+        "bnb": "BNB",
+        "ethereum": "Ethereum",
+        "tether": "Tether"
+      }
+    },
+    "validation": {
+      "required": "This field is required",
+      "selectRequired": "Selection is required"
+    },
+    "crypto": {
+      "declareModal": {
+        "depositTitle": "Crypto Asset Deposit Statement",
+        "withdrawTitle": "Crypto Asset Withdrawal Statement",
+        "asset": "Crypto Asset",
+        "individual": "Individual",
+        "corporate": "Legal Entity",
+        "senderNameIndividual": "Sender Full Name*",
+        "senderNameCorporate": "Legal Entity Name (Trade Name)*",
+        "isOwnAddress": "This address is registered in my name",
+        "informationType": "Information Type",
+        "select": "Select",
+        "address": "Open Address",
+        "addressPlaceholder": "Enter address",
+        "birthplaceIndividual": "Date and Place of Birth",
+        "birthplaceCorporate": "Establishment Place & Date",
+        "identityIndividual": "T.C. Identity / Passport Number",
+        "identityCorporate": "Tax Number",
+        "customerNo": "Customer Number",
+        "customerNoPlaceholder": "Enter customer number",
+        "cityLabelIndividual": "Sender Birth Province",
+        "cityLabelCorporate": "Sender Establishment Province",
+        "districtLabelIndividual": "Sender Birth District",
+        "districtLabelCorporate": "Sender Establishment District",
+        "dateLabelIndividual": "Sender Birth Date",
+        "dateLabelCorporate": "Sender Establishment Date",
+        "cityPlaceholder": "Select Province",
+        "districtPlaceholder": "Select District",
+        "loading": "Loading...",
+        "addressType": "Address Type",
+        "provider": "Crypto Asset Service Provider",
+        "vaspOption": "Crypto Asset Service Provider",
+        "personalOption": "Personal Wallet",
+        "submit": "Submit",
+        "successMessage": "Statement sent successfully.",
+        "errorMessage": "An error occurred while sending the statement.",
+        "idError": "Transaction ID not found."
+      }
+    },
+    "operations": {
+      "title": "My Trades",
+      "description": "All OTC buy-sell orders and transfer movements you execute will be listed here.",
+      "cta": "Complete Application"
+    },
+    "transactions": {
+      "buy": "Buy",
+      "sell": "Sell"
+    },
+    "notifications": {
+      "0": {
+        "title": "You Have a Pending Crypto Deposit",
+        "description": "The deposit is not completed. To allocate the amount to your account, please declare the transaction details."
+      },
+      "1": {
+        "title": "You Have a Pending Crypto Deposit",
+        "description": "The deposit is not completed. To allocate the amount to your account, please declare the transaction details."
+      },
+      "2": {
+        "title": "2FA Setup",
+        "description": "Enable Two-Factor Authentication (2FA) to secure your account."
+      },
+      "3": {
+        "title": "About Your Application",
+        "description": "After you upload your documents, your account will be approved within 24 hours."
+      },
+      "4": {
+        "title": "Welcome to OTCN",
+        "description": "Thanks for creating your corporate account."
+      },
+      "5": {
+        "title": "Welcome to Minka",
+        "description": "Thanks for creating your corporate account."
+      },
+      "title": "Notifications",
+      "description": "Once your account is approved, you can track all crypto and fiat balances from here.",
+      "cta": "Declare Details"
+    }
+  },
+  "wallet": {
+    "title": "My Assets",
+    "subtitle": "You can manage all your crypto and fiat (FIAT) balances from this screen.",
+    "pendingNotification": {
+      "title": "You Have Pending Crypto Deposits",
+      "description": "To complete the deposit and have the amount credited to your account, you need to declare the transaction details.",
+      "action": "Review"
+    },
+    "totalBalance": {
+      "title": "Total Estimated Balance",
+      "change": "Up 6.6% from last month",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "available": "Available",
+      "locked": "In Order",
+      "withdrawing": "In Withdrawal"
+    },
+    "actions": {
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "trade": "Trade"
+    },
+    "donut": {
+      "title": "My Assets",
+      "assetUnit": "Crypto Asset Unit",
+      "assetCategory": "Crypto Asset Category",
+      "legend": {
+        "bitcoin": "Bitcoin",
+        "bnb": "BNB",
+        "ethereum": "Ethereum",
+        "tether": "Tether",
+        "other": "Other"
+      },
+      "categories": {
+        "bitcoin": "Bitcoin",
+        "altcoins": "Altcoins",
+        "stable": "Stablecoins"
+      }
+    },
+    "fiat": {
+      "title": "Currency",
+      "amount": "Amount",
+      "available": "Available",
+      "locked": "In Use",
+      "currency": "Turkish Lira"
+    },
+    "empty": {
+      "title": "You don't have any assets yet",
+      "description": "Deposit funds to your account to start transacting.",
+      "action": "Deposit",
+      "donutMessage": "As you add assets, you can track the overall distribution here."
+    },
+    "table": {
+      "title": "Asset List",
+      "resultCount": "{{count}} results",
+      "convertSmall": "Convert Small Amounts",
+      "hideSmall": "Hide < 1 USD",
+      "searchPlaceholder": "Search",
+      "headers": {
+        "asset": "Crypto Asset",
+        "amount": "Amount",
+        "available": "Available",
+        "locked": "In Use",
+        "action": "Action"
+      },
+      "pagination": {
+        "perPage": "Per page"
+      }
+    }
+  },
+  "modals": {
+    "declare": {
+      "title": "Crypto Asset Deposit Declaration",
+      "titleWithdraw": "Crypto Asset Withdrawal Declaration",
+      "submit": "Submit",
+      "fields": {
+        "assetType": "Crypto Asset",
+        "person": {
+          "individual": "Individual",
+          "corporate": "Corporate"
+        },
+        "receiverName": "Recipient Corporate Name",
+        "sameAddress": "I'm sending from my own address",
+        "infoType": "Information Type",
+        "city": "Sender Company City",
+        "district": "Sender Company District",
+        "establishmentDate": "Sender Company Establishment Date",
+        "addressType": "Address Type",
+        "serviceProvider": "Crypto Asset Service Provider",
+        "note": "Crypto Asset Service Provider"
+      },
+      "options": {
+        "infoType": "Sender Location & Date",
+        "addressType": "Crypto Asset Service Provider",
+        "addressIndividual": "Individual Address",
+        "serviceProvider": "Lorem ipsum",
+        "placeholder": "Lorem ipsum"
+      }
+    },
+    "pending": {
+      "title": "Pending Transactions",
+      "amount": "Amount",
+      "senderAddress": "Sender Address",
+      "network": "Network",
+      "noRecords": "No records found.",
+      "declareAction": "Declare Information"
+    },
+    "assetDetail": {
+      "available": "Available",
+      "inOrder": "In Order",
+      "processing": "Processing",
+      "lastTransactions": "Recent Transactions",
+      "viewAll": "View All",
+      "historyTitle": "Transaction History",
+      "recentCount": "(Last {{count}} transactions)",
+      "filterAll": "All transactions",
+      "noTransactions": "No transactions found.",
+      "footerLast5Info": "Showing the last 5 transactions. Visit the My Transactions page for more details.",
+      "myTransactions": "My Transactions",
+      "footerInfo": "Transaction data for the last 6 months is shown. For your older records, you can visit the",
+      "footerLink": "My Transactions",
+      "footerInfoEnd": "page."
+    },
+    "funds": {
+      "titleDeposit": "Deposit",
+      "titleWithdraw": "Withdraw",
+      "subtitleMethod": "Choose how you want to transact.",
+      "subtitleDepositBank": "Select a bank account and review details.",
+      "subtitleWithdrawBank": "Withdraw to a bank account",
+      "subtitleDepositCrypto": "Transfer crypto from your wallet.",
+      "subtitleWithdrawCrypto": "Withdraw crypto to a wallet.",
+      "subtitleAddBankAccount": "Add a bank account.",
+      "subtitleAddCryptoAddress": "Add a crypto address.",
+      "subtitleSummary": "Review the request details.",
+      "firstTimeDesc": "You can deposit TL via bank account or transfer crypto assets.",
+      "depositDesc": "You can deposit TL via bank account or transfer crypto assets.",
+      "optionDepositBankTitle": "Deposit via bank account",
+      "optionDepositBankDesc": "Deposit TL through Turkish banks instantly or during business hours.",
+      "optionDepositCryptoTitle": "Deposit crypto",
+      "optionDepositCryptoDesc": "Increase your balance by transferring crypto from your wallet.",
+      "depositBankTitle": "Deposit to bank account",
+      "depositBankDesc": "Choose a bank and view account details.",
+      "summaryTitle": "Request details",
+      "depositBullet1": "Add",
+      "depositBullet1b": "code to the transfer description.",
+      "depositBullet2": "Sender account name must match the name on your Minka account.",
+      "depositBullet3": "Incorrect/ incomplete transfers are returned within 24 hours.",
+      "depositAmountLabel": "Amount to send",
+      "depositAmountValue": "Min. 500 TL - Max. 1,000,000 TL",
+      "depositReferenceLabel": "Reference code",
+      "submit": "Submit Request",
+      "continue": "Continue",
+      "withdrawTitle": "Withdraw",
+      "withdrawDesc": "Choose how you want to withdraw and continue.",
+      "optionWithdrawBankTitle": "Withdraw to bank account",
+      "optionWithdrawBankDesc": "Transfer TL to your verified bank account.",
+      "optionWithdrawCryptoTitle": "Withdraw crypto",
+      "optionWithdrawCryptoDesc": "Transfer crypto to supported networks.",
+      "withdrawBankTitle": "Select bank account",
+      "withdrawBankDesc": "Choose the account to use for withdrawal.",
+      "withdrawBullet1": "Withdrawal requests are approved during business hours.",
+      "withdrawBullet2": "IBAN must match the account holder name.",
+      "withdrawAmountLabel": "Amount to withdraw",
+      "withdrawFeeLabel": "Transaction fee",
+      "withdrawFeeValue": "0 TL",
+      "availability": {
+        "instant": "Instant (24/7)",
+        "business": "Business hours"
+      },
+      "fee": {
+        "free": "Free"
+      },
+      "depositNotice": "Please transfer only from your company's corporate bank account. Transfers from personal accounts will be refunded.",
+      "mobileBanking": "Via mobile banking",
+      "cryptoDepositTitle": "Deposit Crypto",
+      "cryptoDepositBullet1": "Make sure you select the correct network for deposits.",
+      "cryptoDepositBullet2": "Transfers to other networks may be lost.",
+      "cryptoDepositBullet3": "Sending tokens other than {{asset}} to this address will result in loss of funds.",
+      "selectCoin": "Crypto Asset",
+      "network": "Network",
+      "addAddress": "Add Address",
+      "cryptoDepositWarning": "Only deposit {{asset}}. Sending other assets may result in permanent loss.",
+      "cryptoDepositMemoWarning": "Only deposit {{asset}}. Sending other assets may result in permanent loss.",
+      "cryptoDepositAddress": "Address",
+      "cryptoDepositQr": "QR Code",
+      "sampleAddress": "bc1qrp33g0q5c5...n0p9",
+      "copy": "Copy",
+      "assetLabel": "Asset",
+      "networkLabel": "Network",
+      "depositAddressLabel": "Wallet Address",
+      "withdrawCryptoTitle": "Withdraw Crypto",
+      "withdrawBankBullet1": "You can withdraw TL to your account 24/7 from our partner banks.",
+      "withdrawBankBullet2": "EFT withdrawal requests can be submitted until 15:30 on weekdays. On weekends or public holidays, only TL withdrawal requests via wire transfer can be submitted.",
+      "withdrawBankBullet3": "You can only withdraw TL to a bank account in your name.",
+      "withdrawBankBullet4": "TL withdrawal minimum is 10 TL.",
+      "withdrawCryptoBullet1": "Make sure the recipient address exactly matches your selected network.",
+      "withdrawCryptoBullet2": "Minimum withdrawal for {{asset}} is {{minQty}} {{asset}}",
+      "withdrawCryptoBullet3": "Estimated arrival time depending on network density: ~ {{time}} minutes",
+      "withdrawAddressLabel": "Recipient Address",
+      "withdrawLabelOptional": "Label / Memo (Optional)",
+      "withdrawFiatAmountLabel": "Approx. fiat amount",
+      "withdrawReceiveLabel": "You will receive",
+      "optional": "Optional",
+      "noAddressWarning": "There is no address created for the asset you selected among your registered addresses. Please create a withdrawal address first.",
+      "addNewAddress": "Add New Safety Withdrawal Address",
+      "addressSelectPlaceholder": "Select Address",
+      "assetSource": "Source of Funds",
+      "assetSourceOptions": {
+        "salaryWorkIncome": "Salary / Business Income",
+        "cryptoGain": "Crypto Earnings",
+        "rentalIncome": "Rental Income",
+        "personalInvestment": "Personal Investment",
+        "other": "Other"
+      },
+      "transactionPurpose": "Purpose of Transaction",
+      "withdrawPurposeOptions": {
+        "transferOwnWallet": "Transfer to My Own Wallet",
+        "transferOtherExchange": "Transfer to Another Exchange Account",
+        "yieldStakingLending": "Yield Purpose (Staking, Lending, etc.)",
+        "investmentIcoIeo": "Investment (ICO, IEO, etc.)",
+        "custodySecurity": "Custody and Security",
+        "other": "Other"
+      },
+      "selectPlaceholder": "Select",
+      "inputPlaceholder": "Input",
+      "selectCoinPlaceholder": "Select Asset",
+      "networkPlaceholder": "Select Network",
+      "labelTitle": "Label",
+      "labelPlaceholder": "Enter Label",
+      "addressTitle": "Address",
+      "addressPlaceholder": "Enter Address",
+      "memoTitle": "MEMO",
+      "memoPlaceholder": "Enter MEMO",
+      "userTypeTitle": "User Type",
+      "individual": "Individual",
+      "corporate": "Legal Entity",
+      "receiverNameIndividual": "Recipient Full Name",
+      "receiverNameCorporate": "Recipient Legal Entity Name (Trade Name)",
+      "isSelfOwnedLabel": "This address is registered in my name",
+      "receiverBirthDateTitle": "Recipient Birth Date",
+      "identityNumberTitle": "Recipient ID Number",
+      "taxNumberTitle": "Recipient Tax Number",
+      "residenceAddressTitle": "Open Address",
+      "residenceAddressPlaceholder": "Open Address",
+      "countryTitle": "Country",
+      "countryTurkey": "Turkey",
+      "providerTypeTitle": "Address Type",
+      "providerNameTitle": "Crypto Asset Service Provider",
+      "other": "Other",
+      "otherProviderNameTitle": "Other Platform Name",
+      "otherProviderNamePlaceholder": "Enter platform name",
+      "providerNamePlaceholder": "Select Provider",
+      "continueToDeclaration": "Continue to Address Declaration",
+      "continueToTfa": "Continue to 2FA Verification",
+      "receiverCountryTitle": "Country",
+      "receiverCountryPlaceholder": "Select Country",
+      "confirm": "Confirm",
+      "providerTypes": {
+        "wallet": "Personal Wallet",
+        "exchange": "Crypto Asset Service Provider"
+      },
+      "bankAccountTitle": "Bank Account",
+      "bankAccountPlaceholder": "Select bank account",
+      "addBankAccount": "Add Bank Account",
+      "bankLabel": "Bank",
+      "ibanLabel": "IBAN",
+      "amountLabel": "Amount",
+      "availableLabel": "Available {{amount}}",
+      "withdrawnAmountLabel": "Withdrawn Amount",
+      "confirmRequest": "Confirm Request",
+      "copySuccess": "Successfully Copied!",
+      "eftHavale": "EFT & 24/7 Wire Transfer",
+      "accountNameTitle": "Account Name",
+      "noBankFound": "No bank found for this currency.",
+      "addressCopied": "Address copied!",
+      "depositTagLabel": "Deposit Tag:",
+      "createAddress": "Create Address",
+      "tfaDescription": "You must complete all verifications to complete the transaction.",
+      "complete": "Complete",
+      "address": "Address",
+      "bankAccountRequired": "Please select a bank account.",
+      "amountRequired": "Please enter an amount.",
+      "amountMustBeGreaterThanZero": "Amount must be greater than 0.",
+      "validAddressRequired": "Please select a valid address.",
+      "withdrawInitError": "An error occurred while initiating the transaction.",
+      "insufficientBalance": "Insufficient balance.",
+      "description": "Description",
+      "ibanTitle": "IBAN",
+      "withdrawSuccess": "Withdrawal request successfully received.",
+      "withdrawError": "Withdrawal request failed."
+    },
+    "tfa": {
+      "email": "Email",
+      "phone": "Phone Number",
+      "codePlaceholder": "Enter 6-digit code",
+      "sendCode": "Send Code",
+      "sending": "Sending...",
+      "verify": "Verify",
+      "verifying": "Verifying...",
+      "emailSentText": "Enter the 6-digit verification code sent to {{email}}.",
+      "phoneSentText": "Enter the 6-digit verification code sent to {{phone}}.",
+      "confirm": "Confirm",
+      "errors": {
+        "flowIdNotFound": "Flow ID not found.",
+        "sendFailed": "Verification code could not be sent.",
+        "verifyFailed": "Verification failed.",
+        "generic": "An error occurred.",
+        "invalidCode": "Please enter a 6-digit code."
+      },
+      "success": {
+        "sent": "Verification code sent.",
+        "verified": "Verification successful."
+      }
+    },
+    "addressModal": {
+      "titleInfo": "Add Withdrawal Address",
+      "titleDeclare": "Crypto Asset Address Declaration",
+      "titleVerify": "2FA Verification",
+      "steps": {
+        "info": "Address Details",
+        "declare": "Address Declaration",
+        "verify": "2FA Verification"
+      },
+      "fields": {
+        "asset": "Crypto Asset",
+        "network": "Network",
+        "label": "Label",
+        "address": "Address",
+        "persona": "Crypto Asset",
+        "corporateName": "Recipient Legal Entity Name (Trade Name)*",
+        "corporateTaxId": "Recipient Legal Entity Tax ID",
+        "fullName": "Recipient Full Name*",
+        "tckn": "Recipient National ID*",
+        "verificationCode": "Verification Code"
+      },
+      "placeholders": {
+        "asset": "Select crypto asset",
+        "network": "Select network",
+        "label": "Enter label",
+        "address": "Enter address",
+        "corporateName": "Select trade name",
+        "corporateTaxId": "Enter tax ID",
+        "fullName": "Enter full name",
+        "tckn": "Enter national ID",
+        "verificationCode": "000000"
+      },
+      "notes": {
+        "whitelist": "Your address will be added to the whitelist.",
+        "tfaRequired": "2FA verification is required."
+      },
+      "actions": {
+        "saveAddress": "Save Address"
+      }
+    },
+    "corporate": {
+      "actions": {
+        "save": "Save"
+      },
+      "validation": {
+        "firstNameMin": "First name must be at least 2 characters",
+        "lastNameMin": "Last name must be at least 2 characters",
+        "identityNumberLength": "National ID number must be 11 digits",
+        "birthDateFormat": "Enter a valid date (YYYY-MM-DD)",
+        "identitySerialRequired": "Identity serial number is required",
+        "applicationIdMissing": "Application ID not found"
+      },
+      "addShareholder": {
+        "title": "Add Shareholder",
+        "fields": {
+          "name": "First Name",
+          "surname": "Last Name",
+          "identityNumber": "National ID Number",
+          "birthDate": "Birth Date"
+        },
+        "placeholders": {
+          "name": "Enter shareholder first name",
+          "surname": "Enter shareholder last name",
+          "identityNumber": "Enter your 11-digit national ID number"
+        }
+      },
+      "updateAuthority": {
+        "title": "Edit Account Authority",
+        "fields": {
+          "identityNumber": "National ID Number",
+          "birthDate": "Birth Date",
+          "identitySerialNumber": "Identity Serial Number"
+        },
+        "placeholders": {
+          "identityNumber": "Enter your 11-digit national ID number",
+          "identitySerialNumber": "Example: A21"
+        }
+      }
+    },
+    "security": {
+      "changePassword": {
+        "title": "Change Password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "New Password (Again)",
+        "saving": "Saving...",
+        "saveAction": "Save New Password"
+      },
+      "passwordVerify": {
+        "titles": {
+          "sms": "Phone Verification",
+          "email": "Email Verification",
+          "authenticator": "2FA Verification"
+        },
+        "descriptions": {
+          "authenticator": "Enter the code from your authenticator app to change your password.",
+          "smsPrefix": "To change your password, enter the verification code sent to",
+          "smsSuffix": ".",
+          "emailPrefix": "To change your password, enter the verification code sent to",
+          "emailSuffix": "."
+        },
+        "codeLabel": "Verification Code",
+        "codePlaceholder": "6-digit verification code",
+        "sendCode": "Send Code",
+        "verifying": "Verifying...",
+        "confirm": "Confirm"
+      }
+    }
+  },
+  "applicationPage": {
+    "cta": "Complete Application",
+    "assets": {
+      "title": "My Assets",
+      "description": "Once your account is approved, you can track all crypto and fiat balances from here."
+    },
+    "trades": {
+      "title": "My Trades",
+      "description": "All OTC buy-sell orders and transfer movements you execute will be listed here."
+    },
+    "notifications": {
+      "0": {
+        "title": "Lorem ipsum",
+        "description": "Lorem ipsum dolar set amet"
+      },
+      "1": {
+        "title": "2FA Setup",
+        "description": "Enable Two-Factor Authentication (2FA) to secure your account."
+      },
+      "2": {
+        "title": "About Your Application",
+        "description": "After you upload your documents, your account will be approved within 24 hours."
+      },
+      "3": {
+        "title": "Welcome to Minka",
+        "description": "Thanks for creating your corporate account."
+      },
+      "title": "Notifications"
+    }
+  },
+  "back": "Back",
+  "hero.title": "Trade crypto in minutes",
+  "hero.subtitle": "Buy, sell, and track markets with real-time data.",
+  "hero.formTitle": "Apply now for your OTCN corporate account",
+  "hero.stats": {
+    "volume": {
+      "value": "$50K+",
+      "label": "Trading Volume"
+    },
+    "support": {
+      "value": "24/7",
+      "label": "Dedicated Support"
+    },
+    "liquidity": {
+      "value": "High",
+      "label": "Liquidity Access"
+    }
+  },
+  "hero.stats.volume.value": "$50K+",
+  "hero.stats.volume.label": "Trading Volume",
+  "hero.stats.support.value": "24/7",
+  "hero.stats.support.label": "Dedicated Support",
+  "hero.stats.liquidity.value": "High",
+  "hero.stats.liquidity.label": "Liquidity Access",
+  "steps": {
+    "title": "A professional OTC experience in 3 steps",
+    "cta": "Start Application",
+    "apply": {
+      "title": "Submit your application",
+      "description": "Kick off the process by filling out the short form. Our team reviews your details quickly, reaches out, and guides you on the next steps."
+    },
+    "register": {
+      "title": "Complete your onboarding",
+      "description": "Upload the required documents to finish onboarding. Our compliance team reviews and verifies your account, and you can track every step directly from the panel."
+    },
+    "trade": {
+      "title": "Start trading",
+      "description": "Once approved, receive tailored pricing and execute OTC trades with a secure, fast, and transparent experience. Our team is available at each stage whenever you need support."
+    }
+  },
+  "testimonials": {
+    "title": "What Did They Say About Us?",
+    "items": [
+      {
+        "quote": "With Minka the entire process is digital and traceable. The team responds fast and pricing is transparent.",
+        "name": "Ayse Demir",
+        "title": "Treasury Manager",
+        "company": "Anka Investments"
+      },
+      {
+        "quote": "On the institutional OTC side, they deliver both speed and secure integrations—this makes the difference for us.",
+        "name": "Mehmet Kaya",
+        "title": "Finance Director",
+        "company": "Nova Tech"
+      },
+      {
+        "quote": "Access to liquidity and operational support lets us handle large trades comfortably.",
+        "name": "Selin Arslan",
+        "title": "Investment Manager",
+        "company": "Pera Capital"
+      }
+    ]
+  },
+  "faq": {
+    "title": {
+      "main": "Frequently Asked",
+      "muted": "Questions"
+    },
+    "description": "Quick answers to the most common questions about your OTC flow. Reach out to our team for anything else.",
+    "items": [
+      {
+        "q": "What Is OTC Trading?",
+        "a": "Content for this item will be added soon."
+      },
+      {
+        "q": "What Are Our Daily and Monthly Limits?",
+        "a": "Content for this item will be added soon."
+      },
+      {
+        "q": "Which Banks Can We Work With?",
+        "a": "Content for this item will be added soon."
+      },
+      {
+        "q": "Which Assets Can We Trade OTC?",
+        "a": "Content for this item will be added soon."
+      },
+      {
+        "q": "Which Banks Can We Work With?",
+        "a": "Content for this item will be added soon."
+      },
+      {
+        "q": "Which Assets Can We Trade OTC?",
+        "a": "Content for this item will be added soon."
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "title": {
+        "line1": "Trade crypto in minutes.",
+        "line2": "Buy, sell, and track markets",
+        "line3": "with real-time data."
+      },
+      "inputAriaLabel": "E-mail or phone number",
+      "inputPlaceholder": "E-mail / Phone number",
+      "startNow": "Start Now",
+      "provideText": "WE JUST PROVIDE",
+      "popular": "Popular",
+      "metrics": {
+        "helper": "lorem ipsum",
+        "marketCap": {
+          "title": "Market\nCap"
+        },
+        "bitcoinDominance": {
+          "title": "Bitcoin\nDominance"
+        }
+      }
+    },
+    "market": {
+      "tabs": {
+        "gainers": "Gainers",
+        "mostVisited": "Most Visited",
+        "new": "New"
+      }
+    },
+    "portfolio": {
+      "title": "Build your portfolio",
+      "description": "Take control of your financial future. Whether you’re a seasoned trader or just starting out, easily trade over 300 cryptocurrencies on your terms, with low fees.",
+      "cta": "Buy crypto"
+    },
+    "faq": {
+      "basicsTitle": "The OTCN Basics",
+      "firstAnswer": "OTCN is a crypto trading platform that helps you buy, sell, and track cryptocurrency markets with real-time prices and live market data. You can create an account, explore market charts, and place trades in minutes."
+    },
+    "coinDetail": {
+      "eyebrow": "Coin Detail",
+      "description": "This is a placeholder detail page. Market data, chart, order book, and asset metadata can be connected here when the real endpoint is ready.",
+      "back": "Back",
+      "stats": {
+        "lastPrice": "Last Price",
+        "change24h": "24h Change",
+        "marketStatus": "Market Status",
+        "mockData": "Mock Data"
+      }
+    },
+    "tradeBanner": {
+      "title": "TRADE YOUR WAY",
+      "subtitle": "We just provide the tools",
+      "features": {
+        "f1": "Trusted by traders worldwide",
+        "f2": "Secure. Fast. Transparent",
+        "f3": "Regulated - grade security",
+        "f4": "24/7 support"
+      }
+    }
+  },
+  "footer": {
+    "contactUs": "Contact Us",
+    "contact": "Contact",
+    "socialMedia": "Social Media",
+    "email": "E-mail",
+    "callCenter": "Call Center",
+    "location": "Location",
+    "locationText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "rights": "OTCN 2026. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "userEngagement": "User Agreement",
+    "cookiePolicy": "Cookie Policy"
+  },
+  "application": {
+    "header": {
+      "title": "Complete Your Corporate Account Application",
+      "description": "Complete the following steps to start OTC transactions and activate your account."
+    },
+    "tabs": {
+      "pre": {
+        "label": "Pre-Application",
+        "description": "Start your application and fill in basic details."
+      },
+      "company": {
+        "label": "Company Information",
+        "description": "Enter company and authorized person details."
+      },
+      "digital": {
+        "label": "Digital Document Upload",
+        "description": "Upload required documents digitally."
+      },
+      "wet": {
+        "label": "Wet Signature Delivery",
+        "description": "Submit wet-signed documents."
+      },
+      "review": {
+        "label": "Review Process",
+        "description": "Your documents are under review."
+      }
+    },
+    "digitalDocumentUpload": {
+      "infoTitle": "Digital uploads are for pre-check purposes.",
+      "infoDescription": "After your documents are approved in the system, you will need to send the wet-signed originals to us by courier.",
+      "table": {
+        "documentName": "Document Name",
+        "uploadDate": "Upload Date",
+        "lastActionDate": "Last Action Date",
+        "status": "Status"
+      },
+      "status": {
+        "pending": "Document Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "reviewing": "Under Review"
+      },
+      "actions": {
+        "uploadDocument": "Upload Document",
+        "viewRejectionReason": "View Rejection Reason",
+        "startCourierRequest": "To Start Courier Request"
+      },
+      "documents": {
+        "declaration": "User Declaration Form",
+        "petition": "Account Opening Request Petition",
+        "signatureCircular": "Current Signature Circular",
+        "taxPlate": "Tax Certificate",
+        "activityCertificate": "Activity Certificate (last 6 months)",
+        "tradeRegistry": "Trade Registry Gazette (Establishment + Authority + Current)",
+        "shareholderInfo1": "Shareholder information (25%+ #1)",
+        "shareholderInfo2": "Shareholder information (25%+ #2)",
+        "invoice": "Invoice issued in the company name within the last 3 months",
+        "ubo": "UBO (Ultimate Beneficial Owner) Declaration"
+      }
+    },
+    "reviewProcess": {
+      "title": "Your Documents Are Being Reviewed",
+      "subtitle": "Your documents have been taken into review by our compliance team.",
+      "description": "The wet-signed documents you submitted for your OTC transactions are being reviewed by our compliance team. You will be notified by email when the process is complete. You can also track your process here at any time.",
+      "notificationTitle": "Email Notification",
+      "notificationDescription": "When the evaluation process is complete, you will be contacted using the details below.",
+      "helpTitle": "Need help?",
+      "helpDescription": "You can contact our support team for questions about the evaluation process.",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone Number",
+      "callCenterLabel": "Call Center:",
+      "contactLabel": "Contact:"
+    },
+    "companyInfo": {
+      "nav": {
+        "shareholder": "Shareholder Information",
+        "bank": "Bank Information",
+        "officer": "Authorized Officer Information"
+      },
+      "bank": {
+        "accountNameLabel": "Account Name",
+        "accountNamePlaceholder": "Corporate Account Name",
+        "taxNumberLabel": "Tax Number",
+        "taxNumberPlaceholder": "Individual / Legal Entity Tax ID Number",
+        "bankLabel": "Bank",
+        "bankPlaceholder": "Select",
+        "ibanLabel": "IBAN",
+        "ibanPlaceholder": "TRXX 0000 0000 0000 0000 0000 00"
+      },
+      "buttons": {
+        "saveInfo": "Save Details",
+        "saveContinue": "Save and Continue",
+        "addShareholder": "Add Shareholder"
+      },
+      "shareholder": {
+        "notice": "By regulation, entering details for shareholders with 25% or more ownership is sufficient.",
+        "newShareholder": "New Shareholder",
+        "fields": {
+          "nameLabel": "First Name",
+          "namePlaceholder": "Shareholder first name",
+          "surnameLabel": "Last Name",
+          "surnamePlaceholder": "Shareholder last name",
+          "nationalIdLabel": "National ID Number",
+          "nationalIdPlaceholder": "Enter your 11-digit ID number",
+          "birthLabel": "Date of Birth",
+          "birthPlaceholder": "DD.MM.YYYY",
+          "emailLabel": "Email Address",
+          "emailPlaceholder": "example@company.com",
+          "phoneLabel": "Phone Number",
+          "phonePlaceholder": "(5XX) XXX XX XX"
+        },
+        "defaults": {
+          "name": "Jane",
+          "surname": "Doe",
+          "email": "example@company.com"
+        },
+        "noShareholderCheckbox": "There are no individual shareholders with 25% or more ownership."
+      },
+      "officer": {
+        "fields": {
+          "nameLabel": "First Name",
+          "namePlaceholder": "Jane",
+          "surnameLabel": "Last Name",
+          "surnamePlaceholder": "Doe",
+          "nationalIdLabel": "National ID Number",
+          "nationalIdPlaceholder": "Enter your 11-digit ID number",
+          "birthLabel": "Date of Birth",
+          "birthPlaceholder": "DD.MM.YYYY",
+          "emailLabel": "Email Address",
+          "emailPlaceholder": "jane@company.com",
+          "phoneLabel": "Phone Number",
+          "phonePlaceholder": "(539) 646 2665",
+          "serialNumberLabel": "Serial Number",
+          "serialNumberPlaceholder": "ID Serial Number"
+        },
+        "kyc": {
+          "title": "KYC Verification",
+          "description": "Please use one of the options below to verify your identity.",
+          "digitalTitle": "Digital KYC",
+          "digitalDesc": "Verify instantly by scanning a QR code or using a link.",
+          "digitalLink": "Fast and Easy",
+          "badge": "Fast and Easy",
+          "courierTitle": "Courier KYC",
+          "courierDesc": "Request a courier to complete identity verification physically.",
+          "courierLink": "Physical Verification",
+          "digitalPanel": {
+            "title": "Digital KYC Verification",
+            "info": "You will complete the identity verification process from your mobile device using this QR code or link. You will leave this page during the process.",
+            "qrHint": "Scan the QR code with your mobile device.",
+            "or": "or",
+            "linkTitle": "Verification Link",
+            "linkHint": "You can copy the link and open it on your mobile device.",
+            "stepsTitle": "Verification Steps",
+            "step1": "Scan the QR code or open the link on your mobile device",
+            "step2": "Photograph the front and back of your ID document",
+            "step3": "Complete face recognition verification",
+            "step4": "Wait for the verification result",
+            "startVerification": "Start Identity Verification"
+          },
+          "courierPanel": {
+            "title": "Courier KYC Verification",
+            "infoTitle": "Important Information",
+            "infoContent": "When you choose the Courier KYC option, the Digital Document Upload step will be skipped. You will deliver all your documents directly via courier.",
+            "viewDocumentList": "View Document List",
+            "phoneLabel": "Your Phone Number",
+            "sendSms": "Send SMS",
+            "smsHint": "An SMS will be sent to your phone to create a courier appointment.",
+            "smsSuccess": "An SMS has been sent to your registered number to direct you for a courier request.",
+            "smsNotReceived": "Didn't receive the SMS?",
+            "resendSms": "Resend",
+            "stepsTitle": "Verification Steps",
+            "step1": "Check the SMS sent to your phone",
+            "step2": "Go to the Kuryenet system by clicking the link in the SMS",
+            "step3": "Select the date and time that suits you",
+            "step4": "Confirm your courier appointment",
+            "requiredDocuments": "Required Documents for Application",
+            "documentsInfo": "The following documents must be delivered with wet signatures when the courier arrives. In case of missing or incorrect documents, your corporate account activation process may be delayed. Please ensure all documents are up to date and valid.",
+            "backToCourier": "Back to Courier Process",
+            "downloadList": "Download List",
+            "companyDocuments": "COMPANY DOCUMENTS",
+            "documentHint": "Prepare the documents and deliver them when the courier arrives.",
+            "documents": {
+              "sig": {
+                "title": "Company Signature Circulars",
+                "bullets": [
+                  "Must be a current document received within the last 3 months.",
+                  "If signatures of persons appointed as proxies for your company are to be used, the signature circulars and power of attorney for these persons must also be uploaded together.",
+                  "You can review it by downloading the sample document."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "Sample file template for signature circulars",
+                "download": "Download"
+              },
+              "gazette": {
+                "title": "Trade Registry Gazette",
+                "bullets": [
+                  "Must be the gazette showing the company's current partnership structure and authorized persons.",
+                  "All important gazette issues such as establishment and address changes must be added."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "Trade Registry Gazette sample view",
+                "download": "Download"
+              },
+              "activity": {
+                "title": "Certificate of Activity",
+                "bullets": [
+                  "Must be received within the last 3 months.",
+                  "Can be obtained from the Chamber of Commerce or Industry."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "Certificate of Activity sample template",
+                "download": "Download"
+              },
+              "tax": {
+                "title": "Tax Plate",
+                "bullets": [
+                  "Must be the current tax plate for the current year."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "Tax plate sample",
+                "download": "Download"
+              },
+              "declaration": {
+                "title": "User Declaration Form",
+                "bullets": [
+                  "All fields of the form must be filled completely and signed."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "User Declaration Form template",
+                "download": "Download"
+              },
+              "petition": {
+                "title": "Account Opening Request Petition",
+                "bullets": [
+                  "Must be written on company letterhead and signed by authorized persons."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "Request Petition draft",
+                "download": "Download"
+              },
+              "invoice": {
+                "title": "Invoice Sample",
+                "bullets": [
+                  "Must be an invoice (electricity, water, internet, etc.) registered in the name of the company within the last 3 months."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "Sample invoice view",
+                "download": "Download"
+              },
+              "ubo": {
+                "title": "UBO Declaration",
+                "bullets": [
+                  "It is the declaration form showing the ultimate beneficial owners."
+                ],
+                "sampleTitle": "Sample File",
+                "sampleDesc": "UBO Declaration Form template",
+                "download": "Download"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "form": {
+    "companyTitle": "Company Name",
+    "authorizedName": "Authorized First Name",
+    "authorizedSurname": "Authorized Last Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email Address",
+    "estimatedVolume": "Estimated Trading Volume",
+    "volumeRangePlaceholder": "Average Range",
+    "inputPlaceholder": "Enter",
+    "companyPlaceholder": "Enter company name",
+    "namePlaceholder": "Enter name",
+    "surnamePlaceholder": "Enter surname",
+    "phoneInputPlaceholder": "Enter phone number",
+    "emailPlaceholder": "Enter email address",
+    "phonePlaceholder": "5__ ___ __ __",
+    "consentText": "I have read the Privacy Notice on Processing of Personal Data.",
+    "submit": "Apply",
+    "submitting": "Submitting...",
+    "successTitle": "Application received",
+    "successDescription": "Please click on the confirmation link sent to your email address.",
+    "errorTitle": "Error!",
+    "errorDescription": "You must fill in the required fields.",
+    "registrationFailed": "Registration failed.",
+    "avgVolumeOptions": {
+      "0-50k": "0 - 50,000 USD",
+      "50k-250k": "50,000 - 250,000 USD",
+      "250k-1m": "250,000 - 1,000,000 USD",
+      "1mPlus": "1,000,000 USD and above"
+    },
+    "totalVolumeOptions": {
+      "daily": "Daily average",
+      "weekly": "Weekly average",
+      "monthly": "Monthly average"
+    },
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "userName": "Username",
+    "phoneCountryCode": "Country Code",
+    "citizenshipNumber": "ID / Passport No",
+    "dateOfBirth": "Date of Birth",
+    "password": "Password",
+    "nickName": "Nickname"
+  },
+  "validation": {
+    "descriptionMin": "Description must be at least 20 characters",
+    "application": {
+      "companyNameMin": "Company name must be at least 2 characters",
+      "firstNameMin": "Authorized first name must be at least 2 characters",
+      "lastNameMin": "Authorized last name must be at least 2 characters",
+      "phoneCountryRequired": "Please select a country code",
+      "phoneInvalid": "Phone number is invalid",
+      "emailInvalid": "Please enter a valid email address",
+      "estimatedVolumeRequired": "Please select an estimated volume",
+      "kvkkRequired": "You must accept the disclosure text before applying.",
+      "phoneTenDigits": "Phone number must be 10 digits",
+      "phoneLengthRange": "Phone number must be 6-14 digits"
+    },
+    "auth": {
+      "emailInvalid": "Please enter a valid email address",
+      "passwordMin": "Password must be at least 6 characters"
+    },
+    "addCryptoAddress": {
+      "fillRequiredFields": "Please fill in the required fields.",
+      "addressAddedError": "Error adding address."
+    },
+    "required": "This field is required",
+    "selectRequired": "Selection is required",
+    "invalidIBAN": "Invalid IBAN",
+    "unsupportedBankCode": "Unsupported bank code",
+    "accountNameRequired": "Account name cannot be empty",
+    "ibanConfirmationRequired": "Please check the IBAN confirmation",
+    "assetRequired": "Asset selection is required",
+    "networkRequired": "Network selection is required",
+    "labelMinLength": "Label must be at least 2 characters",
+    "invalidAddress": "Enter a valid address",
+    "receiverNameRequired": "Receiver name is required",
+    "birthDateRequired": "Birth date is required",
+    "invalidIdentityNumber": "Enter a valid ID number (11 digits)",
+    "invalidTaxNumber": "Enter a valid Tax Number (10 digits)",
+    "providerRequired": "Crypto Asset Service Provider selection is required",
+    "platformNameRequired": "Enter platform name",
+    "assetSourceOtherMin": "Asset source description must be at least 3 characters",
+    "withdrawPurposeOtherMin": "Withdrawal purpose description must be at least 3 characters"
+  },
+  "marketPage": {
+    "title": "Crypto Markets",
+    "search": "Search coin",
+    "empty": "No assets match the selected filters.",
+    "trade": "Trade",
+    "itemsPerPage": "Items per page",
+    "tabs": {
+      "cryptos": "Cryptos",
+      "favorites": "Favorites",
+      "spots": "Spots",
+      "futures": "Futures"
+    },
+    "categories": {
+      "all": "All",
+      "topGainers": "Top Gainers",
+      "newListing": "New Listings",
+      "ai": "AI",
+      "meme": "Meme",
+      "layer1": "Layer 1",
+      "defi": "DeFi",
+      "stablecoin": "Stablecoin",
+      "layer2": "Layer 2",
+      "gaming": "Gaming",
+      "nft": "NFT",
+      "oracle": "Oracle",
+      "other": "Other"
+    },
+    "metrics": {
+      "marketCap": "Market Cap",
+      "nxt10": "NXT10 Index",
+      "fearGreed": "Fear & Greed",
+      "extremeFear": "Extreme Fear",
+      "altcoinSeason": "Altcoin Season",
+      "averageRsi": "Average RSI",
+      "bitcoin": "Bitcoin",
+      "altcoin": "Altcoin",
+      "oversold": "Oversold",
+      "overbought": "Overbought"
+    },
+    "filters": {
+      "marketCap": "Market Cap",
+      "volume24h": "24h Volume",
+      "all": "All Filters",
+      "sortBy": "Sort By"
+    },
+    "table": {
+      "asset": "Asset",
+      "name": "Name",
+      "mobilePriceChange": "Price / 24h Change",
+      "mobileCapVolume": "Cap / Vol",
+      "price": "Price",
+      "change1h": "1h %",
+      "change24h": "24h %",
+      "change7d": "7d %",
+      "marketCap": "Market Cap",
+      "volume24h": "24h Volume",
+      "circulatingSupply": "Circulating Supply"
+    }
+  },
+  "header": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "buyCrypto": "Buy Crypto",
+    "blog": "Blog",
+    "otc": "OTC",
+    "market": "Markets",
+    "trade": "Trade",
+    "transactions": "Transactions",
+    "wallet": "My Assets",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "notifications": "Notifications",
+    "txMenu": {
+      "allTransactions": "Transactions",
+      "allTransactionsDesc": "View your deposit/withdraw operations",
+      "tradeOrders": "Buy / Sell Orders",
+      "tradeOrdersDesc": "See all of your buy/sell trades"
+    },
+    "tradeMenu": {
+      "easyTrade": "Easy Trade",
+      "easyTradeDesc": "Buy and sell crypto instantly with ease",
+      "spotTrade": "Spot Trade",
+      "spotTradeDesc": "Trade crypto pairs at live market prices",
+      "futureTrade": "Futures Trade",
+      "futureTradeDesc": "Trade with leverage on crypto futures"
+    }
+  },
+  "transactions": {
+    "title": "Deposit / Withdraw",
+    "subtitle": "View and track your FIAT or crypto deposits and withdrawals",
+    "tabs": {
+      "fiat": "FIAT Transactions",
+      "crypto": "Crypto Transactions"
+    },
+    "filters": {
+      "type": {
+        "label": "Transaction Type",
+        "default": "All",
+        "all": "All",
+        "withdraw": "Withdraw",
+        "deposit": "Deposit"
+      },
+      "time": {
+        "label": "Time Range",
+        "default": "Last 30 days",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7": "Last 7 days",
+        "last30": "Last 30 days",
+        "last90": "Last 3 months",
+        "thisMonth": "This month",
+        "lastMonth": "Last month",
+        "customRange": "Custom range"
+      },
+      "status": {
+        "label": "Status",
+        "default": "All",
+        "success": "Successful",
+        "pending": "Pending",
+        "processing": "Processing",
+        "failed": "Canceled"
+      },
+      "currency": {
+        "label": "Currency"
+      }
+    },
+    "table": {
+      "headers": {
+        "date": "Date",
+        "amount": "Amount",
+        "status": "Status",
+        "type": "Transaction Type",
+        "bank": "Bank Details"
+      },
+      "detail": {
+        "id": "Transaction ID",
+        "bankName": "Bank Name",
+        "iban": "IBAN",
+        "description": "Description",
+        "otherBank": "Other Bank"
+      }
+    },
+    "crypto": {
+      "headers": {
+        "asset": "Crypto Asset",
+        "network": "Network",
+        "amount": "Amount",
+        "fee": "Transaction Fee",
+        "address": "Address",
+        "txid": "TxID"
+      },
+      "detailTitle": "Transaction Details",
+      "declare": "Declare",
+      "declared": "Declared"
+    }
+  },
+  "trade": {
+    "title": "Easy Trade",
+    "subtitle": "Select and confirm your cryptocurrency, and your assets will be transferred to your wallet instantly.",
+    "buy": "Buy",
+    "sell": "Sell",
+    "marketPrice": "Market price",
+    "youPay": "You pay",
+    "youSell": "You sell",
+    "youReceive": "You receive",
+    "youGet": "You get",
+    "balance": "Balance",
+    "buyAsset": "Buy {asset}",
+    "sellAsset": "Sell {asset}",
+    "priceLabel": "Price",
+    "buyPriceLabel": "Buy Price",
+    "sellPriceLabel": "Sell Price",
+    "amountLabel": "Amount",
+    "totalLabel": "Total",
+    "feeLabel": "Fee Rate:",
+    "buyCtaLabel": "BUY",
+    "sellCtaLabel": "SELL",
+    "maxLabel": "Max",
+    "orderSuccess": "Your trade was completed successfully",
+    "errors": {
+      "insufficientBalance": "Insufficient balance. Please reduce the amount.",
+      "amountTooLarge": "The entered amount is too high. Please try a lower amount.",
+      "invalidAmount": "Invalid amount. Please check price and quantity.",
+      "generic": "Order could not be submitted. Please try again."
+    },
+    "landing": {
+      "hero": {
+        "tagline": "WE JUST PROVIDE",
+        "descriptionLine1": "Trade crypto in minutes.",
+        "descriptionLine2": "Buy, sell, and track markets with real-time data.",
+        "toConvert": "To Convert",
+        "toReceive": "To Receive",
+        "conversionRate": "Conversion Rate: 1 {base} ≈ {rate} {quote}"
+      },
+      "gettingStarted": {
+        "title": "Getting started with",
+        "titleHighlight": "cryptocurrency",
+        "steps": [
+          {
+            "title": "Create an account",
+            "description": "Set up your account in just a few minutes. Sign up using your email address or phone number, enable two-factor authentication, and choose your location to automatically set your preferred currency."
+          },
+          {
+            "title": "Complete identity verification (KYC)",
+            "description": "Submit a valid ID and finish a short liveness check to comply with local requirements. In most cases, the verification process is completed within minutes."
+          },
+          {
+            "title": "Buy crypto",
+            "description": "Depending on the payment options available in your country, you can buy crypto instantly using a debit or credit card, Apple Pay, Google Pay, or make a bank transfer / ACH to benefit from lower fees and higher limits."
+          }
+        ]
+      },
+      "whatIsCrypto": {
+        "title": "What is cryptocurrency?",
+        "firstParagraph": "Cryptocurrency is a form of digital money that exists only online and is protected by cryptographic technology, unlike physical currencies such as the U.S. Dollar or other traditional fiat money. These digital assets operate on blockchain technology, a decentralized system that functions as a shared and transparent digital record.",
+        "secondParagraph": "All cryptocurrency transactions are permanently logged on the blockchain. Once verified, they cannot be altered, reversed, or manipulated, ensuring a high level of security and trust."
+      }
+    },
+    "future": {
+      "eyebrow": "Futures Trade",
+      "title": "Coming soon",
+      "description": "Futures trading is on its way. We're putting the finishing touches on leverage and margin tools."
+    }
+  },
+  "tradeOrders": {
+    "title": "Buy / Sell",
+    "subtitle": "Your asset buy and sell transactions",
+    "detailTitle": "Transaction Details",
+    "openOrdersTitle": "Open Orders",
+    "cancelModal": {
+      "title": "Cancel Order",
+      "description": "Are you sure you want to cancel this order? This action cannot be undone.",
+      "clearAllTitle": "Cancel All Orders",
+      "clearAllDescription": "Are you sure you want to cancel all listed open orders? This action cannot be undone.",
+      "confirm": "Yes, Cancel Order",
+      "clearAllConfirm": "Yes, Cancel All",
+      "cancel": "Close",
+      "processing": "Cancelling...",
+      "cancelSuccess": "Order cancelled."
+    },
+    "tabs": {
+      "open": "Open Orders",
+      "orders": "Orders",
+      "history": "Buy / Sell History"
+    },
+    "filters": {
+      "type": "Order Type",
+      "time": "Time Range",
+      "base": "Base",
+      "pair": "Pair",
+      "currency": "Currency",
+      "side": "Side",
+      "status": "Status",
+      "typeOptions": {
+        "all": "All",
+        "limit": "Limit",
+        "market": "Market"
+      },
+      "timeOptions": {
+        "last7": "Last 7 days",
+        "last30": "Last 30 days",
+        "last90": "Last 3 months"
+      },
+      "sideOptions": {
+        "all": "All",
+        "buy": "Buy",
+        "sell": "Sell"
+      },
+      "quote": "Quote",
+      "actions": {
+        "clearAll": "Clear Filters"
+      }
+    },
+    "status": {
+      "all": "All",
+      "completed": "Completed",
+      "partial": "Partially Filled",
+      "processing": "Processing",
+      "cancelled": "Cancelled",
+      "openOrder": "Open Order",
+      "filledOrder": "Filled Order",
+      "canceledOrder": "Canceled Order",
+      "partiallyFilledOrder": "Partially Filled Order",
+      "transmissionError": "Transmission Error"
+    },
+    "side": {
+      "buy": "Buy",
+      "sell": "Sell"
+    },
+    "table": {
+      "headers": {
+        "date": "Date",
+        "pair": "Pair",
+        "side": "Side",
+        "type": "Order Type",
+        "filled": "Filled",
+        "price": "Price",
+        "total": "Total",
+        "status": "Status",
+        "amount": "Amount",
+        "trigger": "Trigger Condition",
+        "actions": "Actions",
+        "avgPrice": "Average Price",
+        "fee": "Fee"
+      }
+    },
+    "actions": {
+      "clearAll": "Clear All"
+    }
+  },
+  "account": {
+    "menu": {
+      "profile": "Profile Info",
+      "corporate": "Corporate Account Info",
+      "bank": "Bank Accounts",
+      "address": "Address Management",
+      "security": "Security",
+      "user": "User Management",
+      "reports": "Financial Reports",
+      "activity": "Activity",
+      "notification": "Communication Permissions",
+      "preferences": "Preferences"
+    },
+    "activity": {
+      "sessionTitle": "Session Management ({{count}} active sessions)",
+      "deviceTitle": "Device Management ({{count}} device)",
+      "active": "Currently active",
+      "logout": "Log Out"
+    },
+    "profile": {
+      "photo": "Profile Photo",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "idNumber": "ID Number",
+      "birthDate": "Date of Birth",
+      "customerNo": "Customer No",
+      "closeTitle": "Close Account",
+      "closeDesc": "If you close your account, you will need to be re-invited by your Corporate Account admin to regain access.",
+      "closeCta": "Close Account"
+    },
+    "corporateMenu": {
+      "info": "Company Info",
+      "docs": "Company Documents"
+    },
+    "corporateTable": {
+      "title": "Company Documents",
+      "desc": "View and manage your corporate documents below.",
+      "download": "Download",
+      "resultCount": "{{count}} results",
+      "searchPlaceholder": "Search Document",
+      "headers": {
+        "product": "Product",
+        "approveDate": "Approval Date",
+        "validDate": "Validity Date",
+        "status": "Status",
+        "action": "Actions"
+      },
+      "documents": {
+        "userDeclarationForm": "User Declaration Form",
+        "accountOpeningPetition": "Account Opening Request Petition",
+        "signatureCircular": "Current Signature Circular",
+        "taxCertificate": "Tax Certificate",
+        "activityCertificate": "Activity Certificate (last 6 months)",
+        "tradeRegistryGazette": "Trade Registry Gazette",
+        "shareholderInfo1": "Shareholder information (25%+ #1)",
+        "shareholderInfo2": "Shareholder information (25%+ #2)",
+        "invoiceSamples": "Invoice Samples",
+        "uboDeclaration": "UBO (Ultimate Beneficial Owner) Declaration"
+      },
+      "status": {
+        "approved": "Approved",
+        "expired": "Validity Expired"
+      },
+      "upload": "Upload Document",
+      "action": "View",
+      "pagination": {
+        "showing": "Showing {{from}}-{{to}} of {{total}} entries",
+        "show": "Show {{count}}"
+      }
+    },
+    "corporateInfo": {
+      "title": "Shareholder Details",
+      "add": "Add Shareholder",
+      "role": "25%+ shareholder",
+      "managerTitle": "Account Manager",
+      "edit": "Edit",
+      "noShareholder": "No registered shareholders found."
+    },
+    "bank": {
+      "title": "Bank Accounts",
+      "search": "Search Bank",
+      "add": "Add Account",
+      "columns": {
+        "bank": "Bank",
+        "accountName": "Account Name",
+        "taxId": "Tax ID Number",
+        "iban": "IBAN"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "pagination": {
+        "showing": "Showing {{from}}-{{to}} of {{total}} entries",
+        "show": "Show {{count}}"
+      },
+      "noData": "You don't have any registered bank accounts yet.",
+      "noDataDescription": "You need to add a bank account for deposit and withdrawal transactions.",
+      "deleteModal": {
+        "title": "Delete Bank Account",
+        "description": "Are you sure you want to delete this bank account? This action cannot be undone.",
+        "confirm": "Yes, Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "placeholder": {
+      "title": "Content coming soon",
+      "desc": "We are preparing content for this tab."
+    },
+    "security": {
+      "title": "Sign-in methods",
+      "loginMethod": "Sign-in method",
+      "password": "Password",
+      "autoLogout": "Auto logout",
+      "methodValue": "Email",
+      "methodDesc": "Email sign-in is selected. You can switch to phone anytime.",
+      "passwordDesc": "Protect your account with a unique, strong password; don’t reuse it elsewhere.",
+      "autoLogoutValue": "8 hours (default)",
+      "autoLogoutDesc": "Auto sign-out after inactivity.",
+      "twoFaTitle": "Two-Factor Authentication (2FA)",
+      "smsOtp": "SMS OTP",
+      "smsDesc": "One-time codes sent to your phone protect your account.",
+      "emailOtp": "Email OTP",
+      "emailDesc": "One-time codes are sent to your email for sign-in and sensitive actions.",
+      "authApp": "Authenticator app",
+      "authDesc": "Uses a one-time code from Google Authenticator, Authy, or similar.",
+      "edit": "Edit"
+    },
+    "address": {
+      "title": "Address Management",
+      "add": "Add Address",
+      "safeTitle": "Secure Withdrawal Addresses",
+      "searchPlaceholder": "Search Secure Withdrawal Address",
+      "cancel": "Cancel",
+      "resultCount": "{{count}} results",
+      "noRecords": "No records found.",
+      "perPage": "Per page",
+      "columns": {
+        "coin": "Coin",
+        "label": "Label",
+        "network": "Network",
+        "address": "Address",
+        "tag": "Memo / Tag",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "approved": "Approved",
+        "pending": "Pending"
+      },
+      "form": {
+        "title": "Add New Address",
+        "type": "Address Type",
+        "corporate": "Corporate",
+        "individual": "Individual",
+        "label": "Address Name",
+        "network": "Select Network",
+        "address": "Address",
+        "tag": "Tag / Memo (optional)",
+        "whitelist": "Add to whitelist",
+        "save": "Save",
+        "successTitle": "Address added",
+        "successDesc": "New address has been added to the whitelist."
+      },
+      "empty": {
+        "title": "No Withdrawal Address Found",
+        "description": "Deposit funds to your account to start transacting.",
+        "action": "Add Withdrawal Address"
+      },
+      "deleteModal": {
+        "title": "Delete Address",
+        "description": "Are you sure you want to delete this withdrawal address? This action cannot be undone.",
+        "confirm": "Yes, Delete",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "userPage": {
+    "title": "Authorized Users",
+    "addUser": "Add New User",
+    "filters": {
+      "search": "Search User",
+      "status": "Status",
+      "role": "Role"
+    },
+    "table": {
+      "user": "User",
+      "email": "E-mail",
+      "phone": "Phone Number",
+      "role": "Role",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "invited": "Invited"
+    },
+    "pagination": {
+      "showing": "Showing 1 to 8 of 50 entries",
+      "show": "Show 8"
+    },
+    "rolesTitle": "Role Management",
+    "roles": {
+      "admin": "Admin",
+      "approver": "Approver",
+      "trader": "Trader",
+      "viewer": "Viewer"
+    },
+    "permissions": {
+      "manageUsers": "Add, remove, and approve users",
+      "manageRoles": "Assign and change roles for all users",
+      "manageAddresses": "Add, edit, and delete all addresses",
+      "viewReports": "View all reports and logs",
+      "reviewWhitelist": "Review new address/whitelist requests",
+      "reviewRoles": "Review and approve user roles",
+      "sendInvites": "Send new user invitations",
+      "tradeAssets": "Trade crypto/fiat assets",
+      "swapTransfer": "Swap/transfer operations",
+      "manageOwnWhitelist": "Add own addresses to whitelist",
+      "viewHistory": "View asset and transaction history",
+      "viewSummaries": "Review reports and summaries"
+    }
+  },
+  "reportsPage": {
+    "title": "Reports",
+    "dailyTab": "Daily Transaction Report",
+    "monthlyTab": "Monthly Account Statement",
+    "year": "Report Year",
+    "selection": "Month & Day Selection",
+    "cancel": "Cancel",
+    "generate": "Generate Report"
+  },
+  "notificationPage": {
+    "title": "Notifications",
+    "blockedTitle": "Notifications blocked",
+    "blockedDesc": "Enable browser notifications so you don’t miss important updates.",
+    "enable": "Enable Notifications",
+    "preferenceTitle": "Preference",
+    "preferenceValue": "Limited",
+    "preferenceDesc": "Choose your notification preferences.",
+    "customizeTitle": "Customize",
+    "customizeDesc": "Tailor your notification settings.",
+    "smsLabel": "SMS",
+    "smsDesc": "Notifications about important updates and transactions are sent via SMS.",
+    "emailLabel": "E-mail",
+    "emailDesc": "Notifications are sent to your email for logins, important transactions, and updates.",
+    "edit": "Edit"
+  },
+  "preferencesPage": {
+    "title": "Preferences",
+    "edit": "Edit",
+    "timezone": "Time Zone",
+    "currency": "Base Currency",
+    "language": "Language",
+    "numberFormat": "Number Format",
+    "timezones": {
+      "utc": "[+00:00 UTC] UTC, Universal Time",
+      "istanbul": "[+03:00 UTC] Europe/Istanbul",
+      "newYork": "[-05:00 UTC] America/New_York"
+    },
+    "languages": {
+      "en": "English",
+      "pt": "Portuguese",
+      "es": "Spanish",
+      "ru": "Russian"
+    }
+  },
+  "activityPage": {
+    "comingSoon": "Activity screen coming soon."
+  },
+  "toast": {
+    "copied": "Copied to clipboard"
+  },
+  "common": {
+    "close": "Close",
+    "enter": "Enter",
+    "actions": {
+      "search": "Search",
+      "filter": "Filter",
+      "yes": "Yes",
+      "no": "No",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "apply": "Apply",
+      "continue": "Continue",
+      "processing": "Processing...",
+      "max": "Max",
+      "clearAll": "Clear Filters"
+    },
+    "searchInput": {
+      "placeholder": "Search...",
+      "relatedResults": "Related results"
+    },
+    "locale": {
+      "selectLanguage": "Select language",
+      "changeLanguage": "Change language"
+    },
+    "decimalInput": {
+      "amountLabel": "Amount",
+      "available": "Available {{amount}}"
+    },
+    "emptyState": {
+      "title": "No Transactions Found",
+      "description": "You don't have any transactions matching your criteria."
+    },
+    "loading": "Loading...",
+    "retry": "Try Again",
+    "success": "Operation completed successfully",
+    "error": "An error occurred. Please try again."
+  },
+  "auth": {
+    "loginPage": {
+      "initiationTitle": "Verification Required"
+    }
+  },
+  "crypto": {
+    "declareModal": {
+      "depositTitle": "Crypto Asset Deposit Declaration",
+      "withdrawTitle": "Crypto Asset Withdrawal Declaration",
+      "asset": "Crypto Asset",
+      "individual": "Individual",
+      "corporate": "Corporate",
+      "senderNameIndividual": "Sender First & Last Name*",
+      "senderNameCorporate": "Sender Corporate Name (Commercial Title)*",
+      "isOwnAddress": "This address is registered in my name",
+      "informationType": "Information Type",
+      "select": "Select",
+      "address": "Full Address",
+      "addressPlaceholder": "Enter address",
+      "birthplaceIndividual": "Date of Birth & Place",
+      "birthplaceCorporate": "Place of Establishment & Date",
+      "identityIndividual": "ID / Passport Number",
+      "identityCorporate": "Tax Number",
+      "customerNo": "Customer Number",
+      "customerNoPlaceholder": "Enter customer number",
+      "cityLabelIndividual": "Sender Birth City",
+      "cityLabelCorporate": "Sender Establishment City",
+      "districtLabelIndividual": "Sender Birth District",
+      "districtLabelCorporate": "Sender Establishment District",
+      "dateLabelIndividual": "Sender Date of Birth",
+      "dateLabelCorporate": "Sender Establishment Date",
+      "cityPlaceholder": "Select City",
+      "districtPlaceholder": "Select District",
+      "loading": "Loading...",
+      "addressType": "Address Type",
+      "provider": "Crypto Asset Service Provider",
+      "vaspOption": "Crypto Asset Service Provider",
+      "personalOption": "Individual Wallet",
+      "submit": "Submit",
+      "successMessage": "Declaration sent successfully.",
+      "errorMessage": "An error occurred while sending the declaration.",
+      "idError": "Transaction ID not found.",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Enter a description for your transaction",
+      "otherOption": "Other",
+      "otherProviderLabel": "Crypto Asset Service Provider Name",
+      "otherProviderPlaceholder": "Enter service provider name"
+    }
+  }
+}
